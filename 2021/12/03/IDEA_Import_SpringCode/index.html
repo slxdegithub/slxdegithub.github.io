@@ -91,7 +91,7 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
 
 
 <body>
@@ -313,7 +313,7 @@
 <p>可以看到这里可以选择是用gradle-wrapper.properties指定的地址下载gradle，默认会先去你指定的仓库先找，找不到就去下载。也可以使用本地的gradle。建议使用本地gradle。</p>
 <p><img src="/2021/12/03/IDEA_Import_SpringCode/image-20211126195251922.png" srcset="/img/loading.gif" lazyload alt="image-20211126195251922"></p>
 <p>配置好之后 我们找到build.gradle文件，配置上国内镜像 下载速度会快很多</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">allprojects</span> <span class="hljs-string">&#123;</span><br>			<span class="hljs-attr">repositories</span> <span class="hljs-string">&#123;</span><br>				<span class="hljs-attr">maven</span> <span class="hljs-string">&#123; url &#x27;https://maven.aliyun.com/repository/gradle-plugin&#x27; &#125;</span><br>				<span class="hljs-attr">maven</span> <span class="hljs-string">&#123; url &#x27;https://maven.aliyun.com/repository/google&#x27; &#125;</span><br>				<span class="hljs-attr">maven</span> <span class="hljs-string">&#123; url &#x27;https://maven.aliyun.com/repository/jcenter&#x27;&#125;</span><br>			<span class="hljs-attr">&#125;</span><br>		<span class="hljs-attr">&#125;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre class=" language-hljs properties"><span class="hljs-attr">allprojects</span> <span class="hljs-string">&#123;</span><br>			<span class="hljs-attr">repositories</span> <span class="hljs-string">&#123;</span><br>				<span class="hljs-attr">maven</span> <span class="hljs-string">&#123; url &#x27;https://maven.aliyun.com/repository/gradle-plugin&#x27; &#125;</span><br>				<span class="hljs-attr">maven</span> <span class="hljs-string">&#123; url &#x27;https://maven.aliyun.com/repository/google&#x27; &#125;</span><br>				<span class="hljs-attr">maven</span> <span class="hljs-string">&#123; url &#x27;https://maven.aliyun.com/repository/jcenter&#x27;&#125;</span><br>			<span class="hljs-attr">&#125;</span><br>		<span class="hljs-attr"><code class="language-hljs properties"><span class="hljs-attr">allprojects</span> <span class="hljs-string">&#123;</span><br>			<span class="hljs-attr">repositories</span> <span class="hljs-string">&#123;</span><br>				<span class="hljs-attr">maven</span> <span class="hljs-string">&#123; url &#x27;https://maven.aliyun.com/repository/gradle-plugin&#x27; &#125;</span><br>				<span class="hljs-attr">maven</span> <span class="hljs-string">&#123; url &#x27;https://maven.aliyun.com/repository/google&#x27; &#125;</span><br>				<span class="hljs-attr">maven</span> <span class="hljs-string">&#123; url &#x27;https://maven.aliyun.com/repository/jcenter&#x27;&#125;</span><br>			<span class="hljs-attr">&#125;</span><br>		<span class="hljs-attr">&#125;</span><br></code></pre></td></tr></table></figure>
 
 
 
@@ -327,7 +327,7 @@
 <p><img src="/2021/12/03/IDEA_Import_SpringCode/image-20211126200816658.png" srcset="/img/loading.gif" lazyload alt="image-20211126200816658"></p>
 <p><img src="/2021/12/03/IDEA_Import_SpringCode/image-20211126200826599.png" srcset="/img/loading.gif" lazyload alt="image-20211126200826599"></p>
 <p>第二个  </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">Unable to find method <span class="hljs-string">&#x27;org.gradle.api.artifacts.result.ComponentSelectionReason.getDescription()Ljava/lang/String;&#x27;</span>.<br>Possible causes <span class="hljs-keyword">for</span> <span class="hljs-keyword">this</span> unexpected error include:&lt;ul&gt;&lt;li&gt;Gradle<span class="hljs-string">&#x27;s dependency cache may be corrupt (this sometimes occurs after a network connection timeout.)</span><br><span class="hljs-string">Re-download dependencies and sync project (requires network)&lt;/li&gt;&lt;li&gt;The state of a Gradle build process (daemon) may be corrupt. Stopping all Gradle daemons may solve this problem.</span><br><span class="hljs-string">Stop Gradle build processes (requires restart)&lt;/li&gt;&lt;li&gt;Your project may be using a third-party plugin which is not compatible with the other plugins in the project or the version of Gradle requested by the project.&lt;/li&gt;&lt;/ul&gt;In the case of corrupt Gradle processes, you can also try closing the IDE and then killing all Java processes.</span><br><span class="hljs-string"></span><br></code></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre class=" language-hljs java">Unable to find method <span class="hljs-string">&#x27;org.gradle.api.artifacts.result.ComponentSelectionReason.getDescription()Ljava/lang/String;&#x27;</span>.<br>Possible causes <span class="hljs-keyword">for</span> <span class="hljs-keyword">this</span> unexpected error include:&lt;ul&gt;&lt;li&gt;Gradle<span class="hljs-string">&#x27;s dependency cache may be corrupt (this sometimes occurs after a network connection timeout.)</span><br><span class="hljs-string">Re-download dependencies and sync project (requires network)&lt;/li&gt;&lt;li&gt;The state of a Gradle build process (daemon) may be corrupt. Stopping all Gradle daemons may solve this problem.</span><br><span class="hljs-string">Stop Gradle build processes (requires restart)&lt;/li&gt;&lt;li&gt;Your project may be using a third-party plugin which is not compatible with the other plugins in the project or the version of Gradle requested by the project.&lt;/li&gt;&lt;/ul&gt;In the case of corrupt Gradle processes, you can also try closing the IDE and then killing all Java processes.</span><br><span class="hljs-string"><code class="language-hljs java">Unable to find method <span class="hljs-string">&#x27;org.gradle.api.artifacts.result.ComponentSelectionReason.getDescription()Ljava/lang/String;&#x27;</span>.<br>Possible causes <span class="hljs-keyword">for</span> <span class="hljs-keyword">this</span> unexpected error include:&lt;ul&gt;&lt;li&gt;Gradle<span class="hljs-string">&#x27;s dependency cache may be corrupt (this sometimes occurs after a network connection timeout.)</span><br><span class="hljs-string">Re-download dependencies and sync project (requires network)&lt;/li&gt;&lt;li&gt;The state of a Gradle build process (daemon) may be corrupt. Stopping all Gradle daemons may solve this problem.</span><br><span class="hljs-string">Stop Gradle build processes (requires restart)&lt;/li&gt;&lt;li&gt;Your project may be using a third-party plugin which is not compatible with the other plugins in the project or the version of Gradle requested by the project.&lt;/li&gt;&lt;/ul&gt;In the case of corrupt Gradle processes, you can also try closing the IDE and then killing all Java processes.</span><br><span class="hljs-string"></span><br></code></pre></td></tr></table></figure>
 
 <p><img src="/2021/12/03/IDEA_Import_SpringCode/image-20211126200934973.png" srcset="/img/loading.gif" lazyload alt="image-20211126200934973"></p>
 <p>这个问题出现的可能有两种，</p>
@@ -338,7 +338,7 @@
 <p><img src="/2021/12/03/IDEA_Import_SpringCode/image-20211126201335041.png" srcset="/img/loading.gif" lazyload alt="image-20211126201335041"></p>
 <p>这个错误。。，gradle版本太低了。和源码不适配，得往高了换。换了一般都能解决。</p>
 <p>第四个</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">Caused by: java.lang.NoSuchMethodError: org.gradle.api.artifacts.ProjectDependency.getConfiguration<br></code></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre class=" language-hljs java"><code class="language-hljs java">Caused by: java.lang.NoSuchMethodError: org.gradle.api.artifacts.ProjectDependency.getConfiguration<br></code></pre></td></tr></table></figure>
 
 <p>如果 <em>build.gradle</em> 文件包含 <strong>spring-boot-gradle-plugin，</strong>升级其版本 或者其他插件版本低了</p>
 <p>第五个 jar包找不到问题，百度很好解决。</p>
@@ -361,6 +361,12 @@
                 <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2021/12/04/spring-day01/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">spring-day01</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
