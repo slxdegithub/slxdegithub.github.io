@@ -1,0 +1,583 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="Blue~u~u~u~u">
+  <meta name="author" content="Blue~u~u~u~u">
+  <meta name="keywords" content="">
+  <meta name="description" content="字符集一、为什么需要字符集我们在计算机屏幕上看到的是实体化的文字，而在计算机存储介质中存放的实际是二进制的比特(byte)流。简单来说字符集就规定了某个文字对应的二进制数值存放方式（编码）和某串二进制数值代表了哪个文字（解码）的转换关系。正因为字符和字节之间有着这种固定的对应关系，所以我们的文件在以相同的字符集传递的情况之下才不会出现乱码。 二、为什么有各种各样的字符集标准很多规范和标准在最初制定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字符集和编码问题">
+<meta property="og:url" content="http://example.com/2021/12/06/%E5%AD%97%E7%AC%A6%E9%9B%86%E5%92%8C%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Blue~u~u~u~u">
+<meta property="og:description" content="字符集一、为什么需要字符集我们在计算机屏幕上看到的是实体化的文字，而在计算机存储介质中存放的实际是二进制的比特(byte)流。简单来说字符集就规定了某个文字对应的二进制数值存放方式（编码）和某串二进制数值代表了哪个文字（解码）的转换关系。正因为字符和字节之间有着这种固定的对应关系，所以我们的文件在以相同的字符集传递的情况之下才不会出现乱码。 二、为什么有各种各样的字符集标准很多规范和标准在最初制定">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-06T01:41:34.000Z">
+<meta property="article:modified_time" content="2021-12-06T02:40:22.878Z">
+<meta property="article:author" content="Blue~u~u~u~u">
+<meta property="article:tag" content="编码">
+<meta name="twitter:card" content="summary_large_image">
+  
+  <title>字符集和编码问题 - Blue~u~u~u~u</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/friends/">
+                <i class="iconfont icon-user-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="字符集和编码问题">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-12-06 09:41" pubdate>
+        2021年12月6日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      8 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">字符集和编码问题</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：几秒前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h2 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h2><h3 id="一、为什么需要字符集"><a href="#一、为什么需要字符集" class="headerlink" title="一、为什么需要字符集"></a>一、为什么需要字符集</h3><p>我们在计算机屏幕上看到的是实体化的文字，而在计算机存储介质中存放的实际是二进制的比特(byte)流。简单来说字符集就规定了某个文字对应的二进制数值存放方式（编码）和某串二进制数值代表了哪个文字（解码）的转换关系。正因为字符和字节之间有着这种固定的对应关系，所以我们的文件在以相同的字符集传递的情况之下才不会出现乱码。</p>
+<h3 id="二、为什么有各种各样的字符集标准"><a href="#二、为什么有各种各样的字符集标准" class="headerlink" title="二、为什么有各种各样的字符集标准"></a>二、为什么有各种各样的字符集标准</h3><p>很多规范和标准在最初制定时并不会意识到这将会是以后全球普适的准则，或者处于组织本身利益就想从本质上区别于现有标准。于是，就产生了那么多具有相同效果但又不相互兼容的标准了。</p>
+<p>最早是美国人使用电脑，所以最初的字符集是ASCII,使用7位bit表示一个字符，总共能表示128种字符。后来，随着欧洲各个国家的计算机普及，人们发现ASCI码I对应的128个字符不能够满足需求了，因为欧洲各个国家都有一些特殊的字符。所以ASCII进行了扩容，使用8位bit表示一个字符，总共就能表示256种字符。</p>
+<p>而当中国开始普及计算机后，发现256中字符根本没办法满足咱们中国人的日常需求，中华文化上下五千年，汉字的数量多了去了，一个字节根本没法对应一个字符。所以只能继续扩容，两个字节对应一个字符，所以后续的GB2312、GBK等等字符集就都被提出来了。</p>
+<p>正因为世界上有各种各样的国家、民族需要使用计算机，各个国家地区都会根据自己的文化特色创造出相对应的字符集标准。</p>
+<h3 id="三、同一个字在多种字符集下对应的16进制和二进制对比"><a href="#三、同一个字在多种字符集下对应的16进制和二进制对比" class="headerlink" title="三、同一个字在多种字符集下对应的16进制和二进制对比"></a>三、同一个字在多种字符集下对应的16进制和二进制对比</h3><table>
+<thead>
+<tr>
+<th>字符集</th>
+<th>16进制编码</th>
+<th>对应的二进制数据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UTF-8</td>
+<td>0xE5B18C</td>
+<td>1110 0101 1011 0001 1000 1100</td>
+</tr>
+<tr>
+<td>UTF-16</td>
+<td>0x5C4C</td>
+<td>1011 1000 1001 1000</td>
+</tr>
+<tr>
+<td>GBK</td>
+<td>0x8CC5</td>
+<td>1000 1100 1100 0101</td>
+</tr>
+</tbody></table>
+<p>上述是同一个字在三种字符集下所对应的16进制和2进制数据，我们可以发现同样的一个字，在不同的字符集下对应的16进制和2进制数据完全不同。这个字就是我们平常用来形容一个人特别厉害的一个字——–”屌”!</p>
+<h3 id="四、为什么会发生乱码？"><a href="#四、为什么会发生乱码？" class="headerlink" title="四、为什么会发生乱码？"></a>四、为什么会发生乱码？</h3><p>简单的说乱码的出现是因为：编码和解码时用了不同或者不兼容的字符集。对应到真实生活中，就好比是一个英国人为了表示祝福在纸上写了bless（编码过程）。而一个法国人拿到了这张纸，由于在法语中bless表示受伤的意思，所以认为他想表达的是受伤（解码过程）。这个就是一个现实生活中的乱码情况。在计算机科学中一样，一个用UTF-8编码后的字符，用GBK去解码。由于两个字符集的字库表不一样，同一个汉字在两个字符表的位置也不同，最终就会出现乱码。</p>
+<p>在UTF-8字符编码下（一个汉字对应三个字节），”很屌”这两个字对应的16进制字符串</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>UTF-8编码后的十六进制</th>
+<th>UTF-8编码后对应的二进制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>很</td>
+<td>E5BE88</td>
+<td>1110 0101   1011 1110    1000 1000</td>
+</tr>
+<tr>
+<td>屌</td>
+<td>E5B18C</td>
+<td>1110 0101    1011 0001     1000 1100</td>
+</tr>
+</tbody></table>
+<p>于是我们得到了<code>E5BE88E5B18C</code>这么一串数值。而显示时我们用GBK解码进行展示（一个汉字对应两个字节），通过查表我们获得以下信息：</p>
+<table>
+<thead>
+<tr>
+<th>两个字节的十六进制数值</th>
+<th>GBK解码后对应的字符</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>E5BE</td>
+<td>寰</td>
+</tr>
+<tr>
+<td>88E5</td>
+<td>堝</td>
+</tr>
+<tr>
+<td>B18C</td>
+<td>睂</td>
+</tr>
+</tbody></table>
+<p>以上就是”很屌”这两个字在UTF-8字符集下进行编码，然后在GBK下进行解码，就变成了”寰堝睂”。不仅字符变得不认识了，甚至连字数都发生了变化。有没有觉得很屌的样子？</p>
+<h3 id="五、如何将乱码后的字符串还原成它本来的样子"><a href="#五、如何将乱码后的字符串还原成它本来的样子" class="headerlink" title="五、如何将乱码后的字符串还原成它本来的样子"></a>五、如何将乱码后的字符串还原成它本来的样子</h3><p>要从乱码字符中反解出原来的正确文字需要对各个字符集编码规则有较为深刻的掌握。但是原理很简单，这里用最常见的UTF-8被错误用GBK展示时的乱码为例，来说明具体反解和识别过程。</p>
+<h4 id="第1步-编码"><a href="#第1步-编码" class="headerlink" title="第1步 编码"></a>第1步 编码</h4><p>假设我们在页面上看到<code>寰堝睂</code>这样的乱码，而又得知我们的服务器当前使用GBK编码。那么第一步我们就能先通过GBK把乱码编码成二进制表达式。</p>
+<h4 id="第二步-解码"><a href="#第二步-解码" class="headerlink" title="第二步 解码"></a>第二步 解码</h4><p>由于乱码之前的编码字符集是UTF-8，所以我们再使用UTF-8将二进制字节数组解码成字符串，这时候我们就能够得到这串字符串原本的样子<code>很屌</code></p>
+<p>###六、几个常见名词的介绍</p>
+<h4 id="ASCII码表"><a href="#ASCII码表" class="headerlink" title="ASCII码表"></a>ASCII码表</h4><p>一开始最多只能表示128个字符，经过拓展后最多能表示256个字符。</p>
+<h4 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a>Unicode</h4><p>Unicode是国际组织制定的可以容纳世界上所有文字和符号的字符编码方案，相当于一个最大的字库。Unicode用数字0-0x10FFFF来映射这些字符，最多可以容纳1114112个字符。</p>
+<p>既然Unicode包含全世界所有的文字和字符的话，那么为什么全世界不统一使用Unicode字库表来进行编码和解码呢?而非要弄出这么多各种各样的字符集出来呢?</p>
+<p>因为如果全世界都统一使用Unicode的话，一个字符就要对应三个字节，对于美国人和欧洲人来说，他们使用ASCII的话每个字符只需要对应一个字节。这样所造成的后果就是，本来美国人使用ASCII的时候一个U盘能存放1500篇文章，而改成使用Unicode之后U盘只能存放500篇文章了。所以全世界统一使用Unicode字库表并不现实。</p>
+<h4 id="UTF-8"><a href="#UTF-8" class="headerlink" title="UTF-8"></a>UTF-8</h4><p>UTF-8是一个当今接受度最广的字符集编码,但是它只涵盖了Unicode字库中的一小部分，Unicode的编号从<code>0000</code>开始一直到<code>10FFFF</code>共分为16个Plane，每个Plane中有65536个字符。而UTF-8则只实现了第一个Plane，所以这也造成了它在某些场景下对于特殊字符的处理困难。</p>
+<h3 id="七、总结"><a href="#七、总结" class="headerlink" title="七、总结"></a>七、总结</h3><p>Unicode：包容万国，优点是字符-&gt;数字的转换速度快，缺点是占用空间大。</p>
+<p>UTF-8：精准，对不同的字符用不同的长度表示，优点是节省空间，缺点是：字符-&gt;数字的转换速度慢，因为每次都需要计算出字符需要多长的Bytes才能够准确表示。</p>
+<p>所以一般在内存中使用的编码是unicode，用空间换时间，为了快。因为程序都需要加载到内存才能运行，因而内存应该是尽可能的保证快。但硬盘中或者网络传输用utf-8，网络I/O延迟或磁盘I/O延迟要远大与utf-8的转换延迟，而且I/O应该是尽可能地节省带宽，保证数据传输的稳定性。因为数据的传输，追求的是稳定，高效，数据量越小数据传输就越靠谱，于是都转成utf－8格式的，而不是unicode。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/other/">other</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%BC%96%E7%A0%81/">编码</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/04/spring-day01/">
+                        <span class="hidden-mobile">spring-day01</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/weixin.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
