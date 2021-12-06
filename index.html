@@ -48,7 +48,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"slx.blue","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"slx.blue","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":100,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -216,8 +216,8 @@
             
           
           单例模式单例模式有八种方式：
-12345678饿汉式(静态常量实例化)饿汉式(静态代码块实例化)懒汉式(线程不安全)懒汉式(线程安全同步方法)懒汉式饿汉式(静态常量实例化)饿汉式(静态代码块实例化)懒汉式(线程不安全)懒汉式(线程安全同步方法)懒汉式(同步代码块 ，写法错误) 并不能实现线程安全双重检查静态内部类枚举
-饿汉式(静态常量)1234567891011121314151617181920
+12345678饿汉式(静态常量实例化)饿汉式(静态代码块实例化)懒汉式(线程不安全)懒汉式(线程安全同步方法)懒汉式(同步代码块 ，写法错误) 并不能实现线程安全双重检查静态内部类枚举
+饿汉式(静态常量)12345678910111213141516171819202122class Singleton&#123;    //构造器私有化 外部能new    pri
         </a>
       </p>
 
