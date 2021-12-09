@@ -300,7 +300,7 @@
 
 <p>虽然我们学习的上述四个注解都实现IOC，但是其实他们四个在本质上是没有区别的。通过查看源码我们得知，@Controller、@Service、@Repository这三个注解只是在@Component注解的基础上起了三个新的名字。对于Spring使用IOC容器管理这些组件来说没有区别。所以@Controller、@Service、@Repository这三个注解只是给开发人员看的，让我们能够便于分辨组件的作用。</p>
 <p>注意：虽然它们本质上一样，但是为了代码的可读性，为了程序结构严谨我们肯定不能随便胡乱标记。</p>
-<p><img src="/2021/12/06/spring-day02/tu_001.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="http://slx.blue/2021/12/06/spring-day02/tu_001.png" srcset="/img/loading.gif" lazyload></p>
 <h4 id="4-给Bean设置name"><a href="#4-给Bean设置name" class="headerlink" title="4. 给Bean设置name"></a>4. 给Bean设置name</h4><p>在我们使用XML方式管理bean的时候，每个bean都有一个唯一标识，便于在其他地方引用。现在使用注解后，每个组件仍然应该有一个唯一标识。 </p>
 <h5 id="4-1-默认情况"><a href="#4-1-默认情况" class="headerlink" title="4.1 默认情况"></a>4.1 默认情况</h5><p>类名首字母小写就是bean的id。例如：SoldierController类对应的bean的id就是soldierController。 </p>
 <h5 id="4-2-使用value属性指定"><a href="#4-2-使用value属性指定" class="headerlink" title="4.2 使用value属性指定"></a>4.2 使用value属性指定</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Controller(value = &quot;tianDog&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SoldierController</span> </span>&#123;<br>&#125;<br></code></pre></td></tr></table></figure>
@@ -345,7 +345,7 @@
 <li><p>用在参数上</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Controller</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserController</span> </span>&#123;<br>    <span class="hljs-keyword">private</span> UserService userService;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">UserController</span><span class="hljs-params">(<span class="hljs-meta">@Autowired</span> UserService userService)</span> </span>&#123;<br>        <span class="hljs-keyword">this</span>.userService = userService;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h6 id="2-3-3-2-Autowired工作流程"><a href="#2-3-3-2-Autowired工作流程" class="headerlink" title="2.3.3.2 Autowired工作流程"></a>2.3.3.2 Autowired工作流程</h6><p><img src="/2021/12/06/spring-day02/tu_002.png" srcset="/img/loading.gif" lazyload></p>
+<h6 id="2-3-3-2-Autowired工作流程"><a href="#2-3-3-2-Autowired工作流程" class="headerlink" title="2.3.3.2 Autowired工作流程"></a>2.3.3.2 Autowired工作流程</h6><p><img src="http://slx.blue/2021/12/06/spring-day02/tu_002.png" srcset="/img/loading.gif" lazyload></p>
 </li>
 </ol>
 <p>首先根据所需要的组件类型到IOC容器中查找</p>
@@ -379,28 +379,28 @@
 </ul>
 <p>此外，它们的装配顺序不同。 </p>
 <p>Autowired的装配顺序:</p>
-<img src="/2021/12/06/spring-day02/tu_003.png" srcset="/img/loading.gif" lazyload style="zoom:67%;">
+<img src="http://slx.blue/2021/12/06/spring-day02/tu_003.png" srcset="/img/loading.gif" lazyload style="zoom:67%;">
 
 <p>Resource的装配顺序:</p>
 <ol>
 <li>如果同时指定了name和type： </li>
 </ol>
-<img src="/2021/12/06/spring-day02/tu_004.png" srcset="/img/loading.gif" lazyload style="zoom:50%;">
+<img src="http://slx.blue/2021/12/06/spring-day02/tu_004.png" srcset="/img/loading.gif" lazyload style="zoom:50%;">
 
 <ol start="2">
 <li> 如果指定了name： </li>
 </ol>
-<img src="/2021/12/06/spring-day02/tu_005.png" srcset="/img/loading.gif" lazyload style="zoom:50%;">
+<img src="http://slx.blue/2021/12/06/spring-day02/tu_005.png" srcset="/img/loading.gif" lazyload style="zoom:50%;">
 
 <ol start="3">
 <li>如果指定了type: </li>
 </ol>
-<img src="/2021/12/06/spring-day02/tu_006.png" srcset="/img/loading.gif" lazyload style="zoom:50%;">
+<img src="http://slx.blue/2021/12/06/spring-day02/tu_006.png" srcset="/img/loading.gif" lazyload style="zoom:50%;">
 
 <ol start="4">
 <li> 如果既没有指定name，也没有指定type： </li>
 </ol>
-<img src="/2021/12/06/spring-day02/tu_007.png" srcset="/img/loading.gif" lazyload style="zoom:67%;">
+<img src="http://slx.blue/2021/12/06/spring-day02/tu_007.png" srcset="/img/loading.gif" lazyload style="zoom:67%;">
 
 <h3 id="第三节-纯注解开发"><a href="#第三节-纯注解开发" class="headerlink" title="第三节 纯注解开发"></a>第三节 纯注解开发</h3><p>体验纯注解开发，是为了给将来学习SpringBoot打基础。因为在SpringBoot中，就是完全舍弃XML配置文件，全面使用注解来完成主要的配置。 </p>
 <h4 id="1-使用配置类取代配置文件"><a href="#1-使用配置类取代配置文件" class="headerlink" title="1. 使用配置类取代配置文件"></a>1. 使用配置类取代配置文件</h4><h5 id="1-1-创建配置类"><a href="#1-1-创建配置类" class="headerlink" title="1.1 创建配置类"></a>1.1 创建配置类</h5><p>使用@Configuration注解将一个普通的类标记为Spring的配置类。 </p>

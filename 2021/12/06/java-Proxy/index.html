@@ -279,7 +279,7 @@
 </ol>
 <h4 id="1-静态代理"><a href="#1-静态代理" class="headerlink" title="1.静态代理"></a>1.静态代理</h4><p>静态代理在使用时，需要定义接口或者父类(即目标对象)与代理对象一起实现相同的接口或者是继承相同父类</p>
 <p>用例图：</p>
-<p><img src="/2021/12/06/java-Proxy/staticProxy.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p><img src="http://slx.blue/2021/12/06/java-Proxy/staticProxy.png" srcset="/img/loading.gif" lazyload alt="image"></p>
 <p>代码实现：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//接口</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ITeacherDao</span> </span>&#123;<br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">teach</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">// 授课的方法</span><br>&#125;<br><br></code></pre></td></tr></table></figure>
 
@@ -311,7 +311,7 @@
 <blockquote>
 <figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs delphi">&gt;<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">Object</span> newProxyInstance(<br>&gt;ClassLoader loader,<br>&gt;<span class="hljs-keyword">Class</span>&lt;?&gt;[] interfaces,<br>&gt;InvocationHandler h)<br></code></pre></td></tr></table></figure>
 </blockquote>
-<p><img src="/2021/12/06/java-Proxy/dynamic.png" srcset="/img/loading.gif" lazyload alt="dynamic"></p>
+<p><img src="http://slx.blue/2021/12/06/java-Proxy/dynamic.png" srcset="/img/loading.gif" lazyload alt="dynamic"></p>
 <p>代码实现</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//接口</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ITeacherDao</span> </span>&#123;<br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">teach</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">// 授课方法</span><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sayHello</span><span class="hljs-params">(String name)</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
@@ -339,7 +339,7 @@
 </li>
 </ol>
 <p>设计类图：</p>
-<p><img src="/2021/12/06/java-Proxy/cglib.png" srcset="/img/loading.gif" lazyload alt="dynamic"></p>
+<p><img src="http://slx.blue/2021/12/06/java-Proxy/cglib.png" srcset="/img/loading.gif" lazyload alt="dynamic"></p>
 <p>代码实现</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//被代理对象</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TeacherDao</span> </span>&#123;<br>	<span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">teach</span><span class="hljs-params">()</span> </span>&#123;<br>		System.out.println(<span class="hljs-string">&quot; 老师授课中  ， 我是cglib代理，不需要实现接口 &quot;</span>);<br>		<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello&quot;</span>;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 

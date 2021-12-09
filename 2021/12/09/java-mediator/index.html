@@ -261,7 +261,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：6 小时前
+                  本文最后更新于：7 小时前
                 
               </p>
             
@@ -275,7 +275,7 @@
 <li>比如MVC模式，C(Controller控制器)是M(Model模型）和（View视图）的中介者，在前后端交互时气到了中间人的作用。</li>
 </ol>
 <p>原理类图</p>
-<p><img src="/2021/12/09/java-mediator/mediator01.png" srcset="/img/loading.gif" lazyload alt="mediator"></p>
+<p><img src="http://slx.blue/2021/12/09/java-mediator/mediator01.png" srcset="/img/loading.gif" lazyload alt="mediator"></p>
 <p>类图说明</p>
 <ol>
 <li>Mediator就是抽象中介者，定义了同事对象到中介者对象的接口</li>
@@ -284,7 +284,7 @@
 <li><code>ConcreteColleague</code> 具体的同事类，会有很多，每个同事只知道自己的行为，而不了解其他的行为(方法)，但是他们都依赖中介者对象。</li>
 </ol>
 <h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><p>实现类图：</p>
-<p><img src="/2021/12/09/java-mediator/mediator02.png" srcset="/img/loading.gif" lazyload alt="mediator02"></p>
+<p><img src="http://slx.blue/2021/12/09/java-mediator/mediator02.png" srcset="/img/loading.gif" lazyload alt="mediator02"></p>
 <p>代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//中介者抽象类</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Mediator</span> </span>&#123;<br>	<span class="hljs-comment">//将给中介者对象，加入到集合中</span><br>	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Register</span><span class="hljs-params">(String colleagueName, Colleague colleague)</span></span>;<br><br>	<span class="hljs-comment">//接收消息, 具体的同事对象发出</span><br>	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">GetMessage</span><span class="hljs-params">(<span class="hljs-keyword">int</span> stateChange, String colleagueName)</span></span>;<br><br>	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">SendMessage</span><span class="hljs-params">()</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
