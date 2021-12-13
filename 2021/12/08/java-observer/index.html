@@ -19,7 +19,7 @@
   <meta name="description" content="观察者模式 天气预报需求：  气象站可以将每天测量到的温度，湿度，气压等一公告的形式发布出去，比如发布到自己的网站或者第三方 设计开放性API 便于其他第三方接入气象站获取数据 每次更新的时候 就要实时通知其他的第三方更新。  基本介绍 观察者模式，对象之间多对一依赖的一种设计方案   代码案例12345&#x2F;&#x2F;观察者接口，有观察者来实现public interface Observer &amp;#123;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java-观察者模式">
-<meta property="og:url" content="https://slx.blue/2021/12/08/java-observer/index.html">
+<meta property="og:url" content="https://slxdegithub.github.io/2021/12/08/java-observer/index.html">
 <meta property="og:site_name" content="Blue~u~u~u~u">
 <meta property="og:description" content="观察者模式 天气预报需求：  气象站可以将每天测量到的温度，湿度，气压等一公告的形式发布出去，比如发布到自己的网站或者第三方 设计开放性API 便于其他第三方接入气象站获取数据 每次更新的时候 就要实时通知其他的第三方更新。  基本介绍 观察者模式，对象之间多对一依赖的一种设计方案   代码案例12345&#x2F;&#x2F;观察者接口，有观察者来实现public interface Observer &amp;#123;">
 <meta property="og:locale" content="zh_CN">
@@ -68,7 +68,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"slx.blue","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"slxdegithub.github.io","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
