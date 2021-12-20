@@ -13,10 +13,10 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="Blue~u~u~u">
   <meta name="author" content="Blue~u~u~u">
   <meta name="keywords" content="">
-  <meta name="description" content="Redis-day02第一章 Redis持久化机制Redis的高性能是由于其将所有数据都存储在了内存中，为了使Redis在重启之后仍能保证数据不丢失，需要将数据从内存中同步到硬盘(文件)中，这一过程就是持久化。Redis 提供了一系列不同的持久化选项，包含: RDB、AOF、不持久以及RDB+AOF这四种选项 官网地址: https:&#x2F;&#x2F;redis.io&#x2F;topics&#x2F;persistence  第">
+  
+    <meta name="description" content="Redis-day02第一章 Redis持久化机制Redis的高性能是由于其将所有数据都存储在了内存中，为了使Redis在重启之后仍能保证数据不丢失，需要将数据从内存中同步到硬盘(文件)中，这一过程就是持久化。Redis 提供了一系列不同的持久化选项，包含: RDB、AOF、不持久以及RDB+AOF这四种选项 官网地址: https:&#x2F;&#x2F;redis.io&#x2F;topics&#x2F;persistence  第">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis-进阶">
 <meta property="og:url" content="http://www.slx.blue/2021/12/19/redis-02/index.html">
@@ -35,6 +35,7 @@
 <meta property="article:tag" content="redis">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://www.slx.blue/2021/12/19/redis-02/tu_001.png">
+  
   
   <title>redis-进阶 - Blue~u~u~u~u</title>
 
@@ -73,7 +74,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -847,7 +848,7 @@
       var typing = Fluid.plugins.typing;
       var title = document.getElementById('subtitle').title;
       
-      typing(title)
+        typing(title);
       
     })(window, document);
   </script>

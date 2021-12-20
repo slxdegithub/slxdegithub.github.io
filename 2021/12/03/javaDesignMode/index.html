@@ -13,10 +13,10 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="Blue~u~u~u">
   <meta name="author" content="Blue~u~u~u">
   <meta name="keywords" content="">
-  <meta name="description" content="设计模式原则设计原则核心思想:  找出应用中可能需要变化之处，把他们独立出来，不要和那些不需要变化的代码放在一起。   针对接口编程，而不是针对实现编程。  为了交互对象之间的松耦合设计努力     12345678设计模式常见的七大原则：1)单一职责原则2)接口隔离原则3)依赖倒置原则4)里式替换原则5)开闭原则6)迪米特原则7)合成复用原则   代码重用性  可读性  可扩展性  可靠性  高">
+  
+    <meta name="description" content="设计模式原则设计原则核心思想:  找出应用中可能需要变化之处，把他们独立出来，不要和那些不需要变化的代码放在一起。   针对接口编程，而不是针对实现编程。  为了交互对象之间的松耦合设计努力     12345678设计模式常见的七大原则：1)单一职责原则2)接口隔离原则3)依赖倒置原则4)里式替换原则5)开闭原则6)迪米特原则7)合成复用原则   代码重用性  可读性  可扩展性  可靠性  高">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java设计模式">
 <meta property="og:url" content="http://www.slx.blue/2021/12/03/javaDesignMode/index.html">
@@ -37,6 +37,7 @@
 <meta property="article:tag" content="设计模式">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://www.slx.blue/2021/12/03/javaDesignMode/TraditionalBuilder.jpg">
+  
   
   <title>java设计模式 - Blue~u~u~u~u</title>
 
@@ -75,7 +76,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -226,7 +227,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      124 分钟
+      125 分钟
     </span>
   
 
@@ -1002,7 +1003,7 @@
       var typing = Fluid.plugins.typing;
       var title = document.getElementById('subtitle').title;
       
-      typing(title)
+        typing(title);
       
     })(window, document);
   </script>

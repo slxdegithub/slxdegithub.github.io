@@ -13,10 +13,10 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="Blue~u~u~u">
   <meta name="author" content="Blue~u~u~u">
   <meta name="keywords" content="">
-  <meta name="description" content="Linux-day02第一章 Linux常用命令第一节 进程相关命令1. 查看进程状态1.1 命令的使用ps命令是用于查看进程状态的命令，它常和e参数(对应单词entire，表示全部。具体指显示系统中全部的进程信息。)，以及f参数(对应单词full-formate，表示完整格式。) 一起使用  进程信息中各列数据的说明:    列名 含义    UID 进程的用户信息   PID 进程id。由系统">
+  
+    <meta name="description" content="Linux-day02第一章 Linux常用命令第一节 进程相关命令1. 查看进程状态1.1 命令的使用ps命令是用于查看进程状态的命令，它常和e参数(对应单词entire，表示全部。具体指显示系统中全部的进程信息。)，以及f参数(对应单词full-formate，表示完整格式。) 一起使用  进程信息中各列数据的说明:    列名 含义    UID 进程的用户信息   PID 进程id。由系统">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux-进阶">
 <meta property="og:url" content="http://www.slx.blue/2021/12/16/Linux-02/index.html">
@@ -79,6 +79,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_001.png">
   
+  
   <title>Linux-进阶 - Blue~u~u~u~u</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
@@ -116,7 +117,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -1459,7 +1460,7 @@
       var typing = Fluid.plugins.typing;
       var title = document.getElementById('subtitle').title;
       
-      typing(title)
+        typing(title);
       
     })(window, document);
   </script>
