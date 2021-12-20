@@ -1,0 +1,854 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Blue~u~u~u">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="spring-day04第一章 声明式事务第一节 JDBCTemplate1. 简介为了在特定领域帮助我们简化代码，Spring 封装了很多 『Template』形式的模板类。例如：RedisTemplate、RestTemplate 等等，包括我们今天要学习的 JDBCTemplate。  2. 准备工作2.1 加入依赖12345678910111213141516171819202122232">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring-day04-transaction">
+<meta property="og:url" content="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/index.html">
+<meta property="og:site_name" content="Blue~u~u~u~u">
+<meta property="og:description" content="spring-day04第一章 声明式事务第一节 JDBCTemplate1. 简介为了在特定领域帮助我们简化代码，Spring 封装了很多 『Template』形式的模板类。例如：RedisTemplate、RestTemplate 等等，包括我们今天要学习的 JDBCTemplate。  2. 准备工作2.1 加入依赖12345678910111213141516171819202122232">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_021.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_022.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_031.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_023.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_024.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_025.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_026.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_027.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_028.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_029.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_030.png">
+<meta property="article:published_time" content="2021-12-08T07:58:08.000Z">
+<meta property="article:modified_time" content="2021-12-08T08:14:00.235Z">
+<meta property="article:author" content="Blue~u~u~u">
+<meta property="article:tag" content="spring">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_021.png">
+  
+  
+  <title>spring-day04-transaction - Blue~u~u~u~u</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Blue~u~u</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="spring-day04-transaction">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-12-08 15:58" pubdate>
+        2021年12月8日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      28k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      87 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">spring-day04-transaction</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：12 天前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="spring-day04"><a href="#spring-day04" class="headerlink" title="spring-day04"></a>spring-day04</h1><h2 id="第一章-声明式事务"><a href="#第一章-声明式事务" class="headerlink" title="第一章 声明式事务"></a>第一章 声明式事务</h2><h3 id="第一节-JDBCTemplate"><a href="#第一节-JDBCTemplate" class="headerlink" title="第一节 JDBCTemplate"></a>第一节 JDBCTemplate</h3><h4 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h4><p>为了在特定领域帮助我们简化代码，Spring 封装了很多 『Template』形式的模板类。例如：RedisTemplate、RestTemplate 等等，包括我们今天要学习的 JDBCTemplate。 </p>
+<h4 id="2-准备工作"><a href="#2-准备工作" class="headerlink" title="2. 准备工作"></a>2. 准备工作</h4><h5 id="2-1-加入依赖"><a href="#2-1-加入依赖" class="headerlink" title="2.1 加入依赖"></a>2.1 加入依赖</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- 基于Maven依赖传递性，导入spring-context依赖即可导入当前所需所有jar包 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-context<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.3.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- Spring 持久化层支持jar包 --&gt;</span><br>    <span class="hljs-comment">&lt;!-- Spring 在执行持久化层操作、与持久化层技术进行整合过程中，需要使用orm、jdbc、tx三个jar包 --&gt;</span><br>    <span class="hljs-comment">&lt;!-- 导入 orm 包就可以通过 Maven 的依赖传递性把其他两个也导入 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-orm<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.3.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- Spring 测试相关 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.3.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- junit测试 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>junit<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>junit<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>4.12<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- MySQL驱动 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.1.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- 数据源 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.alibaba<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>druid<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0.31<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--引入LomBok的依赖--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.18.8<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>provided<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="2-2-数据源的属性文件jdbc-properties"><a href="#2-2-数据源的属性文件jdbc-properties" class="headerlink" title="2.2 数据源的属性文件jdbc.properties"></a>2.2 数据源的属性文件jdbc.properties</h5><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-meta">atguigu.url</span>=<span class="hljs-string">jdbc:mysql://localhost:3306/mybatis-example</span><br><span class="hljs-meta">atguigu.driver</span>=<span class="hljs-string">com.mysql.jdbc.Driver</span><br><span class="hljs-meta">atguigu.username</span>=<span class="hljs-string">root</span><br><span class="hljs-meta">atguigu.password</span>=<span class="hljs-string">123456</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="2-3-Spring-配置文件"><a href="#2-3-Spring-配置文件" class="headerlink" title="2.3 Spring 配置文件"></a>2.3 Spring 配置文件</h5><h6 id="2-3-1-配置数据源"><a href="#2-3-1-配置数据源" class="headerlink" title="2.3.1 配置数据源"></a>2.3.1 配置数据源</h6><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--引入jdbc.properties属性文件--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">context:property-placeholder</span> <span class="hljs-attr">location</span>=<span class="hljs-string">&quot;classpath:jdbc.properties&quot;</span>/&gt;</span><br><span class="hljs-comment">&lt;!--配置数据源--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;dataSource&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;com.alibaba.druid.pool.DruidDataSource&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;username&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;$&#123;atguigu.username&#125;&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;$&#123;atguigu.password&#125;&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;driverClassName&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;$&#123;atguigu.driver&#125;&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;url&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;$&#123;atguigu.url&#125;&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h6 id="2-3-2-配置-JDBCTemplate"><a href="#2-3-2-配置-JDBCTemplate" class="headerlink" title="2.3.2 配置 JDBCTemplate"></a>2.3.2 配置 JDBCTemplate</h6><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--对JdbcTemplate进行IOC--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;jdbcTemplate&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.springframework.jdbc.core.JdbcTemplate&quot;</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--注入数据源对象--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;dataSource&quot;</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;dataSource&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="2-4-在测试类装配-JdbcTemplate"><a href="#2-4-在测试类装配-JdbcTemplate" class="headerlink" title="2.4 在测试类装配 JdbcTemplate"></a>2.4 在测试类装配 JdbcTemplate</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="hljs-meta">@ContextConfiguration(locations = &quot;classpath:spring-application.xml&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestJdbcTemplate</span> </span>&#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> JdbcTemplate jdbcTemplate;<br>&#125;    <br></code></pre></td></tr></table></figure>
+
+<h5 id="2-5-JDBCTemplate的基本用法"><a href="#2-5-JDBCTemplate的基本用法" class="headerlink" title="2.5 JDBCTemplate的基本用法"></a>2.5 JDBCTemplate的基本用法</h5><h6 id="2-5-1-增删改操作"><a href="#2-5-1-增删改操作" class="headerlink" title="2.5.1 增删改操作"></a>2.5.1 增删改操作</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testInsert</span><span class="hljs-params">()</span></span>&#123;<br>    String sql = <span class="hljs-string">&quot;insert into t_emp (emp_name,emp_salary) values (?,?)&quot;</span>;<br>    jdbcTemplate.update(sql,<span class="hljs-string">&quot;aobama&quot;</span>,<span class="hljs-number">3000d</span>);<br>&#125;<br><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testUpdate</span><span class="hljs-params">()</span></span>&#123;<br>    String sql = <span class="hljs-string">&quot;update t_emp set emp_name=?,emp_salary=? where emp_id=?&quot;</span>;<br>    jdbcTemplate.update(sql,<span class="hljs-string">&quot;aolafu&quot;</span>,<span class="hljs-number">6000d</span>,<span class="hljs-number">1</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="2-5-2-查询：返回单个简单类型"><a href="#2-5-2-查询：返回单个简单类型" class="headerlink" title="2.5.2 查询：返回单个简单类型"></a>2.5.2 查询：返回单个简单类型</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testSelectCount</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-comment">//查询员工的个数</span><br>    String sql = <span class="hljs-string">&quot;select count(emp_id) from t_emp&quot;</span>;<br>    Long count = jdbcTemplate.queryForObject(sql, Long.class);<br>    System.out.println(count);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="2-5-3-查询：返回实体类类型"><a href="#2-5-3-查询：返回实体类类型" class="headerlink" title="2.5.3 查询：返回实体类类型"></a>2.5.3 查询：返回实体类类型</h6><ol>
+<li>封装实体类类型</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu.pojo;<br><br><span class="hljs-keyword">import</span> lombok.AllArgsConstructor;<br><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> lombok.NoArgsConstructor;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Employee</span> </span>&#123;<br>    <span class="hljs-keyword">private</span> Integer empId;<br>    <span class="hljs-keyword">private</span> String empName;<br>    <span class="hljs-keyword">private</span> Double empSalary;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>借助 RowMapper 完成查询</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testSelectOnRowToBean</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-comment">//查询某个员工信息封装到Employee对象中</span><br>    String sql = <span class="hljs-string">&quot;select emp_id empId,emp_name empName, emp_salary empSalary from t_emp where emp_id=?&quot;</span>;<br>    Employee employee = jdbcTemplate.queryForObject(sql,<span class="hljs-keyword">new</span> BeanPropertyRowMapper&lt;&gt;(Employee.class),<span class="hljs-number">1</span>);<br>    System.out.println(employee);<br>&#125;<br><br><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testSelectRowsToBeanList</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-comment">//查询多个员工信息，封装到List&lt;Employee&gt;中</span><br>    String sql = <span class="hljs-string">&quot;select emp_id empId,emp_name empName, emp_salary empSalary from t_emp&quot;</span>;<br>    List&lt;Employee&gt; list = jdbcTemplate.query(sql, <span class="hljs-keyword">new</span> BeanPropertyRowMapper&lt;&gt;(Employee.class));<br><br>    System.out.println(list);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="第二节-声明式事务的概述"><a href="#第二节-声明式事务的概述" class="headerlink" title="第二节 声明式事务的概述"></a>第二节 声明式事务的概述</h3><h4 id="1-编程式事务"><a href="#1-编程式事务" class="headerlink" title="1. 编程式事务"></a>1. 编程式事务</h4><p>事务功能的相关操作全部通过自己编写代码来实现： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java">Connection conn = ...;<br>    <br><span class="hljs-keyword">try</span> &#123;<br>    <br>    <span class="hljs-comment">// 开启事务：关闭事务的自动提交</span><br>    conn.setAutoCommit(<span class="hljs-keyword">false</span>);<br>    <span class="hljs-comment">// 核心操作</span><br>    <br>    <span class="hljs-comment">// 提交事务</span><br>    conn.commit();<br>    <br>&#125;<span class="hljs-keyword">catch</span>(Exception e)&#123;<br>    <br>    <span class="hljs-comment">// 回滚事务</span><br>    conn.rollBack();<br>    <br>&#125;<span class="hljs-keyword">finally</span>&#123;<br>    <span class="hljs-comment">//将连接的autoCommit还原成true</span><br>    conn.setAutoCommit(<span class="hljs-keyword">true</span>);<br>    <span class="hljs-comment">// 释放数据库连接</span><br>    conn.close();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>编程式的实现方式存在缺陷：</p>
+<ul>
+<li>细节没有被屏蔽：具体操作过程中，所有细节都需要程序员自己来完成，比较繁琐。</li>
+<li>代码复用性不高：如果没有有效抽取出来，每次实现功能都需要自己编写代码，代码就没有得到复用。</li>
+</ul>
+<h4 id="2-声明式事务"><a href="#2-声明式事务" class="headerlink" title="2. 声明式事务"></a>2. 声明式事务</h4><p>既然事务控制的代码有规律可循，代码的结构基本是确定的，所以框架就可以将固定模式的代码抽取出来，进行相关的封装。</p>
+<p>封装起来后，我们只需要在配置文件中进行简单的配置即可完成操作。</p>
+<ul>
+<li>好处1：提高开发效率</li>
+<li>好处2：消除了冗余的代码</li>
+<li>好处3：框架会综合考虑相关领域中在实际开发环境下有可能遇到的各种问题，进行了健壮性、性能等各个方面的优化</li>
+</ul>
+<p>所以，我们可以总结下面两个概念：</p>
+<ul>
+<li><strong>编程式</strong>：<strong>自己写代码</strong>实现功能</li>
+<li><strong>声明式</strong>：通过<strong>配置</strong>让<strong>框架</strong>实现功能</li>
+</ul>
+<h4 id="3-事务管理器"><a href="#3-事务管理器" class="headerlink" title="3. 事务管理器"></a>3. 事务管理器</h4><p>Spring中的声明式事务是通过事务管理器来进行事务管理的，所以在Spring中定义了事务管理器的顶级接口，针对各种不同的持久层框架，又定义了不同的事务管理器类来进行事务管理</p>
+<h5 id="3-1-顶级接口"><a href="#3-1-顶级接口" class="headerlink" title="3.1 顶级接口"></a>3.1 顶级接口</h5><h6 id="3-1-1-Spring-5-2以前"><a href="#3-1-1-Spring-5-2以前" class="headerlink" title="3.1.1 Spring 5.2以前"></a>3.1.1 Spring 5.2以前</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">PlatformTransactionManager</span> </span>&#123;<br>    <span class="hljs-function">TransactionStatus <span class="hljs-title">getTransaction</span><span class="hljs-params">(TransactionDefinition definition)</span> <span class="hljs-keyword">throws</span> TransactionException</span>;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">commit</span><span class="hljs-params">(TransactionStatus status)</span> <span class="hljs-keyword">throws</span> TransactionException</span>;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">rollback</span><span class="hljs-params">(TransactionStatus status)</span> <span class="hljs-keyword">throws</span> TransactionException</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="3-1-2-从-Spring-5-2开始"><a href="#3-1-2-从-Spring-5-2开始" class="headerlink" title="3.1.2 从 Spring 5.2开始"></a>3.1.2 从 Spring 5.2开始</h6><p>PlatformTransactionManager 接口本身没有变化，它继承了 TransactionManager </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">TransactionManager</span> </span>&#123;<br>    <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>TransactionManager接口中什么都没有，但是它还是有存在的意义——定义一个技术体系。</p>
+</blockquote>
+<h5 id="3-2-事务管理器的体系结构"><a href="#3-2-事务管理器的体系结构" class="headerlink" title="3.2 事务管理器的体系结构"></a>3.2 事务管理器的体系结构</h5><p><img src="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_021.png" srcset="/img/loading.gif" lazyload></p>
+<p>我们现在要使用的事务管理器是org.springframework.jdbc.datasource.<strong>DataSourceTransactionManager</strong>，将来整合 Mybatis 用的也是这个类。</p>
+<p>DataSourceTransactionManager类中的主要方法：</p>
+<ul>
+<li>doBegin()：开启事务</li>
+<li>doSuspend()：挂起事务(暂停事务)</li>
+<li>doResume()：恢复挂起的事务</li>
+<li>doCommit()：提交事务</li>
+<li>doRollback()：回滚事务</li>
+</ul>
+<blockquote>
+<p>如果持久层使用Hibernate框架的话，则需要使用HibernateTransactionManager</p>
+</blockquote>
+<h3 id="第三节-基于注解的声明式事务"><a href="#第三节-基于注解的声明式事务" class="headerlink" title="第三节 基于注解的声明式事务"></a>第三节 基于注解的声明式事务</h3><h4 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1. 准备工作"></a>1. 准备工作</h4><h5 id="1-1-引入依赖"><a href="#1-1-引入依赖" class="headerlink" title="1.1 引入依赖"></a>1.1 引入依赖</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- 基于Maven依赖传递性，导入spring-context依赖即可导入当前所需所有jar包 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-context<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.3.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- Spring 持久化层支持jar包 --&gt;</span><br>    <span class="hljs-comment">&lt;!-- Spring 在执行持久化层操作、与持久化层技术进行整合过程中，需要使用orm、jdbc、tx三个jar包 --&gt;</span><br>    <span class="hljs-comment">&lt;!-- 导入 orm 包就可以通过 Maven 的依赖传递性把其他两个也导入 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-orm<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.3.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- Spring 测试相关 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.3.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- junit测试 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>junit<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>junit<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>4.12<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- MySQL驱动 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.1.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- 数据源 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.alibaba<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>druid<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0.31<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--引入LomBok的依赖--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.18.8<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>provided<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="1-2-数据源的属性文件"><a href="#1-2-数据源的属性文件" class="headerlink" title="1.2 数据源的属性文件"></a>1.2 数据源的属性文件</h5><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-meta">atguigu.url</span>=<span class="hljs-string">jdbc:mysql://localhost:3306/mybatis-example</span><br><span class="hljs-meta">atguigu.driver</span>=<span class="hljs-string">com.mysql.jdbc.Driver</span><br><span class="hljs-meta">atguigu.username</span>=<span class="hljs-string">root</span><br><span class="hljs-meta">atguigu.password</span>=<span class="hljs-string">123456</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="1-3-Spring-配置文件"><a href="#1-3-Spring-配置文件" class="headerlink" title="1.3 Spring 配置文件"></a>1.3 Spring 配置文件</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">beans</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://www.springframework.org/schema/beans&quot;</span></span><br><span class="hljs-tag">       <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="hljs-tag">       <span class="hljs-attr">xmlns:context</span>=<span class="hljs-string">&quot;http://www.springframework.org/schema/context&quot;</span></span><br><span class="hljs-tag">       <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://www.springframework.org/schema/beans</span></span><br><span class="hljs-string"><span class="hljs-tag">                           http://www.springframework.org/schema/beans/spring-beans.xsd</span></span><br><span class="hljs-string"><span class="hljs-tag">                           http://www.springframework.org/schema/context</span></span><br><span class="hljs-string"><span class="hljs-tag">                           https://www.springframework.org/schema/context/spring-context.xsd&quot;</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--包扫描--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">context:component-scan</span> <span class="hljs-attr">base-package</span>=<span class="hljs-string">&quot;com.atguigu&quot;</span>/&gt;</span><br>    <span class="hljs-comment">&lt;!--引入jdbc.properties属性文件--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">context:property-placeholder</span> <span class="hljs-attr">location</span>=<span class="hljs-string">&quot;classpath:jdbc.properties&quot;</span>/&gt;</span><br>    <span class="hljs-comment">&lt;!--配置数据源--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;dataSource&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;com.alibaba.druid.pool.DruidDataSource&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;username&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;$&#123;atguigu.username&#125;&quot;</span>/&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;$&#123;atguigu.password&#125;&quot;</span>/&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;driverClassName&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;$&#123;atguigu.driver&#125;&quot;</span>/&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;url&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;$&#123;atguigu.url&#125;&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!--配置JdbcTemplate的IOC--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;jdbcTemplate&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.springframework.jdbc.core.JdbcTemplate&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;dataSource&quot;</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;dataSource&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">beans</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="1-4-数据建模"><a href="#1-4-数据建模" class="headerlink" title="1.4 数据建模"></a>1.4 数据建模</h5><h6 id="1-4-1-物理建模"><a href="#1-4-1-物理建模" class="headerlink" title="1.4.1 物理建模"></a>1.4.1 物理建模</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE TABLE t_account(<br>	account_id INT PRIMARY KEY AUTO_INCREMENT,<br>	account_name VARCHAR(20),<br>	money DOUBLE<br>);<br><br>INSERT INTO t_account VALUES (NULL,&#x27;zs&#x27;,1000);<br><br>INSERT INTO t_account VALUES (NULL,&#x27;ls&#x27;,1000);<br></code></pre></td></tr></table></figure>
+
+<h6 id="1-4-2-逻辑建模"><a href="#1-4-2-逻辑建模" class="headerlink" title="1.4.2 逻辑建模"></a>1.4.2 逻辑建模</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Account</span> </span>&#123;<br>    <span class="hljs-keyword">private</span> Integer accountId;<br>    <span class="hljs-keyword">private</span> String accountName;<br>    <span class="hljs-keyword">private</span> Double money;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="1-5-创建持久层组件"><a href="#1-5-创建持久层组件" class="headerlink" title="1.5 创建持久层组件"></a>1.5 创建持久层组件</h5><h6 id="1-5-1-AccountDao接口"><a href="#1-5-1-AccountDao接口" class="headerlink" title="1.5.1 AccountDao接口"></a>1.5.1 AccountDao接口</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu.dao;<br><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">AccountDao</span> </span>&#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 根据账户的id修改账户的金额</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> accountId</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> money</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">updateAccountMoney</span><span class="hljs-params">(Integer accountId,Double money)</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="1-5-2-AccountDaoImpl实现类"><a href="#1-5-2-AccountDaoImpl实现类" class="headerlink" title="1.5.2 AccountDaoImpl实现类"></a>1.5.2 AccountDaoImpl实现类</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu.dao.impl;<br><br><span class="hljs-keyword">import</span> com.atguigu.dao.AccountDao;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.jdbc.core.JdbcTemplate;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Repository;<br><br><span class="hljs-meta">@Repository</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AccountDaoImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">AccountDao</span> </span>&#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> JdbcTemplate jdbcTemplate;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">updateAccountMoney</span><span class="hljs-params">(Integer accountId, Double money)</span> </span>&#123;<br>        String sql = <span class="hljs-string">&quot;update t_account set money=money+? where account_id=?&quot;</span>;<br>        jdbcTemplate.update(sql,money,accountId);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="1-6-创建业务层组件"><a href="#1-6-创建业务层组件" class="headerlink" title="1.6 创建业务层组件"></a>1.6 创建业务层组件</h5><h6 id="1-6-1-AccountService接口"><a href="#1-6-1-AccountService接口" class="headerlink" title="1.6.1 AccountService接口"></a>1.6.1 AccountService接口</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu.service;<br><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">AccountService</span> </span>&#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 转账方法</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> fromId 转出账户的id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> toId 转入账户的id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> money 转账金额</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">transfer</span><span class="hljs-params">(Integer fromId,Integer toId,Double money)</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="1-6-2-AccountServiceImpl实现类"><a href="#1-6-2-AccountServiceImpl实现类" class="headerlink" title="1.6.2 AccountServiceImpl实现类"></a>1.6.2 AccountServiceImpl实现类</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu.service.impl;<br><br><span class="hljs-keyword">import</span> com.atguigu.dao.AccountDao;<br><span class="hljs-keyword">import</span> com.atguigu.service.AccountService;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Service;<br><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AccountServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">AccountService</span> </span>&#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> AccountDao accountDao;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">transfer</span><span class="hljs-params">(Integer fromId, Integer toId, Double money)</span> </span>&#123;<br>        <span class="hljs-comment">//1. 转出账户扣款</span><br>        accountDao.updateAccountMoney(fromId,-money);<br><br>        <span class="hljs-keyword">int</span> num = <span class="hljs-number">10</span>/<span class="hljs-number">0</span>;<br>        <span class="hljs-comment">//2. 转入账户收款</span><br>        accountDao.updateAccountMoney(toId,money);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="1-7-测试类"><a href="#1-7-测试类" class="headerlink" title="1.7 测试类"></a>1.7 测试类</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu;<br><br><span class="hljs-keyword">import</span> com.atguigu.service.AccountService;<br><span class="hljs-keyword">import</span> org.junit.Test;<br><span class="hljs-keyword">import</span> org.junit.runner.RunWith;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.test.context.ContextConfiguration;<br><span class="hljs-keyword">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner;<br><br><span class="hljs-meta">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="hljs-meta">@ContextConfiguration(locations = &quot;classpath:spring-application.xml&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestTransaction</span> </span>&#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> AccountService accountService;<br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testTransfer</span><span class="hljs-params">()</span></span>&#123;<br>        accountService.transfer(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">500d</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-进行基于注解的声明式事务的配置"><a href="#2-进行基于注解的声明式事务的配置" class="headerlink" title="2. 进行基于注解的声明式事务的配置"></a>2. 进行基于注解的声明式事务的配置</h4><h5 id="2-1-配置事务管理器"><a href="#2-1-配置事务管理器" class="headerlink" title="2.1 配置事务管理器"></a>2.1 配置事务管理器</h5><p>在spring的配置文件中配置事务管理器对象</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--对事务管理者做IOC配置--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;transactionManager&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--注入数据源--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;dataSource&quot;</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;dataSource&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="2-2-开启基于注解的声明式事务功能"><a href="#2-2-开启基于注解的声明式事务功能" class="headerlink" title="2.2 开启基于注解的声明式事务功能"></a>2.2 开启基于注解的声明式事务功能</h5><p>在spring的配置文件中开启基于注解的声明式事务功能</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--</span><br><span class="hljs-comment">        要开启注解方式声明式事务的支持</span><br><span class="hljs-comment">        transaction-manager属性:表示使用哪个事务管理器对象来管理事务</span><br><span class="hljs-comment">                               如果你的事务管理器的id是transactionManager的话，可以省略该属性</span><br><span class="hljs-comment">--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">tx:annotation-driven</span>/&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>注意：导入名称空间时有好几个重复的，我们需要的是 <strong>tx 结尾</strong>的那个。 </p>
+<p><img src="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_022.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="2-3-在需要事务的方法上使用注解"><a href="#2-3-在需要事务的方法上使用注解" class="headerlink" title="2.3 在需要事务的方法上使用注解"></a>2.3 在需要事务的方法上使用注解</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">transfer</span><span class="hljs-params">(Integer fromId, Integer toId, Double money)</span> </span>&#123;<br>    <span class="hljs-comment">//1. 转出账户扣款</span><br>    accountDao.updateAccountMoney(fromId,-money);<br><br>    <span class="hljs-keyword">int</span> num = <span class="hljs-number">10</span>/<span class="hljs-number">0</span>;<br>    <span class="hljs-comment">//2. 转入账户收款</span><br>    accountDao.updateAccountMoney(toId,money);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="2-4-执行测试"><a href="#2-4-执行测试" class="headerlink" title="2.4 执行测试"></a>2.4 执行测试</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu;<br><br><span class="hljs-keyword">import</span> com.atguigu.service.AccountService;<br><span class="hljs-keyword">import</span> org.junit.Test;<br><span class="hljs-keyword">import</span> org.junit.runner.RunWith;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.test.context.ContextConfiguration;<br><span class="hljs-keyword">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner;<br><br><span class="hljs-meta">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="hljs-meta">@ContextConfiguration(locations = &quot;classpath:spring-application.xml&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestTransaction</span> </span>&#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> AccountService accountService;<br><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testTransfer</span><span class="hljs-params">()</span></span>&#123;<br>        accountService.transfer(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">500d</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-从日志内容角度查看事务效果"><a href="#3-从日志内容角度查看事务效果" class="headerlink" title="3. 从日志内容角度查看事务效果"></a>3. 从日志内容角度查看事务效果</h4><h5 id="3-1-加入依赖"><a href="#3-1-加入依赖" class="headerlink" title="3.1 加入依赖"></a>3.1 加入依赖</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- 加入日志 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>ch.qos.logback<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>logback-classic<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.2.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="3-2-加入logback的配置文件"><a href="#3-2-加入logback的配置文件" class="headerlink" title="3.2 加入logback的配置文件"></a>3.2 加入logback的配置文件</h5><p>文件名：logback.xml </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">configuration</span> <span class="hljs-attr">debug</span>=<span class="hljs-string">&quot;true&quot;</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- 指定日志输出的位置 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">appender</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;STDOUT&quot;</span></span><br><span class="hljs-tag">              <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;ch.qos.logback.core.ConsoleAppender&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">encoder</span>&gt;</span><br>            <span class="hljs-comment">&lt;!-- 日志输出的格式 --&gt;</span><br>            <span class="hljs-comment">&lt;!-- 按照顺序分别是：时间、日志级别、线程名称、打印日志的类、日志主体内容、换行 --&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">pattern</span>&gt;</span>[%d&#123;HH:mm:ss.SSS&#125;] [%-5level] [%thread] [%logger] [%msg]%n<span class="hljs-tag">&lt;/<span class="hljs-name">pattern</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">encoder</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">appender</span>&gt;</span><br> <br>    <span class="hljs-comment">&lt;!-- 设置全局日志级别。日志级别按顺序分别是：DEBUG、INFO、WARN、ERROR --&gt;</span><br>    <span class="hljs-comment">&lt;!-- 指定任何一个日志级别都只打印当前级别和后面级别的日志。 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">root</span> <span class="hljs-attr">level</span>=<span class="hljs-string">&quot;INFO&quot;</span>&gt;</span><br>        <span class="hljs-comment">&lt;!-- 指定打印日志的appender，这里通过“STDOUT”引用了前面配置的appender --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">appender-ref</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;STDOUT&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">root</span>&gt;</span><br> <br>    <span class="hljs-comment">&lt;!-- 根据特殊需求指定局部日志级别 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">logger</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;</span> <span class="hljs-attr">level</span>=<span class="hljs-string">&quot;DEBUG&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">logger</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;org.springframework.jdbc.core.JdbcTemplate&quot;</span> <span class="hljs-attr">level</span>=<span class="hljs-string">&quot;DEBUG&quot;</span> /&gt;</span><br> <br><span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="3-3-观察日志打印"><a href="#3-3-观察日志打印" class="headerlink" title="3.3 观察日志打印"></a>3.3 观察日志打印</h5><p><img src="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_031.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="4-debug查看事务管理器中的关键方法"><a href="#4-debug查看事务管理器中的关键方法" class="headerlink" title="4. debug查看事务管理器中的关键方法"></a>4. debug查看事务管理器中的关键方法</h4><p>需要查看的类：org.springframework.jdbc.datasource.DataSourceTransactionManager </p>
+<h5 id="4-1-开启事务的方法"><a href="#4-1-开启事务的方法" class="headerlink" title="4.1 开启事务的方法"></a>4.1 开启事务的方法</h5><p><img src="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_023.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_024.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="4-2-提交事务的方法"><a href="#4-2-提交事务的方法" class="headerlink" title="4.2 提交事务的方法"></a>4.2 提交事务的方法</h5><p><img src="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_025.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="4-3-回滚事务的方法"><a href="#4-3-回滚事务的方法" class="headerlink" title="4.3 回滚事务的方法"></a>4.3 回滚事务的方法</h5><p><img src="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_026.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="第四节-事务属性"><a href="#第四节-事务属性" class="headerlink" title="第四节 事务属性"></a>第四节 事务属性</h3><h4 id="1-只读属性"><a href="#1-只读属性" class="headerlink" title="1. 只读属性"></a>1. 只读属性</h4><h5 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h5><p>对一个查询操作来说，如果我们把它设置成只读，就能够明确告诉数据库，这个操作不涉及写操作。这样数据库就能够针对查询操作来进行优化。但是如果你的方法中执行写操作，那么就会报错</p>
+<h5 id="1-2-设置方式"><a href="#1-2-设置方式" class="headerlink" title="1.2 设置方式"></a>1.2 设置方式</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(read-only=true)</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">transfer</span><span class="hljs-params">(Integer fromId, Integer toId, Double money)</span> </span>&#123;<br>    <span class="hljs-comment">//1. 转出账户扣款</span><br>    accountDao.updateAccountMoney(fromId,-money);<br>    <span class="hljs-comment">//int num = 10/0;</span><br>    <span class="hljs-comment">//2. 转入账户收款</span><br>    accountDao.updateAccountMoney(toId,money);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="1-3-如果在设置了只读的事务中进行写操作"><a href="#1-3-如果在设置了只读的事务中进行写操作" class="headerlink" title="1.3 如果在设置了只读的事务中进行写操作"></a>1.3 如果在设置了只读的事务中进行写操作</h5><p>会抛出下面异常：</p>
+<blockquote>
+<p>Caused by: java.sql.SQLException: Connection is read-only. Queries leading to data modification are not allowed</p>
+</blockquote>
+<h5 id="1-4-如果将-Transactional注解放在类上"><a href="#1-4-如果将-Transactional注解放在类上" class="headerlink" title="1.4  如果将@Transactional注解放在类上"></a>1.4  如果将@Transactional注解放在类上</h5><h6 id="1-4-1-生效原则"><a href="#1-4-1-生效原则" class="headerlink" title="1.4.1 生效原则"></a>1.4.1 生效原则</h6><p>如果一个类中每一个方法上都使用了@Transactional注解，那么就可以将@Transactional注解提取到类上。反过来说：@Transactional注解在类级别标记，会影响到类中的每一个方法。同时，类级别标记的@Transactional注解中设置的事务属性也会延续影响到方法执行时的事务属性。除非在方法上又设置了@Transactional注解。</p>
+<p>对一个方法来说，离它最近的@Transactional注解中的事务属性设置生效。</p>
+<h6 id="1-4-2-用法举例"><a href="#1-4-2-用法举例" class="headerlink" title="1.4.2 用法举例"></a>1.4.2 用法举例</h6><p>在类级别@Transactional注解中设置只读，这样类中所有的查询方法都不需要设置@Transactional注解了。因为对查询操作来说</p>
+<p>，其他属性通常不需要设置，所以使用公共设置即可。</p>
+<p>然后在这个基础上，对增删改方法设置@Transactional注解 readOnly 属性为 false。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu.service.impl;<br><br><span class="hljs-keyword">import</span> com.atguigu.dao.AccountDao;<br><span class="hljs-keyword">import</span> com.atguigu.service.AccountService;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Service;<br><span class="hljs-keyword">import</span> org.springframework.transaction.annotation.Transactional;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * read-only属性表示事务是否只读:默认值是false，</span><br><span class="hljs-comment"> 如果设置为true那么当前事务中只能做数据库的读操作，不能做写操作</span><br><span class="hljs-comment"> *          该属性的作用:可以对只读的数据库操作做一些优化</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Transactional(readOnly = true)</span><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AccountServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">AccountService</span> </span>&#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> AccountDao accountDao;<br><br>    <span class="hljs-meta">@Transactional(readOnly = false)</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">transfer</span><span class="hljs-params">(Integer fromId, Integer toId, Double money)</span> </span>&#123;<br>        <span class="hljs-comment">//1. 转出账户扣款</span><br>        accountDao.updateAccountMoney(fromId,-money);<br><br>        <span class="hljs-comment">//int num = 10/0;</span><br>        <span class="hljs-comment">//2. 转入账户收款</span><br>        accountDao.updateAccountMoney(toId,money);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>PS：Spring 环境下很多场合都有类似设定，一个注解如果标记了类的每一个方法那么通常就可以提取到类级别。但是，如果不是类中的所有方法都需要用到事务，则绝不允许将@Transaction注解放在类上</p>
+</blockquote>
+<h4 id="2-超时属性"><a href="#2-超时属性" class="headerlink" title="2. 超时属性"></a>2. 超时属性</h4><h5 id="2-1-简介"><a href="#2-1-简介" class="headerlink" title="2.1 简介"></a>2.1 简介</h5><p>事务在执行过程中，有可能因为遇到某些问题，导致程序卡住，从而长时间占用数据库资源。而长时间占用资源，大概率是因为程序运行出现了问题（可能是Java程序或MySQL数据库或网络连接等等）。</p>
+<p>此时这个很可能出问题的程序应该被回滚，撤销它已做的操作，事务结束，把资源让出来，让其他正常程序可以执行。</p>
+<p>概括来说就是一句话：超时回滚，释放资源。</p>
+<h5 id="2-2-设置方式"><a href="#2-2-设置方式" class="headerlink" title="2.2 设置方式"></a>2.2 设置方式</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(readOnly = false, timeout = 3)</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">updateTwice</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">        // 修改员工姓名的一组参数</span></span><br><span class="hljs-params"><span class="hljs-function">        Integer empId4EditName, String newName,</span></span><br><span class="hljs-params"><span class="hljs-function">        // 修改员工工资的一组参数</span></span><br><span class="hljs-params"><span class="hljs-function">        Integer empId4EditSalary, Double newSalary</span></span><br><span class="hljs-params"><span class="hljs-function">        )</span> </span>&#123;<br>    <span class="hljs-comment">// 为了测试事务是否生效，执行两个数据库操作，看它们是否会在某一个失败时一起回滚</span><br>    empDao.updateEmpNameById(empId4EditName, newName);<br>    empDao.updateEmpSalaryById(empId4EditSalary, newSalary);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="2-3-模拟超时"><a href="#2-3-模拟超时" class="headerlink" title="2.3 模拟超时"></a>2.3 模拟超时</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">updateEmpSalaryById</span><span class="hljs-params">(Integer empId, Double salary)</span> </span>&#123;<br>    <span class="hljs-keyword">try</span> &#123;<br>        TimeUnit.SECONDS.sleep(<span class="hljs-number">5</span>);<br>    &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>        e.printStackTrace();<br>    &#125;<br>    <span class="hljs-comment">// 为了看到操作失败后的效果人为将 SQL 语句破坏</span><br>    String sql = <span class="hljs-string">&quot;update t_emp set emp_salary=? where emp_id=?&quot;</span>;<br>    jdbcTemplate.update(sql, salary, empId);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>PS：注意：sleep操作如果放在执行 SQL 语句后面那就不起作用。</p>
+</blockquote>
+<h5 id="2-4-执行效果"><a href="#2-4-执行效果" class="headerlink" title="2.4  执行效果"></a>2.4  执行效果</h5><p>执行过程中日志和抛出异常的情况：</p>
+<blockquote>
+<p>[16:25:41.706] [DEBUG] [main] [org.springframework.jdbc.datasource.DataSourceTransactionManager] [Initiating transaction rollback] [16:25:41.706] [DEBUG] [main] [org.springframework.jdbc.datasource.DataSourceTransactionManager] [Rolling back JDBC transaction on Connection [com.mysql.jdbc.JDBC4Connection@53b7f657]] [16:25:41.709] [DEBUG] [main] [org.springframework.jdbc.datasource.DataSourceTransactionManager] [Releasing JDBC Connection [com.mysql.jdbc.JDBC4Connection@53b7f657] after transaction]</p>
+<p>org.springframework.transaction.<strong>TransactionTimedOutException</strong>: Transaction timed out: deadline was Fri Jun 04 16:25:39 CST 2021</p>
+</blockquote>
+<h4 id="3-回滚和不回滚的异常属性"><a href="#3-回滚和不回滚的异常属性" class="headerlink" title="3. 回滚和不回滚的异常属性"></a>3. 回滚和不回滚的异常属性</h4><h5 id="3-1-默认情况"><a href="#3-1-默认情况" class="headerlink" title="3.1 默认情况"></a>3.1 默认情况</h5><p>默认只针对运行时异常回滚，编译时异常不回滚。情景模拟代码如下： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">transfer</span><span class="hljs-params">(Integer fromId, Integer toId, Double money)</span> <span class="hljs-keyword">throws</span> ClassNotFoundException</span>&#123;<br>    <span class="hljs-comment">//1. 转出账户扣款</span><br>    accountDao.updateAccountMoney(fromId,-money);<br>    <span class="hljs-comment">//什么是运行时异常:不需要在编译时处理的异常</span><br>    <span class="hljs-comment">//什么是编译时异常:需要在编译时就进行处理的异常</span><br>	<span class="hljs-comment">//默认情况是遇到运行时异常才回滚:</span><br>    Class.forName(<span class="hljs-string">&quot;com.mysql.jdbc.Driveraaaaaa&quot;</span>);<br>    <span class="hljs-keyword">int</span> num = <span class="hljs-number">10</span>/<span class="hljs-number">0</span>;<br>    <span class="hljs-comment">//2. 转入账户收款</span><br>    accountDao.updateAccountMoney(toId,money);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="3-2-设置回滚的异常"><a href="#3-2-设置回滚的异常" class="headerlink" title="3.2 设置回滚的异常"></a>3.2 设置回滚的异常</h5><ul>
+<li>rollbackFor属性：需要设置一个Class类型的对象</li>
+<li>rollbackForClassName属性：需要设置一个字符串类型的全类名</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(rollbackFor = Exception.class)</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="3-3-设置不回滚的异常"><a href="#3-3-设置不回滚的异常" class="headerlink" title="3.3 设置不回滚的异常"></a>3.3 设置不回滚的异常</h5><p>在默认设置和已有设置的基础上，再指定一个异常类型，碰到它不回滚。 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(</span><br><span class="hljs-meta">    noRollbackFor = FileNotFoundException.class</span><br><span class="hljs-meta">)</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="3-4-如果回滚和不回滚异常同时设置"><a href="#3-4-如果回滚和不回滚异常同时设置" class="headerlink" title="3.4 如果回滚和不回滚异常同时设置"></a>3.4 如果回滚和不回滚异常同时设置</h5><h6 id="3-4-1-当两者范围不同"><a href="#3-4-1-当两者范围不同" class="headerlink" title="3.4.1 当两者范围不同"></a>3.4.1 当两者范围不同</h6><p>不管是哪个设置范围大，都是在大范围内在排除小范围的设定。例如：</p>
+<ul>
+<li>rollbackFor = Exception.class</li>
+<li>noRollbackFor = FileNotFoundException.class</li>
+</ul>
+<p>意思是除了 FileNotFoundException 之外，其他所有 Exception 范围的异常都回滚；但是碰到 FileNotFoundException 不回滚。</p>
+<h6 id="3-4-2-当两者范围相同-傻子才会这样去设置"><a href="#3-4-2-当两者范围相同-傻子才会这样去设置" class="headerlink" title="3.4.2 当两者范围相同(傻子才会这样去设置)"></a>3.4.2 当两者范围相同(傻子才会这样去设置)</h6><ul>
+<li>noRollbackFor = FileNotFoundException.class</li>
+<li>rollbackFor = FileNotFoundException.class</li>
+</ul>
+<p>此时 Spring 采纳了 rollbackFor 属性的设定：遇到 FileNotFoundException 异常会回滚。</p>
+<h4 id="4-事务隔离级别属性"><a href="#4-事务隔离级别属性" class="headerlink" title="4. 事务隔离级别属性"></a>4. 事务隔离级别属性</h4><h5 id="4-1-回顾事务的隔离级别"><a href="#4-1-回顾事务的隔离级别" class="headerlink" title="4.1 回顾事务的隔离级别"></a>4.1 回顾事务的隔离级别</h5><table>
+<thead>
+<tr>
+<th><strong>级别</strong></th>
+<th><strong>名字</strong></th>
+<th><strong>隔离级别</strong></th>
+<th><strong>脏读</strong></th>
+<th><strong>不可重复读</strong></th>
+<th><strong>幻读</strong></th>
+<th><strong>数据库默认隔离级别</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1</strong></td>
+<td>读未提交</td>
+<td>read uncommitted</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>一般不使用</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>读已提交</td>
+<td>read committed</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+<td>Oracle</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>可重复读</td>
+<td>repeatable read</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+<td>MySQL</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>串行化</td>
+<td>serializable</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td>最高的隔离级别</td>
+</tr>
+</tbody></table>
+<h5 id="4-2-设置方式"><a href="#4-2-设置方式" class="headerlink" title="4.2 设置方式"></a>4.2 设置方式</h5><p>在 @Transactional 注解中使用 isolation 属性设置事务的隔离级别。 取值使用 org.springframework.transaction.annotation.Isolation 枚举类提供的数值。 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(isolation = Isolation.READ_UNCOMMITTED)</span><br></code></pre></td></tr></table></figure>
+
+<p>我们一般不需要去设置事务的隔离级别，绝大多数情况下使用默认的隔离级别就行</p>
+<h4 id="5-事务传播行为属性"><a href="#5-事务传播行为属性" class="headerlink" title="5. 事务传播行为属性"></a>5. 事务传播行为属性</h4><h5 id="5-1-事务传播行为要研究的问题"><a href="#5-1-事务传播行为要研究的问题" class="headerlink" title="5.1 事务传播行为要研究的问题"></a>5.1 事务传播行为要研究的问题</h5><p>事务的传播行为要研究的是是当两个方法嵌套执行的时候，外层方法的事务能否传播到内层方法以及怎么传播到外层方法</p>
+<h5 id="5-2-propagation属性"><a href="#5-2-propagation属性" class="headerlink" title="5.2 propagation属性"></a>5.2 propagation属性</h5><h6 id="5-2-1-默认值"><a href="#5-2-1-默认值" class="headerlink" title="5.2.1 默认值"></a>5.2.1 默认值</h6><p>@Transactional 注解通过 propagation 属性设置事务的传播行为。它的默认值是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function">Propagation <span class="hljs-title">propagation</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> Propagation.REQUIRED</span>;<br></code></pre></td></tr></table></figure>
+
+<h6 id="5-2-2-可选值说明"><a href="#5-2-2-可选值说明" class="headerlink" title="5.2.2 可选值说明"></a>5.2.2 可选值说明</h6><p>propagation 属性的可选值由 org.springframework.transaction.annotation.Propagation 枚举类提供：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>REQUIRED 默认值</td>
+<td>当前方法必须工作在事务中 如果当前线程上有已经开启的事务可用，那么就在这个事务中运行 如果当前线程上没有已经开启的事务，那么就自己开启新事务，在新事务中运行 所以当前方法有可能和其他方法共用事务 在共用事务的情况下：当前方法会因为其他方法回滚而受连累</td>
+</tr>
+<tr>
+<td><strong>REQUIRES_NEW</strong> 建议使用</td>
+<td>当前方法必须工作在事务中 不管当前线程上是否有已经开启的事务，都要开启新事务 在新事务中运行 不会和其他方法共用事务，避免被其他方法连累。如果外层已经有事务，就先将它挂起，内层方法新建实物，内层方法新建实物执行完之后再恢复外层事务</td>
+</tr>
+<tr>
+<td>SUPPORTS(支持)</td>
+<td>如果外层方法有事务，内层方法则会参与进外层事务一起执行，如果外层方法没有事务，那么内层方法则是以非事务方式运行</td>
+</tr>
+<tr>
+<td>NOT_SUPPORTED</td>
+<td>如果外层方法有事务，则先将外层方法事务挂起，内层以非事务方法执行。执行完之后再恢复外层事务(不支持事务)</td>
+</tr>
+<tr>
+<td>MANDATORY(强制性的)</td>
+<td>如果外层方法有事务，内层方法则会参与外层事务一起执行，如果外层方法没有事务，则抛出异常，强制从外层方法必须有事务</td>
+</tr>
+<tr>
+<td>NEVER</td>
+<td>只能以非事务方式运行，如果外层方法有事务 直接抛出异常</td>
+</tr>
+<tr>
+<td>NESTED</td>
+<td>新建一个嵌套事务，在嵌套事务中执行，设置了一个回滚点。有点类似REQUIRED</td>
+</tr>
+</tbody></table>
+<h5 id="5-3-测试事务的传播行为"><a href="#5-3-测试事务的传播行为" class="headerlink" title="5.3 测试事务的传播行为"></a>5.3 测试事务的传播行为</h5><h6 id="5-3-1-在业务层中声明两个内层方法"><a href="#5-3-1-在业务层中声明两个内层方法" class="headerlink" title="5.3.1 在业务层中声明两个内层方法"></a>5.3.1 在业务层中声明两个内层方法</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(propagation = Propagation.REQUIRED)</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">updateAccountNameInner</span><span class="hljs-params">(Integer accountId, String accountName)</span></span>&#123;<br>    accountDao.updateAccountName(accountId,accountName);<br>    <span class="hljs-keyword">int</span> num = <span class="hljs-number">10</span>/<span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-meta">@Transactional(propagation = Propagation.REQUIRED)</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">updateAccountMoney</span><span class="hljs-params">(Integer accountId, Double money)</span></span>&#123;<br>    accountDao.updateAccountMoney(accountId,money);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="5-3-2-创建TopService"><a href="#5-3-2-创建TopService" class="headerlink" title="5.3.2 创建TopService"></a>5.3.2 创建TopService</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu.service.impl;<br><br><span class="hljs-keyword">import</span> com.atguigu.service.AccountService;<br><span class="hljs-keyword">import</span> com.atguigu.service.TopService;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Service;<br><span class="hljs-keyword">import</span> org.springframework.transaction.annotation.Transactional;<br><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TopServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">TopService</span> </span>&#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> AccountService accountService;<br><br>    <span class="hljs-meta">@Transactional</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">topTxMethod</span><span class="hljs-params">()</span> </span>&#123;<br>        accountService.updateAccountMoney(<span class="hljs-number">1</span>,<span class="hljs-number">2000d</span>);<br>        accountService.updateAccountNameInner(<span class="hljs-number">1</span>,<span class="hljs-string">&quot;hello&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="5-3-3-junit测试方法"><a href="#5-3-3-junit测试方法" class="headerlink" title="5.3.3 junit测试方法"></a>5.3.3 junit测试方法</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu;<br><br><span class="hljs-keyword">import</span> com.atguigu.service.AccountService;<br><span class="hljs-keyword">import</span> com.atguigu.service.TopService;<br><span class="hljs-keyword">import</span> org.junit.Test;<br><span class="hljs-keyword">import</span> org.junit.runner.RunWith;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.test.context.ContextConfiguration;<br><span class="hljs-keyword">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner;<br><br><span class="hljs-meta">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="hljs-meta">@ContextConfiguration(locations = &quot;classpath:spring-application.xml&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestTransaction</span> </span>&#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> AccountService accountService;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> TopService topService;<br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testPropagation</span><span class="hljs-params">()</span></span>&#123;<br>        topService.topTxMethod();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="5-3-4-测试-REQUIRED-模式"><a href="#5-3-4-测试-REQUIRED-模式" class="headerlink" title="5.3.4 测试 REQUIRED 模式"></a>5.3.4 测试 REQUIRED 模式</h6><p><img src="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_027.png" srcset="/img/loading.gif" lazyload></p>
+<p>效果：内层方法A、内层方法B所做的修改都没有生效，总事务回滚了。 </p>
+<h6 id="5-3-5-测试-REQUIRES-NEW-模式"><a href="#5-3-5-测试-REQUIRES-NEW-模式" class="headerlink" title="5.3.5 测试 REQUIRES_NEW 模式"></a>5.3.5 测试 REQUIRES_NEW 模式</h6><p>修改 EmpService 中内层方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">updateEmpNameInner</span><span class="hljs-params">(Integer empId, String empName)</span> </span>&#123;<br>    <br>    empDao.updateEmpNameById(empId, empName);<br>&#125;<br>    <br><span class="hljs-meta">@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">updateEmpSalaryInner</span><span class="hljs-params">(Integer empId, Double empSalary)</span> </span>&#123;<br>    <br>    empDao.updateEmpSalaryById(empId, empSalary);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_028.png" srcset="/img/loading.gif" lazyload></p>
+<p>效果：内层方法A的修改生效了、内层方法B所做的修改都没有生效，总事务回滚了。</p>
+<h6 id="5-3-6-实际开发情景"><a href="#5-3-6-实际开发情景" class="headerlink" title="5.3.6 实际开发情景"></a>5.3.6 实际开发情景</h6><p>Service方法应用了通知</p>
+<p><img src="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_029.png" srcset="/img/loading.gif" lazyload></p>
+<p>过滤器或拦截器等类似组件</p>
+<p><img src="http://www.slx.blue/2021/12/08/spring-day04-Transactiona/tu_030.png" srcset="/img/loading.gif" lazyload></p>
+<p>我们在事务传播行为这里，使用 REQUIRES_NEW 属性，也可以说是让不同事务方法从事务的使用上<strong>解耦合</strong>，不要互相影响。 </p>
+<h3 id="第五节-基于XML配置声明式事务-了解"><a href="#第五节-基于XML配置声明式事务-了解" class="headerlink" title="第五节 基于XML配置声明式事务(了解)"></a>第五节 基于XML配置声明式事务(了解)</h3><h4 id="1-加入依赖"><a href="#1-加入依赖" class="headerlink" title="1. 加入依赖"></a>1. 加入依赖</h4><p>相比于基于注解的声明式事务，基于 XML 的声明式事务需要一个额外的依赖： </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-aspects<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.3.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="2-迁移代码"><a href="#2-迁移代码" class="headerlink" title="2. 迁移代码"></a>2. 迁移代码</h4><p>将上一个基于注解的 module 中的代码转移到新module。去掉 @Transactional 注解。 </p>
+<h4 id="3-修改-Spring-配置文件"><a href="#3-修改-Spring-配置文件" class="headerlink" title="3. 修改 Spring 配置文件"></a>3. 修改 Spring 配置文件</h4><p>去掉 tx:annotation-driven 标签，然后加入下面的配置： </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--</span><br><span class="hljs-comment">        使用配置文件方式配置声明式事务:</span><br><span class="hljs-comment">        配置文件方式进行声明式事务的配置是写在&lt;tx:advice&gt;标签中，</span><br><span class="hljs-comment">        该标签的transaction-manager表示使用哪个事务管理器对象来进行事务管理，默认的事务管理器的id是transactionManager</span><br><span class="hljs-comment">    --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">tx:advice</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;adv1&quot;</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--</span><br><span class="hljs-comment">            tx:attributes表示声明各个方法上使用的事务的属性</span><br><span class="hljs-comment">        --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">tx:attributes</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--</span><br><span class="hljs-comment">                tx:method表示要使用事务的方法，name属性表示方法名，其它属性表示事务的属性</span><br><span class="hljs-comment">            --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">tx:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;transfer&quot;</span> <span class="hljs-attr">rollback-for</span>=<span class="hljs-string">&quot;java.lang.Exception&quot;</span> <span class="hljs-attr">propagation</span>=<span class="hljs-string">&quot;REQUIRES_NEW&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">tx:attributes</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">tx:advice</span>&gt;</span><br><br><span class="hljs-comment">&lt;!--真正配置事务作用在哪些方法上，要通过aop配置--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">aop:config</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--配置切入点:表示描述哪些方法要使用事务--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">aop:pointcut</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;pt1&quot;</span> <span class="hljs-attr">expression</span>=<span class="hljs-string">&quot;execution(public void com.atguigu.service.impl.AccountServiceImpl.transfer(Integer,Integer,Double))&quot;</span>/&gt;</span><br><br>    <span class="hljs-comment">&lt;!--指定事务作用于切入点--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">aop:advisor</span> <span class="hljs-attr">advice-ref</span>=<span class="hljs-string">&quot;adv1&quot;</span> <span class="hljs-attr">pointcut-ref</span>=<span class="hljs-string">&quot;pt1&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">aop:config</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="4-注意"><a href="#4-注意" class="headerlink" title="4. 注意"></a>4. 注意</h4><p>即使需要事务功能的目标方法已经被切入点表达式涵盖到了，但是如果没有给它配置事务属性，那么这个方法就还是没有事务。所以事务属性必须配置。 </p>
+<h2 id="第三章-Spring5的新特性"><a href="#第三章-Spring5的新特性" class="headerlink" title="第三章 Spring5的新特性"></a>第三章 Spring5的新特性</h2><h3 id="第一节-JSR305标准相关注解"><a href="#第一节-JSR305标准相关注解" class="headerlink" title="第一节 JSR305标准相关注解"></a>第一节 JSR305标准相关注解</h3><h4 id="1-JSR的概述"><a href="#1-JSR的概述" class="headerlink" title="1. JSR的概述"></a>1. JSR的概述</h4><h5 id="1-1-JCP"><a href="#1-1-JCP" class="headerlink" title="1.1 JCP"></a>1.1 JCP</h5><p>JCP（Java Community Process) 是一个由SUN公司发起的，开放的国际组织。主要由Java开发者以及被授权者组成，负责Java技术规范维护，Java技术发展和更新。</p>
+<p>JCP官网地址：<a target="_blank" rel="noopener" href="https://jcp.org/en/home/index">https://jcp.org/en/home/index</a></p>
+<h5 id="1-2-JSR"><a href="#1-2-JSR" class="headerlink" title="1.2 JSR"></a>1.2 JSR</h5><p>JSR 的全称是：Java Specification Request，意思是 Java 规范提案。谁向谁提案呢？任何人都可以向 JCP (Java Community Process) 提出新增一个标准化技术规范的正式请求。JSR已成为Java界的一个重要标准。登录<a target="_blank" rel="noopener" href="https://jcp.org/en/home/index"> JCP 官网</a>可以查看<a target="_blank" rel="noopener" href="https://jcp.org/en/jsr/all">所有 JSR 标准</a>。 </p>
+<h4 id="2-JSR-305的规范"><a href="#2-JSR-305的规范" class="headerlink" title="2. JSR 305的规范"></a>2. JSR 305的规范</h4><p>JSR 305: Annotations for Software Defect Detection</p>
+<p>This JSR will work to develop standard annotations (such as @NonNull) that can be applied to Java programs to assist tools that detect software defects.</p>
+<p>主要功能：使用注解（例如@NonNull等等）协助开发者侦测软件缺陷。</p>
+<p>Spring 从 5.0 版本开始支持了 JSR 305 规范中涉及到的相关注解。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> org.springframework.lang;<br><span class="hljs-keyword">import</span> java.lang.annotation.Documented;<br><span class="hljs-keyword">import</span> java.lang.annotation.ElementType;<br><span class="hljs-keyword">import</span> java.lang.annotation.Retention;<br><span class="hljs-keyword">import</span> java.lang.annotation.RetentionPolicy;<br><span class="hljs-keyword">import</span> java.lang.annotation.Target;<br><span class="hljs-keyword">import</span> javax.annotation.Nonnull;<br><span class="hljs-keyword">import</span> javax.annotation.meta.TypeQualifierNickname;<br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * A common Spring annotation to declare that annotated elements cannot be &#123;<span class="hljs-doctag">@code</span> null&#125;.</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * &lt;p&gt;Leverages JSR-305 meta-annotations to indicate nullability in Java to common</span><br><span class="hljs-comment"> * tools with JSR-305 support and used by Kotlin to infer nullability of Spring API.</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * &lt;p&gt;Should be used at parameter, return value, and field level. Method overrides should</span><br><span class="hljs-comment"> * repeat parent &#123;<span class="hljs-doctag">@code</span> <span class="hljs-doctag">@NonNull</span>&#125; annotations unless they behave differently.</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * &lt;p&gt;Use &#123;<span class="hljs-doctag">@code</span> <span class="hljs-doctag">@NonNullApi</span>&#125; (scope = parameters + return values) and/or &#123;<span class="hljs-doctag">@code</span> <span class="hljs-doctag">@NonNullFields</span>&#125;</span><br><span class="hljs-comment"> * (scope = fields) to set the default behavior to non-nullable in order to avoid annotating</span><br><span class="hljs-comment"> * your whole codebase with &#123;<span class="hljs-doctag">@code</span> <span class="hljs-doctag">@NonNull</span>&#125;.</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> Sebastien Deleuze</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> Juergen Hoeller</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@since</span> 5.0</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@see</span> NonNullApi</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@see</span> NonNullFields</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@see</span> Nullable</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Target(&#123;ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD&#125;)</span><br><span class="hljs-meta">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="hljs-meta">@Documented</span><br><span class="hljs-meta">@Nonnull</span><br><span class="hljs-meta">@TypeQualifierNickname</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> NonNull &#123;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-相关注解"><a href="#3-相关注解" class="headerlink" title="3. 相关注解"></a>3. 相关注解</h4><table>
+<thead>
+<tr>
+<th>注解名称</th>
+<th>含义</th>
+<th>可标记位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>@Nullable</td>
+<td>可以为空</td>
+<td>@Target({ElementType.<strong>METHOD</strong>, ElementType.<strong>PARAMETER</strong>, ElementType.<strong>FIELD</strong>})</td>
+</tr>
+<tr>
+<td>@NonNull</td>
+<td>不应为空</td>
+<td>@Target({ElementType.<strong>METHOD</strong>, ElementType.<strong>PARAMETER</strong>, ElementType.<strong>FIELD</strong>})</td>
+</tr>
+<tr>
+<td>@NonNullFields</td>
+<td>在特定包下的字段不应为空</td>
+<td>@Target(ElementType.<strong>PACKAGE</strong>) @TypeQualifierDefault(ElementType.<strong>FIELD</strong>)</td>
+</tr>
+<tr>
+<td>@NonNullApi</td>
+<td>参数和方法返回值不应为空</td>
+<td>@Target(ElementType.<strong>PACKAGE</strong>) @TypeQualifierDefault({ElementType.<strong>METHOD</strong>, ElementType.<strong>PARAMETER</strong>})</td>
+</tr>
+</tbody></table>
+<h3 id="第二节-整合junit5"><a href="#第二节-整合junit5" class="headerlink" title="第二节 整合junit5"></a>第二节 整合junit5</h3><h4 id="1-导入依赖"><a href="#1-导入依赖" class="headerlink" title="1. 导入依赖"></a>1. 导入依赖</h4><p>在原有环境基础上增加如下依赖： </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.junit.jupiter<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>junit-jupiter-api<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.7.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.3.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="2-创建测试类"><a href="#2-创建测试类" class="headerlink" title="2. 创建测试类"></a>2. 创建测试类</h4><ul>
+<li>@ExtendWith(SpringExtension.class) 表示使用 Spring 提供的扩展功能。</li>
+<li>@ContextConfiguration(value = {“classpath:spring-context.xml”}) 还是用来指定 Spring 配置文件位置，和整合 junit4 一样。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu;<br><br><span class="hljs-keyword">import</span> com.atguigu.config.AtguiguSpringConfiguration;<br><span class="hljs-keyword">import</span> com.atguigu.service.AccountService;<br><span class="hljs-keyword">import</span> org.junit.jupiter.api.Test;<br><span class="hljs-keyword">import</span> org.junit.jupiter.api.extension.ExtendWith;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.test.context.ContextConfiguration;<br><span class="hljs-keyword">import</span> org.springframework.test.context.junit.jupiter.SpringExtension;<br><br><span class="hljs-meta">@ExtendWith(SpringExtension.class)</span><br><span class="hljs-meta">@ContextConfiguration(classes = AtguiguSpringConfiguration.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestTransaction</span> </span>&#123;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> AccountService accountService;<br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testTransfer</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> ClassNotFoundException </span>&#123;<br>        accountService.transfer(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">500d</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-使用复合注解"><a href="#3-使用复合注解" class="headerlink" title="3. 使用复合注解"></a>3. 使用复合注解</h4><p>@SpringJUnitConfig 注解综合了前面两个注解的功能，此时指定 Spring 配置文件位置即可。但是注意此时需要使用 locations 属性，不是 value 属性了。 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu;<br><br><span class="hljs-keyword">import</span> com.atguigu.config.AtguiguSpringConfiguration;<br><span class="hljs-keyword">import</span> com.atguigu.service.AccountService;<br><span class="hljs-keyword">import</span> org.junit.jupiter.api.Test;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.test.context.junit.jupiter.SpringJUnitConfig;<br><br><span class="hljs-meta">@SpringJUnitConfig(AtguiguSpringConfiguration.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestTransaction</span> </span>&#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> AccountService accountService;<br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testTransfer</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> ClassNotFoundException </span>&#123;<br>        accountService.transfer(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">500d</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/spring/">spring</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/spring/">spring</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客目前大部分文章都是参考尚硅谷或者源于尚硅谷的学习资料！<a href="http://www.atguigu.com/" rel="nofollow noopener"官网地址！</a> 
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/12/08/java-observer/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">java-观察者模式</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/08/java-iterator/">
+                        <span class="hidden-mobile">java设计模式-迭代器模式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/weixin.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

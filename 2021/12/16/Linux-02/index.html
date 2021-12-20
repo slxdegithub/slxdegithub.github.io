@@ -1,0 +1,1487 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Blue~u~u~u">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Linux-day02第一章 Linux常用命令第一节 进程相关命令1. 查看进程状态1.1 命令的使用ps命令是用于查看进程状态的命令，它常和e参数(对应单词entire，表示全部。具体指显示系统中全部的进程信息。)，以及f参数(对应单词full-formate，表示完整格式。) 一起使用  进程信息中各列数据的说明:    列名 含义    UID 进程的用户信息   PID 进程id。由系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux-进阶">
+<meta property="og:url" content="http://www.slx.blue/2021/12/16/Linux-02/index.html">
+<meta property="og:site_name" content="Blue~u~u~u~u">
+<meta property="og:description" content="Linux-day02第一章 Linux常用命令第一节 进程相关命令1. 查看进程状态1.1 命令的使用ps命令是用于查看进程状态的命令，它常和e参数(对应单词entire，表示全部。具体指显示系统中全部的进程信息。)，以及f参数(对应单词full-formate，表示完整格式。) 一起使用  进程信息中各列数据的说明:    列名 含义    UID 进程的用户信息   PID 进程id。由系统">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_001.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_002.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_003.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_004.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_005.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_006.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_007.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_009.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_010.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_011.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_012.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_013.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_014.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_015.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_016.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_017.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_018.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_019.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_020.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_021.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_022.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_023.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_024.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_025.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_026.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_027.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_028.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_029.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_030.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_031.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_032.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_034.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_035.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_036.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_037.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_038.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_039.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_040.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_041.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_042.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_043.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_044.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_045.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_046.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_047.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_048.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_049.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_050.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_051.png">
+<meta property="article:published_time" content="2021-12-16T13:27:28.000Z">
+<meta property="article:modified_time" content="2021-12-18T11:44:12.799Z">
+<meta property="article:author" content="Blue~u~u~u">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://www.slx.blue/2021/12/16/Linux-02/tu_001.png">
+  
+  
+  <title>Linux-进阶 - Blue~u~u~u~u</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Blue~u~u</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Linux-进阶">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-12-16 21:27" pubdate>
+        2021年12月16日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      14k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      43 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Linux-进阶</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="Linux-day02"><a href="#Linux-day02" class="headerlink" title="Linux-day02"></a>Linux-day02</h1><h2 id="第一章-Linux常用命令"><a href="#第一章-Linux常用命令" class="headerlink" title="第一章 Linux常用命令"></a>第一章 Linux常用命令</h2><h3 id="第一节-进程相关命令"><a href="#第一节-进程相关命令" class="headerlink" title="第一节 进程相关命令"></a>第一节 进程相关命令</h3><h4 id="1-查看进程状态"><a href="#1-查看进程状态" class="headerlink" title="1. 查看进程状态"></a>1. 查看进程状态</h4><h5 id="1-1-命令的使用"><a href="#1-1-命令的使用" class="headerlink" title="1.1 命令的使用"></a>1.1 命令的使用</h5><p><code>ps</code>命令是用于查看进程状态的命令，它常和<code>e</code>参数(对应单词entire，表示全部。具体指显示系统中全部的进程信息。)，以及<code>f</code>参数(对应单词full-formate，表示完整格式。) 一起使用</p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_001.png" srcset="/img/loading.gif" lazyload></p>
+<p>进程信息中各列数据的说明:</p>
+<table>
+<thead>
+<tr>
+<th>列名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UID</td>
+<td>进程的用户信息</td>
+</tr>
+<tr>
+<td><strong>PID</strong></td>
+<td>进程id。由系统分配，不会重复。</td>
+</tr>
+<tr>
+<td><strong>PPID</strong></td>
+<td>父进程的id。父进程和子进程的关系是：父进程启动了子进程。</td>
+</tr>
+<tr>
+<td><strong>CMD</strong></td>
+<td>当前进程所对应的程序。</td>
+</tr>
+<tr>
+<td>C</td>
+<td>用整数表示的CPU使用率</td>
+</tr>
+<tr>
+<td>STIME</td>
+<td>进程启动时间</td>
+</tr>
+<tr>
+<td>TTY</td>
+<td>进程所在终端。所谓终端就是用户输入命令的操作界面。</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>进程所占用的CPU时间</td>
+</tr>
+</tbody></table>
+<h5 id="1-2-父进程和子进程之间的关系"><a href="#1-2-父进程和子进程之间的关系" class="headerlink" title="1.2 父进程和子进程之间的关系"></a>1.2 父进程和子进程之间的关系</h5><p>简单来说，父进程和子进程的关系是：父进程启动了子进程。我们可以使用pstree命令查看整个进程树。 </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_002.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="1-3-和其它命令配合一起查看进程"><a href="#1-3-和其它命令配合一起查看进程" class="headerlink" title="1.3 和其它命令配合一起查看进程"></a>1.3 和其它命令配合一起查看进程</h5><h6 id="1-3-1-分屏查看进程信息"><a href="#1-3-1-分屏查看进程信息" class="headerlink" title="1.3.1 分屏查看进程信息"></a>1.3.1 分屏查看进程信息</h6><p>全部进程的信息太多了，一屏无法全部显示，所以我们希望可以分屏显示并由我们来控制翻页。为了达到这个目标，我们可以使用管道符号将ps -ef命令的输出数据传送给less命令。 <code>ps -ef | less</code></p>
+<h6 id="1-3-2-精确查询一个具体进程信息"><a href="#1-3-2-精确查询一个具体进程信息" class="headerlink" title="1.3.2 精确查询一个具体进程信息"></a>1.3.2 精确查询一个具体进程信息</h6><p>我们通过Xshell远程连接Linux系统，靠的是sshd这个服务。这个服务如果正在运行中，那么一定会有这个服务对应的进程。所以下面我们来查询一下sshd这个命令的进程。 </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_003.png" srcset="/img/loading.gif" lazyload></p>
+<p>我们看到这里返回了3条结果，其中前两天都是和sshd服务相关的结果，但是最后一条不是。</p>
+<blockquote>
+<p>root 72826 3456 0 20:06 pts/0 00:00:00 grep –color=auto sshd</p>
+</blockquote>
+<p>仔细观察一下就能发现，这其实是grep命令本身。因为grep命令运行过程中本身也是一个进程，“grep sshd”正好也匹配sshd，所以就被选中了。但是这是一个干扰项，并不是我们真正要查询的内容，所以需要把它从查询结果中排除。</p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_004.png" srcset="/img/loading.gif" lazyload></p>
+<p>再用一层管道，使用grep命令的-v参数把匹配grep的行排除，返回不匹配的结果，这就是我们最终想要的。 </p>
+<h4 id="2-杀死进程"><a href="#2-杀死进程" class="headerlink" title="2. 杀死进程"></a>2. 杀死进程</h4><h5 id="2-1-命令的使用"><a href="#2-1-命令的使用" class="headerlink" title="2.1 命令的使用"></a>2.1 命令的使用</h5><p><code>kill -9 进程id</code>表示杀死指定id的进程</p>
+<h5 id="2-2-举例"><a href="#2-2-举例" class="headerlink" title="2.2 举例"></a>2.2 举例</h5><ol>
+<li><p>打开Linux内置的火狐浏览器</p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_005.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>查看火狐浏览器的进程id</p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_006.png" srcset="/img/loading.gif" lazyload></p>
+<p> 另外一个是浏览器插件，不用管。 </p>
+</li>
+<li><p>使用kill命令结束火狐浏览器进程: <code>kill -9 3325</code></p>
+</li>
+</ol>
+<h4 id="3-实时查看系统运行情况和健康状态-了解"><a href="#3-实时查看系统运行情况和健康状态-了解" class="headerlink" title="3.  实时查看系统运行情况和健康状态(了解)"></a>3.  实时查看系统运行情况和健康状态(了解)</h4><h5 id="3-1-命令和参数"><a href="#3-1-命令和参数" class="headerlink" title="3.1 命令和参数"></a>3.1 命令和参数</h5><table>
+<thead>
+<tr>
+<th>命令名</th>
+<th>更新时间间隔（秒）</th>
+<th>不显示任何闲置或者僵死进程</th>
+<th>通过进程id监控单一进程</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>top</td>
+<td>-d 间隔秒数</td>
+<td>-i</td>
+<td>-p 进程id</td>
+</tr>
+</tbody></table>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_007.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="3-2-按键操作"><a href="#3-2-按键操作" class="headerlink" title="3.2 按键操作"></a>3.2 按键操作</h5><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P</td>
+<td>默认值，根据CPU使用率排序</td>
+</tr>
+<tr>
+<td>M</td>
+<td>以内存的使用率排序</td>
+</tr>
+<tr>
+<td>N</td>
+<td>以PID排序</td>
+</tr>
+<tr>
+<td>d</td>
+<td>设置数据刷新的时间间隔，单位是秒</td>
+</tr>
+<tr>
+<td>q</td>
+<td>退出</td>
+</tr>
+</tbody></table>
+<h5 id="3-3-查询结果的字段解释"><a href="#3-3-查询结果的字段解释" class="headerlink" title="3.3 查询结果的字段解释"></a>3.3 查询结果的字段解释</h5><h6 id="3-3-1-第一行信息为任务队列信息"><a href="#3-3-1-第一行信息为任务队列信息" class="headerlink" title="3.3.1 第一行信息为任务队列信息"></a>3.3.1 第一行信息为任务队列信息</h6><table>
+<thead>
+<tr>
+<th>内容举例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>12:26:49</td>
+<td>系统当前时间</td>
+</tr>
+<tr>
+<td>up 1 day, 13:32</td>
+<td>系统的运行时间，前面例子表示本机已经运行1天13小时32分钟</td>
+</tr>
+<tr>
+<td>2 users</td>
+<td>当前登录了2个用户</td>
+</tr>
+<tr>
+<td>load average:0.00, 0.00, 0.00</td>
+<td>系统在之前1分钟，5分钟，15分钟的平均负载。 一般认为小于1时，负载较小。如果大于1，系统已经超出负荷。</td>
+</tr>
+</tbody></table>
+<h6 id="3-3-2-第二行为进程信息"><a href="#3-3-2-第二行为进程信息" class="headerlink" title="3.3.2 第二行为进程信息"></a>3.3.2 第二行为进程信息</h6><table>
+<thead>
+<tr>
+<th>内容举例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tasks: 95 total</td>
+<td>系统中的进程总数</td>
+</tr>
+<tr>
+<td>1 running</td>
+<td>正在运行的进程数</td>
+</tr>
+<tr>
+<td>94 sleeping</td>
+<td>睡眠的进程</td>
+</tr>
+<tr>
+<td>0 stopped</td>
+<td>正在停止的进程</td>
+</tr>
+<tr>
+<td>0 zombie</td>
+<td>僵尸进程。如果不是0，需要手工检查僵尸进程</td>
+</tr>
+</tbody></table>
+<h6 id="3-3-3-第三行为CPU信息"><a href="#3-3-3-第三行为CPU信息" class="headerlink" title="3.3.3 第三行为CPU信息"></a>3.3.3 第三行为CPU信息</h6><table>
+<thead>
+<tr>
+<th>内容举例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cpu(s):0.1%us</td>
+<td>用户空间占用的CPU百分比，us对应user</td>
+</tr>
+<tr>
+<td>0.1%sy</td>
+<td>内核空间占用的CPU百分比，sy对应system</td>
+</tr>
+<tr>
+<td>0.0%ni</td>
+<td>改变过优先级的进程占用的CPU百分比，ni对应niced</td>
+</tr>
+<tr>
+<td>99.7%id</td>
+<td>空闲CPU的CPU百分比</td>
+</tr>
+<tr>
+<td>0.1%wa</td>
+<td>等待输入/输出的进程的占用CPU百分比，wa对应IO wait</td>
+</tr>
+<tr>
+<td>0.0%hi</td>
+<td>硬中断请求服务占用的CPU百分比，hi对应hardware IRQ</td>
+</tr>
+<tr>
+<td>0.1%si</td>
+<td>软中断请求服务占用的CPU百分比，si对应software IRQ</td>
+</tr>
+<tr>
+<td>0.0%st</td>
+<td>st（Steal time）虚拟时间百分比，也叫被hypervisor偷走的时间。 就是当有虚拟机时，虚拟CPU等待实际CPU的时间百分比。</td>
+</tr>
+</tbody></table>
+<h6 id="3-3-4-第四行为物理内存信息"><a href="#3-3-4-第四行为物理内存信息" class="headerlink" title="3.3.4 第四行为物理内存信息"></a>3.3.4 第四行为物理内存信息</h6><table>
+<thead>
+<tr>
+<th>内容举例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2031912 total</td>
+<td>物理内存的总量，单位KB</td>
+</tr>
+<tr>
+<td>70496 free</td>
+<td>空闲的物理内存数量</td>
+</tr>
+<tr>
+<td>1780676 used</td>
+<td>已经使用的物理内存数量</td>
+</tr>
+<tr>
+<td>174864 buff/cache</td>
+<td>作为缓冲的内存数量</td>
+</tr>
+</tbody></table>
+<p>使用中的内存总量（used）指的是现在系统内核控制的内存数，空闲内存总量（free）是还未纳入内核管控范围的数量。</p>
+<p>纳入内核管理的内存不见得都在使用中，还包括过去使用过的现在可以被重复利用的内存，内核并不把这些可被重新使用的内存还给free，因此Linux系统运行过程中free内存会越来越少，但不影响系统运行。因为这表示更多的空闲内存被内核管理了。</p>
+<h6 id="3-3-5-第五行为交换分区（swap）信息"><a href="#3-3-5-第五行为交换分区（swap）信息" class="headerlink" title="3.3.5 第五行为交换分区（swap）信息"></a>3.3.5 第五行为交换分区（swap）信息</h6><table>
+<thead>
+<tr>
+<th>内容举例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2097148 total</td>
+<td>交换分区（虚拟内存）的总大小</td>
+</tr>
+<tr>
+<td>1137824 free</td>
+<td>空闲交换分区的大小</td>
+</tr>
+<tr>
+<td>959324 used</td>
+<td>已经使用的交互分区的大小</td>
+</tr>
+<tr>
+<td>58640 avail Mem</td>
+<td>在不交换的情况下，对启动新应用程序可用内存的估计</td>
+</tr>
+</tbody></table>
+<p>交换分区是一个非常值得关注的地方，如果swap区的used数值持续发生变化那么说明在内核和交换分区之间正在持续发生数据交换，这表示内存不够用了——必须不断把内存中的数据保存到硬盘上。</p>
+<h4 id="4-查看网络状态命令-了解"><a href="#4-查看网络状态命令-了解" class="headerlink" title="4. 查看网络状态命令(了解)"></a>4. 查看网络状态命令(了解)</h4><h5 id="4-1-命令和参数"><a href="#4-1-命令和参数" class="headerlink" title="4.1 命令和参数"></a>4.1 命令和参数</h5><p><code>netstat</code>命令是查看网络状态,常用参数列表如下:</p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-a</td>
+<td>显示所有正在或不在侦听的套接字。</td>
+</tr>
+<tr>
+<td>-n</td>
+<td>显示数字形式地址而不是去解析主机、端口或用户名。</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>显示套接字所属进程的PID和名称。</td>
+</tr>
+</tbody></table>
+<p>常用: <code>netstat -anp</code></p>
+<h5 id="4-2-查询结果的解释"><a href="#4-2-查询结果的解释" class="headerlink" title="4.2 查询结果的解释"></a>4.2 查询结果的解释</h5><p>netstat命令显示的网络状态信息包含两部分内容：</p>
+<ul>
+<li><p>本机和外部的连接状态信息(重点)</p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_009.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+</ul>
+<ul>
+<li><p>本机系统内部进程间通信信息(了解)</p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_010.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+</ul>
+<h5 id="4-3-使用技巧"><a href="#4-3-使用技巧" class="headerlink" title="4.3 使用技巧"></a>4.3 使用技巧</h5><h5 id="4-3-1-分屏查看网络状态"><a href="#4-3-1-分屏查看网络状态" class="headerlink" title="4.3.1 分屏查看网络状态"></a>4.3.1 分屏查看网络状态</h5><p><code>netstat -anp | less</code></p>
+<h5 id="4-3-2-根据进程名称查看网络状态"><a href="#4-3-2-根据进程名称查看网络状态" class="headerlink" title="4.3.2 根据进程名称查看网络状态"></a>4.3.2 根据进程名称查看网络状态</h5><p><code>netstat -anp | grep sshd</code></p>
+<h5 id="4-3-3-根据端口号查看网络状态"><a href="#4-3-3-根据端口号查看网络状态" class="headerlink" title="4.3.3 根据端口号查看网络状态"></a>4.3.3 根据端口号查看网络状态</h5><p><code>netstat -anp | grep :22</code></p>
+<p>这里需要注意一下，端口号本身就是一串数字，进程id也是一串数字。那么根据端口号匹配时，很多无关的进程id也会被匹配到，造成大量不必要的干扰。此时给端口号数字前加上冒号就好多了。 </p>
+<h3 id="第二节-字符串处理的命令-了解"><a href="#第二节-字符串处理的命令-了解" class="headerlink" title="第二节 字符串处理的命令(了解)"></a>第二节 字符串处理的命令(了解)</h3><h4 id="1-basename"><a href="#1-basename" class="headerlink" title="1. basename"></a>1. basename</h4><p>返回路径字符串中的资源（文件或目录本身）部分 </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_011.png" srcset="/img/loading.gif" lazyload></p>
+<p>如果指定了后缀，basename会帮我们把后缀部分也去掉 </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_012.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="2-dirname"><a href="#2-dirname" class="headerlink" title="2. dirname"></a>2. dirname</h4><p>返回路径字符串中的目录部分 </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_013.png" srcset="/img/loading.gif" lazyload></p>
+<p>注意: 这里dd是文件</p>
+<h4 id="3-cut"><a href="#3-cut" class="headerlink" title="3. cut"></a>3. cut</h4><p>根据指定符号拆分字符串并提取。默认根据 \t 拆分。</p>
+<ul>
+<li>-f 参数：指定要提取的列</li>
+<li>-d 参数：指定拆分依据的字符</li>
+</ul>
+<p>准备测试数据： </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_014.png" srcset="/img/loading.gif" lazyload></p>
+<p>切割提取第一列： </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_015.png" srcset="/img/loading.gif" lazyload></p>
+<p>切割提取第二、第三列： </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_016.png" srcset="/img/loading.gif" lazyload></p>
+<p>选取系统 PATH 变量值，第2个 “:” 开始后的所有路径： </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_017.png" srcset="/img/loading.gif" lazyload></p>
+<p>切割ifconfig 后打印的IP地址： </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_018.png" srcset="/img/loading.gif" lazyload></p>
+<p>另一种做法： </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_019.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="4-sort"><a href="#4-sort" class="headerlink" title="4. sort"></a>4. sort</h4><p>sort命令是在Linux里非常有用，它将文件进行排序，并将排序结果标准输出。</p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-n</td>
+<td>依照数值大小排序</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>相反顺序排序</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>设置排序时使用的分隔字符</td>
+</tr>
+<tr>
+<td>-k</td>
+<td>指定需要排序的列</td>
+</tr>
+</tbody></table>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_020.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="第二章-Linux权限管理"><a href="#第二章-Linux权限管理" class="headerlink" title="第二章 Linux权限管理"></a>第二章 Linux权限管理</h2><h3 id="第一节-权限管理中的专业术语"><a href="#第一节-权限管理中的专业术语" class="headerlink" title="第一节 权限管理中的专业术语"></a>第一节 权限管理中的专业术语</h3><h4 id="1-用户"><a href="#1-用户" class="headerlink" title="1. 用户"></a>1. 用户</h4><p>系统使用者登录系统时使用的账号、密码。系统通过“用户”来识别使用者的身份。使用者以“用户”的名义操作系统资源。 </p>
+<h4 id="2-登录"><a href="#2-登录" class="headerlink" title="2. 登录"></a>2. 登录</h4><p>使用者想要让系统认可自己的身份就必须提供账号、密码等信息。更专业的说法是：“认证（authentication）”。 </p>
+<h4 id="3-资源"><a href="#3-资源" class="headerlink" title="3. 资源"></a>3. 资源</h4><p>权限控制系统要保护的对象。权限控制系统中必须要保存每一个资源所要求的访问权限。哪怕是“不需要任何权限，任何人都可以使用”也是权限信息的一种描述——没有要求也是一种要求。 </p>
+<h4 id="4-授权"><a href="#4-授权" class="headerlink" title="4. 授权"></a>4. 授权</h4><p>authorization，系统给用户分配权限。这些权限代表了用户可以做什么。 </p>
+<h4 id="5-校验"><a href="#5-校验" class="headerlink" title="5. 校验"></a>5. 校验</h4><p>一个用户访问一个资源的时候，权限控制系统必须要检查这个用户持有的权限是否满足目标资源所要求的权限。 </p>
+<h4 id="6-用户组"><a href="#6-用户组" class="headerlink" title="6. 用户组"></a>6. 用户组</h4><p>同一类的用户归到同一个组，也可以叫做角色。 </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_021.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="第二节-创建用户和用户组的基本命令"><a href="#第二节-创建用户和用户组的基本命令" class="headerlink" title="第二节 创建用户和用户组的基本命令"></a>第二节 创建用户和用户组的基本命令</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>groupadd 组名</td>
+<td>创建用户组</td>
+</tr>
+<tr>
+<td>id 用户名</td>
+<td>返回用户信息，检查用户是否存在</td>
+</tr>
+<tr>
+<td>useradd -g 组名 用户名</td>
+<td>创建用户，同时指定所属用户组</td>
+</tr>
+<tr>
+<td>passwd 用户名</td>
+<td>给用户账号设置密码</td>
+</tr>
+</tbody></table>
+<h3 id="第三节-文件权限"><a href="#第三节-文件权限" class="headerlink" title="第三节 文件权限"></a>第三节 文件权限</h3><h4 id="1-文件权限信息说明"><a href="#1-文件权限信息说明" class="headerlink" title="1. 文件权限信息说明"></a>1. 文件权限信息说明</h4><p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_022.png" srcset="/img/loading.gif" lazyload></p>
+<p>权限信息共分三组，每组三位： </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_023.png" srcset="/img/loading.gif" lazyload></p>
+<p>下面介绍rwx-分别是什么意思：</p>
+<ul>
+<li><p>r：读（read）</p>
+<ul>
+<li><p>读文件：查看文件内容</p>
+<p>例如：cat、less、tail等命令</p>
+</li>
+<li><p>读目录：查看目录内容</p>
+<p>例如：使用ll命令查看目录内容</p>
+</li>
+</ul>
+</li>
+<li><p>w：写（write）</p>
+<ul>
+<li><p>写文件：向文件中写入新内容</p>
+</li>
+<li><p>写目录：在目录里面增删内容</p>
+<p>例如：在目录内新建文件、删除文件、新建目录、删除目录给目录重命名</p>
+</li>
+</ul>
+</li>
+<li><p>x：执行（execute）</p>
+<ul>
+<li>执行文件：把文件当作可执行文件来运行</li>
+<li>执行目录：使用cd命令进入目录</li>
+</ul>
+</li>
+<li><p>-：无权限</p>
+</li>
+</ul>
+<p>由于每一位要么有权限要么没有权限，所以天然可以使用二进制来表示权限信息：</p>
+<ul>
+<li>1：有</li>
+<li>0：无</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>权限的符号表示</th>
+<th>权限的二进制表示</th>
+<th>权限的十进制表示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>rwx r-x r-x</td>
+<td>111 101 101</td>
+<td>7 5 5</td>
+</tr>
+<tr>
+<td>rw- r– r–</td>
+<td>110 100 100</td>
+<td>6 4 4</td>
+</tr>
+</tbody></table>
+<h4 id="2-修改文件权限"><a href="#2-修改文件权限" class="headerlink" title="2. 修改文件权限"></a>2. 修改文件权限</h4><h5 id="2-1-命令介绍"><a href="#2-1-命令介绍" class="headerlink" title="2.1 命令介绍"></a>2.1 命令介绍</h5><table>
+<thead>
+<tr>
+<th>命令名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>chmod</td>
+<td>修改权限信息</td>
+</tr>
+<tr>
+<td>chown</td>
+<td>修改文件或目录的所属用户</td>
+</tr>
+<tr>
+<td>chgrp</td>
+<td>修改文件或目录的所属用户组</td>
+</tr>
+</tbody></table>
+<h5 id="2-2-演示chmod命令"><a href="#2-2-演示chmod命令" class="headerlink" title="2.2 演示chmod命令"></a>2.2 演示chmod命令</h5><h6 id="2-2-1-修改权限信息前"><a href="#2-2-1-修改权限信息前" class="headerlink" title="2.2.1 修改权限信息前"></a>2.2.1 修改权限信息前</h6><p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_024.png" srcset="/img/loading.gif" lazyload></p>
+<h6 id="2-2-2-添加权限"><a href="#2-2-2-添加权限" class="headerlink" title="2.2.2 添加权限"></a>2.2.2 添加权限</h6><p>增加执行权限 </p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">chmod +x fruit/<span class="hljs-attribute">content</span><br></code></pre></td></tr></table></figure>
+
+<p>添加权限信息后</p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_025.png" srcset="/img/loading.gif" lazyload></p>
+<h6 id="2-2-3-删除权限"><a href="#2-2-3-删除权限" class="headerlink" title="2.2.3 删除权限"></a>2.2.3 删除权限</h6><p>删除执行权限 </p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">chmod -x fruit/<span class="hljs-attribute">content</span><br></code></pre></td></tr></table></figure>
+
+<p>删除权限信息后</p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_026.png" srcset="/img/loading.gif" lazyload></p>
+<h6 id="2-2-4-修改权限"><a href="#2-2-4-修改权限" class="headerlink" title="2.2.4 修改权限"></a>2.2.4 修改权限</h6><p>方法1: <code>chmod 三位数字</code></p>
+<p>这三位数字分别表示: 拥有者的权限、同组用户的权限、其它用户的权限</p>
+<p><code>r</code>：是4； <code>w</code>：是2；<code>x</code>：是1</p>
+<p>例如<code>chmod 755 fruit/content </code>表示将权限设置为:</p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_027.png" srcset="/img/loading.gif" lazyload></p>
+<p>方法2: <code>chmod u=rwx,g=rx,o=rx</code>，其中u表示拥有者，g表示同组用户，o表示其它用户</p>
+<h3 id="第四节-提升普通用户的权限"><a href="#第四节-提升普通用户的权限" class="headerlink" title="第四节 提升普通用户的权限"></a>第四节 提升普通用户的权限</h3><p>在公司参与开发的过程中，通常我们不会拿到服务器系统的 root 权限，而是普通用户权限。但是普通用户很多操作无法执行。比如在 /opt 目录下新建目录: </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_028.png" srcset="/img/loading.gif" lazyload></p>
+<p>提升普通用户的权限其实就是赋予普通用户那些超级管理员才有的权限，我们需要在 /etc/sudoers文件中 进行配置,但是注意sudoers文件默认是只读的，我们要修改它的权限，修改成root可以编辑<code>chmod 644 /etc/sudoers</code></p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">## Allow root <span class="hljs-keyword">to</span> run <span class="hljs-keyword">any</span> commands anywhere <br>root    <span class="hljs-keyword">ALL</span>=(<span class="hljs-keyword">ALL</span>)       <span class="hljs-keyword">ALL</span><br>luozhixiang <span class="hljs-keyword">ALL</span>=(<span class="hljs-keyword">ALL</span>)   <span class="hljs-keyword">ALL</span><br></code></pre></td></tr></table></figure>
+
+<p>不需要重启系统，我们再次测试:</p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_029.png" srcset="/img/loading.gif" lazyload></p>
+<p>但此时我们发现，每次使用<code>sudo</code>都需要输入密码，很麻烦，所以我们可以在<code>/etc/sudoers</code>中进行配置</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">luozhixiang <span class="hljs-keyword">ALL</span>=(<span class="hljs-keyword">ALL</span>)   NOPASSWD:<span class="hljs-keyword">ALL</span><br></code></pre></td></tr></table></figure>
+
+<p>这样再使用sudo命令就不需要输入密码了 </p>
+<p>这里有两点需要注意：</p>
+<ul>
+<li>在同一次登录中，即使不加NOPASSWD也只需要输入一次密码，所以NOPASSWD是否生效需要退出登录后再重新登录来测试。</li>
+<li>使用sudo提权后创建的目录仍然是root root权限，如果有需要那就还要使用chown或chgrp来修改。</li>
+</ul>
+<h2 id="第三章-Linux系统的服务管理"><a href="#第三章-Linux系统的服务管理" class="headerlink" title="第三章 Linux系统的服务管理"></a>第三章 Linux系统的服务管理</h2><h3 id="第一节-服务的概念"><a href="#第一节-服务的概念" class="headerlink" title="第一节 服务的概念"></a>第一节 服务的概念</h3><p>操作系统中在后台持续运行的程序，本身并没有操作界面，需要通过端口号访问和操作。CentOS 6和CentOS 7的服务管理有很大区别，我们分别来看。</p>
+<h3 id="第二节-CentOS6的服务-了解"><a href="#第二节-CentOS6的服务-了解" class="headerlink" title="第二节 CentOS6的服务(了解)"></a>第二节 CentOS6的服务(了解)</h3><h4 id="1-service命令"><a href="#1-service命令" class="headerlink" title="1. service命令"></a>1. service命令</h4><p>启动服务：service 服务名 start</p>
+<p>停止服务：service 服务名 stop</p>
+<p>重启服务：service 服务名 restart</p>
+<p>重新加载服务：service 服务名 reload</p>
+<p>查看服务状态：service 服务名 status</p>
+<h4 id="2-chkconfig命令"><a href="#2-chkconfig命令" class="headerlink" title="2. chkconfig命令"></a>2. chkconfig命令</h4><p>查看服务列表：chkconfig [–list]</p>
+<p>设置具体服务开机自动启动状态：chkconfig 服务名 on/off</p>
+<h4 id="3-防火墙"><a href="#3-防火墙" class="headerlink" title="3. 防火墙"></a>3. 防火墙</h4><p>防火墙默认会阻止绝大部分端口号的访问，在实际生产环境下，运维工程师需要为服务器设置详细的访问规则。在练习过程中，我们为了方便建议把防火墙直接关闭。由于防火墙服务默认开机自动启动，所以除了<strong>停止服务</strong>，还要设置为<strong>开机不自动启动</strong>。</p>
+<p>服务名：iptables</p>
+<p>停止防火墙：service iptables stop</p>
+<p>设置开机不自动启动：chkconfig iptables off</p>
+<h3 id="第三节-CentOS7的服务"><a href="#第三节-CentOS7的服务" class="headerlink" title="第三节 CentOS7的服务"></a>第三节 CentOS7的服务</h3><h4 id="1-systemctl命令"><a href="#1-systemctl命令" class="headerlink" title="1. systemctl命令"></a>1. systemctl命令</h4><p>启动服务：systemctl start 服务名(xxxx.service)</p>
+<p>重启服务：systemctl restart 服务名(xxxx.service)</p>
+<p>停止服务：systemctl stop 服务名(xxxx.service)</p>
+<p>重新加载服务：systemctl reload 服务名(xxxx.service)</p>
+<p>查看服务状态：systemctl status 服务名(xxxx.service)</p>
+<h3 id="2-systemctl命令代替chkconfig命令"><a href="#2-systemctl命令代替chkconfig命令" class="headerlink" title="2. systemctl命令代替chkconfig命令"></a>2. systemctl命令代替chkconfig命令</h3><p>查看服务状态：systemctl list-unit-files</p>
+<p>设置或取消服务开机自动启动：</p>
+<ul>
+<li><p>设置开机自动启动：systemctl enable 服务名</p>
+</li>
+<li><p>取消开机自动启动：systemctl disable 服务名</p>
+</li>
+</ul>
+<h4 id="3-防火墙的操作"><a href="#3-防火墙的操作" class="headerlink" title="3. 防火墙的操作"></a>3. 防火墙的操作</h4><ul>
+<li>开启防火墙 <code>systemctl start firewalld</code></li>
+<li>重启防火墙 <code>systemctl restart firewalld</code></li>
+<li>关闭防火墙<code>systemctl stop firewalld</code></li>
+<li>设置开机启动<code>systemctl enable firewalld</code></li>
+<li>停止并关闭开机启动<code>systemctl disable firewalld</code></li>
+<li>查看防火墙状态<code>systemctl status firewalld</code> 或者 <code>firewall-cmd --state</code></li>
+<li>查看防火墙开机时是否启动<code>systemctl list-unit-files | grep firewalld</code></li>
+</ul>
+<h4 id="4-防火墙端口设置"><a href="#4-防火墙端口设置" class="headerlink" title="4. 防火墙端口设置"></a>4. 防火墙端口设置</h4><ul>
+<li><p>开放端口   <code>firewall-cmd --add-port=端口号/tcp --permanent</code></p>
+</li>
+<li><p>更新防火墙规则<code>firewall-cmd --reload</code></p>
+</li>
+<li><p>查看</p>
+<p><code>firewall-cmd --zone=public --query-port=端口号/tcp</code><br><code>firewall-cmd --zone=public --list-ports</code></p>
+</li>
+<li><p>取消端口开放  <code>firewall-cmd --remove-port=端口/tcp --permanent</code></p>
+</li>
+<li><p>常用端口</p>
+<ul>
+<li>8080 tomcat</li>
+<li>80 http协议</li>
+<li>443 https协议</li>
+<li>22 ssh远程连接</li>
+<li>3306 mysql</li>
+<li>6379 redis</li>
+</ul>
+</li>
+</ul>
+<h2 id="第四章-Linux下的Shell脚本开发"><a href="#第四章-Linux下的Shell脚本开发" class="headerlink" title="第四章 Linux下的Shell脚本开发"></a>第四章 Linux下的Shell脚本开发</h2><h3 id="第一节-Shell编程概述"><a href="#第一节-Shell编程概述" class="headerlink" title="第一节 Shell编程概述"></a>第一节 Shell编程概述</h3><p>Shell是一个命令行解释器，它接收应用程序或用户的命令，然后调用操作系统内核。 它是一个功能强大的编程语言，易编写、易调试、灵活性强 </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_030.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="第二节-Linux系统提供的Shell解析器"><a href="#第二节-Linux系统提供的Shell解析器" class="headerlink" title="第二节 Linux系统提供的Shell解析器"></a>第二节 Linux系统提供的Shell解析器</h3><p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_031.png" srcset="/img/loading.gif" lazyload></p>
+<p>其中最常用的是 /bin/sh 和 /bin/bash</p>
+<h4 id="1-bash-和-sh-的关系"><a href="#1-bash-和-sh-的关系" class="headerlink" title="1. bash 和 sh 的关系"></a>1. bash 和 sh 的关系</h4><p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_032.png" srcset="/img/loading.gif" lazyload></p>
+<p>sh是bash的软链接 ,Linux默认使用的是bash</p>
+<h3 id="第三节-Shell编程入门"><a href="#第三节-Shell编程入门" class="headerlink" title="第三节 Shell编程入门"></a>第三节 Shell编程入门</h3><h4 id="1-创建脚本文件"><a href="#1-创建脚本文件" class="headerlink" title="1. 创建脚本文件"></a>1. 创建脚本文件</h4><p>使用<code>touch</code>命令创建脚本文件, 通常以.sh作为扩展名 </p>
+<h4 id="2-编写脚本内容"><a href="#2-编写脚本内容" class="headerlink" title="2. 编写脚本内容"></a>2. 编写脚本内容</h4><p>第一行通常指定脚本解析器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span><br>echo &quot;hello world&quot;<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-脚本文件的运行方式"><a href="#3-脚本文件的运行方式" class="headerlink" title="3. 脚本文件的运行方式"></a>3. 脚本文件的运行方式</h4><table>
+<thead>
+<tr>
+<th>命令名</th>
+<th>在当前进程运行</th>
+<th>新建子进程运行</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>source</td>
+<td>√</td>
+<td></td>
+</tr>
+<tr>
+<td>.</td>
+<td>√</td>
+<td></td>
+</tr>
+<tr>
+<td>sh</td>
+<td></td>
+<td>√</td>
+</tr>
+<tr>
+<td>bash</td>
+<td></td>
+<td>√</td>
+</tr>
+<tr>
+<td>chmod +x后直接运行</td>
+<td></td>
+<td>√</td>
+</tr>
+</tbody></table>
+<p>其中“.”是source的另一种写法。在当前进程中发布的全局变量可以在当前进程的其他脚本中继续沿用，也可以在子进程中使用；但是子进程export发布的变量仅限于子进程内部使用。</p>
+<h3 id="第四节-Shell的语法"><a href="#第四节-Shell的语法" class="headerlink" title="第四节 Shell的语法"></a>第四节 Shell的语法</h3><h4 id="1-变量"><a href="#1-变量" class="headerlink" title="1. 变量"></a>1. 变量</h4><h5 id="1-1-系统预定义变量"><a href="#1-1-系统预定义变量" class="headerlink" title="1.1 系统预定义变量"></a>1.1 系统预定义变量</h5><p>常用系统变量包括：<code>$USER</code>、<code>$HOME</code>、<code>$PWD</code>、<code>$SHELL</code>等，可以使用echo命令输出它们的值。使用<code>set</code>命令可以查看所有系统预定义变量</p>
+<h5 id="1-2-自定义变量"><a href="#1-2-自定义变量" class="headerlink" title="1.2 自定义变量"></a>1.2 自定义变量</h5><h6 id="1-2-1-定义变量"><a href="#1-2-1-定义变量" class="headerlink" title="1.2.1 定义变量"></a>1.2.1 定义变量</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">USER_NAME=tom<br></code></pre></td></tr></table></figure>
+
+<h6 id="1-2-2-输出变量"><a href="#1-2-2-输出变量" class="headerlink" title="1.2.2 输出变量"></a>1.2.2 输出变量</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">echo $USER_NAME<br></code></pre></td></tr></table></figure>
+
+<h6 id="1-2-3-撤销变量"><a href="#1-2-3-撤销变量" class="headerlink" title="1.2.3 撤销变量"></a>1.2.3 撤销变量</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">unset USER_NAME<br></code></pre></td></tr></table></figure>
+
+<h6 id="1-2-4-定义静态变量"><a href="#1-2-4-定义静态变量" class="headerlink" title="1.2.4 定义静态变量"></a>1.2.4 定义静态变量</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">readonly COMPANY_NAME=atguigu<br></code></pre></td></tr></table></figure>
+
+<p>静态变量不能撤销，也不能修改</p>
+<h6 id="1-2-5-语法规则"><a href="#1-2-5-语法规则" class="headerlink" title="1.2.5 语法规则"></a>1.2.5 语法规则</h6><ul>
+<li>变量名称可以由字母、数字和下划线组成，但是不能以数字开头，环境变量名建议大写。</li>
+<li>等号两侧不能有空格，衍生规则就是变量声明时必须初始化</li>
+<li>在bash中，变量默认类型都是字符串类型，无法直接进行数值运算。</li>
+<li>变量的值如果有空格，需要使用双引号或单引号括起来。</li>
+<li>变量名区分大小写。</li>
+</ul>
+<h5 id="1-3-特殊变量"><a href="#1-3-特殊变量" class="headerlink" title="1.3 特殊变量"></a>1.3 特殊变量</h5><h6 id="1-3-1-n"><a href="#1-3-1-n" class="headerlink" title="1.3.1 $n"></a>1.3.1 $n</h6><p>n是数字，$0代表当前脚本名称。从$1开始代表对应的脚本参数。从${10}开始数字需要使用{}括起来。 </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_034.png" srcset="/img/loading.gif" lazyload></p>
+<h6 id="1-3-2"><a href="#1-3-2" class="headerlink" title="1.3.2 $#"></a>1.3.2 $#</h6><p>返回输入参数的个数 </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_035.png" srcset="/img/loading.gif" lazyload></p>
+<h6 id="1-3-3-和"><a href="#1-3-3-和" class="headerlink" title="1.3.3 $*和$@"></a>1.3.3 $*和$@</h6><p>都能够返回全部参数，但是只有在循环中且放在引号中能够体现出它们的区别。 </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_036.png" srcset="/img/loading.gif" lazyload></p>
+<h6 id="1-3-4"><a href="#1-3-4" class="headerlink" title="1.3.4 $?"></a>1.3.4 $?</h6><p>返回上一条命令的执行结果。</p>
+<ul>
+<li>条件判断语句<ul>
+<li>返回 0 表示 true</li>
+<li>返回 1 表示 false</li>
+</ul>
+</li>
+<li>普通语句<ul>
+<li>返回 0 表示成功</li>
+<li>返回非 0 数表示失败</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-运算符"><a href="#2-运算符" class="headerlink" title="2. 运算符"></a>2. 运算符</h4><p>Shell的运算表达式的语法如下:  <code>$((表达式))</code>或<code>$[表达式] </code></p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_037.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="3-条件判断"><a href="#3-条件判断" class="headerlink" title="3. 条件判断"></a>3. 条件判断</h4><h5 id="3-1-基本语法"><a href="#3-1-基本语法" class="headerlink" title="3.1 基本语法"></a>3.1 基本语法</h5><ul>
+<li>写法1：test condition</li>
+<li>写法2：[ condition ]<ul>
+<li>注意 condition 前后有空格</li>
+<li>空字符串视为 false，非空字符串视为 true</li>
+</ul>
+</li>
+</ul>
+<h5 id="3-2-常用判断条件"><a href="#3-2-常用判断条件" class="headerlink" title="3.2 常用判断条件"></a>3.2 常用判断条件</h5><table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>写法</th>
+<th>单词</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数值</td>
+<td>-lt</td>
+<td>less than</td>
+<td>小于</td>
+</tr>
+<tr>
+<td>数值</td>
+<td>-le</td>
+<td>less equal</td>
+<td>小于等于</td>
+</tr>
+<tr>
+<td>数值</td>
+<td>-eq</td>
+<td>equal</td>
+<td>等于</td>
+</tr>
+<tr>
+<td>数值</td>
+<td>-gt</td>
+<td>greater than</td>
+<td>大于</td>
+</tr>
+<tr>
+<td>数值</td>
+<td>-ge</td>
+<td>greater equal</td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td>数值</td>
+<td>-ne</td>
+<td>not equal</td>
+<td>不等于</td>
+</tr>
+<tr>
+<td>文件</td>
+<td>-r</td>
+<td>read</td>
+<td>判断当前用户是否可以读取该文件</td>
+</tr>
+<tr>
+<td>文件</td>
+<td>-w</td>
+<td>write</td>
+<td>判断当前用户是否可以修改该文件</td>
+</tr>
+<tr>
+<td>文件</td>
+<td>-x</td>
+<td>execute</td>
+<td>判断当前用户对该文件是否有执行权限</td>
+</tr>
+<tr>
+<td>文件</td>
+<td>-f</td>
+<td>file</td>
+<td>判断当前文件是否存在并且是一个常规的文件</td>
+</tr>
+<tr>
+<td>文件</td>
+<td>-e</td>
+<td>existence</td>
+<td>判断文件是否存在</td>
+</tr>
+<tr>
+<td>文件</td>
+<td>-d</td>
+<td>directory</td>
+<td>判断是否存在并且是一个目录</td>
+</tr>
+</tbody></table>
+<p>可以参考下面例子：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span><br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 条件判断表达式写法一：<span class="hljs-built_in">test</span></span><br>test 10 -gt 7<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 使用$?获取上一条语句的执行结果</span><br>echo $?<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 使用$?获取上一条语句的执行结果</span><br>test 10 -lt 7<br>echo $?<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 条件判断表达式写法二：[ condition ]</span><br><span class="hljs-meta">#</span><span class="bash"> 注意：condition两边要有空格</span><br>[ 10 -gt 7 ]<br>echo $?<br><br>[ 10 -lt 7 ]<br>echo $?<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 专门针对文件进行操作的运算符</span><br>[ -e aaa.txt ]<br>echo $?<br><br>[ -r aaa.txt ]<br>echo $?<br><br>[ -w aaa.txt ]<br>echo $?<br></code></pre></td></tr></table></figure>
+
+<h4 id="4-流程控制"><a href="#4-流程控制" class="headerlink" title="4. 流程控制"></a>4. 流程控制</h4><h5 id="4-1-三元运算"><a href="#4-1-三元运算" class="headerlink" title="4.1 三元运算"></a>4.1 三元运算</h5><p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_038.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="4-2-if判断"><a href="#4-2-if判断" class="headerlink" title="4.2 if判断"></a>4.2 if判断</h5><h6 id="4-2-1-单if"><a href="#4-2-1-单if" class="headerlink" title="4.2.1 单if"></a>4.2.1 单if</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">if [ 10 -gt 5 ]<br>then<br>echo &quot;10大于5&quot;<br>fi<br></code></pre></td></tr></table></figure>
+
+<h6 id="4-2-2-if…else…"><a href="#4-2-2-if…else…" class="headerlink" title="4.2.2 if…else…"></a>4.2.2 if…else…</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">if [ 10 -gt 5 ]<br>then<br>echo &quot;10大于5&quot;<br>else<br>echo &quot;10小于5&quot;<br>fi<br></code></pre></td></tr></table></figure>
+
+<h6 id="4-2-3-if…elif…"><a href="#4-2-3-if…elif…" class="headerlink" title="4.2.3 if…elif…"></a>4.2.3 if…elif…</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell">if [ 10 -gt 5 ]<br>then<br>echo &quot;10大于5&quot;<br>elif [ 10 -lt 5 ]<br>then<br>echo &quot;10小于5&quot;<br>else<br>echo &quot;10等于5&quot;<br>fi<br></code></pre></td></tr></table></figure>
+
+<h5 id="4-3-case判断"><a href="#4-3-case判断" class="headerlink" title="4.3 case判断"></a>4.3 case判断</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs shell">AGE=10<br>case $AGE in<br>&quot;10&quot;)<br>echo 10<br>;;<br>&quot;20&quot;)<br>echo 20<br>;;<br>*)<br>echo other<br>;;<br>esac<br></code></pre></td></tr></table></figure>
+
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_039.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="4-4-for循环"><a href="#4-4-for循环" class="headerlink" title="4.4 for循环"></a>4.4 for循环</h5><p>简单for循环</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">for (( i=1;i&lt;=10;i++ ))<br>do<br>echo $i<br>done<br></code></pre></td></tr></table></figure>
+
+<p>从外部传入循环长度</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span><br><span class="hljs-meta">#</span><span class="bash"> 如果需要使用外部数据，则需要把外部数据赋值给一个变量，不能在<span class="hljs-keyword">for</span>语句中直接使用</span><br>len=$1<br><br>for (( i=1;i&lt;=len;i++ ))<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 从<span class="hljs-keyword">do</span>关键字开始是循环体开始</span><br>do<br><br>echo $i;<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 到<span class="hljs-keyword">done</span>关键字为止是循环体结束</span><br>done<br></code></pre></td></tr></table></figure>
+
+<h5 id="4-5-for-in循环"><a href="#4-5-for-in循环" class="headerlink" title="4.5 for in循环"></a>4.5 for in循环</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">for i in $*<br>do<br>echo $i<br>done<br></code></pre></td></tr></table></figure>
+
+<p>没有引号的时候$*和$@一样，加了引号就有区别 </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">for i in &quot;$*&quot;<br>do<br>echo $i<br>done<br></code></pre></td></tr></table></figure>
+
+<p>上面代码输出的结果是： </p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_040.png" srcset="/img/loading.gif" lazyload></p>
+<p>“$*”不换行，”$@”有换行。</p>
+<h5 id="4-6-while循环"><a href="#4-6-while循环" class="headerlink" title="4.6 while循环"></a>4.6 while循环</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell">sum=0<br>start=1<br>while [ $start -le 100 ]<br>do<br><span class="hljs-meta">#</span><span class="bash"> 累加</span><br>sum=$[$sum+$start]<br><span class="hljs-meta">#</span><span class="bash"> start的值自增1</span><br>start=$[$start+1]<br>done<br>echo $sum<br></code></pre></td></tr></table></figure>
+
+<h4 id="5-函数"><a href="#5-函数" class="headerlink" title="5. 函数"></a>5. 函数</h4><p>Shell 编程中的函数和我们以前熟悉的函数最大的区别是：Shell 编程中要求函数的返回值只能是整数。并且只能通过 $? 方式获得。可以显示加：return 返回，如果不加，将以最后一条命令运行结果(这个运算结果可以表示true或者false，以及执行成功或者执行失败)，作为返回值。return 后跟数值 n(0-255)。 </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span><br><span class="hljs-meta">#</span><span class="bash"> 声明函数</span><br>function sum()&#123;<br><span class="hljs-meta">	#</span><span class="bash"> 使用<span class="hljs-variable">$1</span>、<span class="hljs-variable">$2</span>引用函数传入的参数</span><br>	return $[$1+$2]<br>&#125;<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 调用函数，传入参数</span><br>sum 10 20<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 使用$?获取函数执行结果</span><br>echo &quot;sum 10 20执行的结果是$?&quot;<br></code></pre></td></tr></table></figure>
+
+<h4 id="6-获取脚本外部数据"><a href="#6-获取脚本外部数据" class="headerlink" title="6. 获取脚本外部数据"></a>6. 获取脚本外部数据</h4><h5 id="6-1-获取参数"><a href="#6-1-获取参数" class="headerlink" title="6.1 获取参数"></a>6.1 获取参数</h5><p>这个前面说过了，通过$1、$2、……方式获取，从${10}开始需要使用大括号。 </p>
+<h5 id="6-2-使用read读取用户输入"><a href="#6-2-使用read读取用户输入" class="headerlink" title="6.2 使用read读取用户输入"></a>6.2 使用read读取用户输入</h5><p>read命令有两个常用参数</p>
+<ul>
+<li>-t用于指定输入等待时间，单位是秒</li>
+<li>-p用于指定提示文字</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">read -t 10 -p &quot;please enter:&quot; NAME<br>echo $NAME<br></code></pre></td></tr></table></figure>
+
+<h2 id="第五章-服务器端应用程序的安装"><a href="#第五章-服务器端应用程序的安装" class="headerlink" title="第五章 服务器端应用程序的安装"></a>第五章 服务器端应用程序的安装</h2><h3 id="第一节-备份配置文件"><a href="#第一节-备份配置文件" class="headerlink" title="第一节 备份配置文件"></a>第一节 备份配置文件</h3><p>Linux 系统环境下配置文件通常内容很多。如果不小心修改了不该修改的地方，自己有不记得做了修改，那么将来报错很难找到错误位置。</p>
+<p>为了避免这样的问题，我们可以在修改任何配置文件之前都多复制一份：把原始、纯净、正确的配置文件执行了备份。将来万一发生问题，拿原始配置文件覆盖错误配置文件，瞬间恢复到正确状态可以重新开始。</p>
+<h3 id="第二节-快照备份虚拟机"><a href="#第二节-快照备份虚拟机" class="headerlink" title="第二节 快照备份虚拟机"></a>第二节 快照备份虚拟机</h3><h4 id="1-使用场景"><a href="#1-使用场景" class="headerlink" title="1. 使用场景"></a>1. 使用场景</h4><h5 id="1-1-场景一"><a href="#1-1-场景一" class="headerlink" title="1.1 场景一"></a>1.1 场景一</h5><p>针对需要通过安装过程来安装的程序，如果安装失败需要卸载后重新安装，那最好是卸载干净再重新执行安装。Linux 环境下不方便执行『清理残留』。</p>
+<p>所以为了避免安装失败以后没有退路可以重新开始，建议在执行相关安装之前拍摄快照。一旦发生问题，可以恢复快照重新开始。</p>
+<h5 id="1-2-场景二"><a href="#1-2-场景二" class="headerlink" title="1.2 场景二"></a>1.2 场景二</h5><p>对于已经安装好的程序（特别是系统当中安装了很多程序都已成功），强烈建议通过拍摄快照的方式保留这个正确的状态。 </p>
+<h4 id="2-具体操作"><a href="#2-具体操作" class="headerlink" title="2. 具体操作"></a>2. 具体操作</h4><h5 id="2-1-保存快照"><a href="#2-1-保存快照" class="headerlink" title="2.1 保存快照"></a>2.1 保存快照</h5><p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_041.png" srcset="/img/loading.gif" lazyload></p>
+<p>给快照文件命名:</p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_042.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="2-2-恢复快照"><a href="#2-2-恢复快照" class="headerlink" title="2.2 恢复快照"></a>2.2 恢复快照</h5><p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_043.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="2-3-删除快照"><a href="#2-3-删除快照" class="headerlink" title="2.3 删除快照"></a>2.3 删除快照</h5><p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_044.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="第三节-安装JDK"><a href="#第三节-安装JDK" class="headerlink" title="第三节 安装JDK"></a>第三节 安装JDK</h3><h4 id="1-rpm命令"><a href="#1-rpm命令" class="headerlink" title="1. rpm命令"></a>1. rpm命令</h4><p>rpm 是 Redhat package management 的缩写，实质上来说，通过 rpm 可以管理 Linux 环境下的安装包。 </p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-qa</td>
+<td>查询系统中已经安装的程序，通常配合管道，使用 grep 精确匹配想要查询的包</td>
+</tr>
+<tr>
+<td>-ivh</td>
+<td>执行 rpm 包安装操作</td>
+</tr>
+<tr>
+<td>-e</td>
+<td>卸载 rpm 包</td>
+</tr>
+<tr>
+<td>–nodeps</td>
+<td>在卸载过程中忽略依赖关系</td>
+</tr>
+</tbody></table>
+<p>注：Linux 系统中命令的参数往往有这样的特点：</p>
+<ul>
+<li>参数如果是一个或多个完整的单词那么前面是两个“-”</li>
+<li>参数如果是单词的缩写，是一个字母，那么前面是一个“-”</li>
+</ul>
+<h4 id="2-具体安装步骤"><a href="#2-具体安装步骤" class="headerlink" title="2. 具体安装步骤"></a>2. 具体安装步骤</h4><h5 id="2-1-卸载系统预装的JDK"><a href="#2-1-卸载系统预装的JDK" class="headerlink" title="2.1 卸载系统预装的JDK"></a>2.1 卸载系统预装的JDK</h5><ol>
+<li> 查询系统中已经安装的 JDK </li>
+</ol>
+   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shel">rpm -qa | grep openjdk<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li> 执行卸载，卸载过程中使用 –nodeps 忽略依赖关系 </li>
+</ol>
+   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">rpm -e --nodeps 第一步查询出来的数据，如果是多个则用空格分隔<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li> 重启系统生效(一般不需要)</li>
+</ol>
+   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">reboot<br></code></pre></td></tr></table></figure>
+
+<h5 id="2-2-安装JDK"><a href="#2-2-安装JDK" class="headerlink" title="2.2 安装JDK"></a>2.2 安装JDK</h5><ol>
+<li><p>使用xftp将资料中的jdk的压缩包传输到虚拟机的<code>/opt</code>目录中</p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_045.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>解压jdk压缩包</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd /opt<br>tar -zxvf jdk-8u152-linux-x64.tar.gz<br></code></pre></td></tr></table></figure></li>
+<li><p>配置JDK的环境变量</p>
+<p>为了避免配置错误导致运行失败，提前复制一份/etc/profile </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cp /etc/profile /etc/profile.bak<br></code></pre></td></tr></table></figure>
+
+<p>编辑 /etc/profile 文件（下面内容添加到文件末尾）： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 声明 JAVA_HOME 环境变量，等号两边不能有空格</span><br>JAVA_HOME=/opt/jdk1.8.0_152<br>   <br><span class="hljs-meta">#</span><span class="bash"> 给 PATH 环境变量附加 <span class="hljs-variable">$JAVA_HOME</span>/bin 部分</span><br><span class="hljs-meta">#</span><span class="bash"> <span class="hljs-variable">$PATH</span> 表示引用 PATH 环境变量以前的旧值</span><br><span class="hljs-meta">#</span><span class="bash"> 使用英文冒号连接</span><br><span class="hljs-meta">#</span><span class="bash"> <span class="hljs-variable">$JAVA_HOME</span> 表示对 JAVA_HOME 变量的引用</span><br><span class="hljs-meta">#</span><span class="bash"> <span class="hljs-variable">$JAVA_HOME</span>/bin 表示指向可执行文件</span><br>PATH=$JAVA_HOME/bin:$PATH<br>   <br><span class="hljs-meta">#</span><span class="bash"> 发布</span><br><span class="hljs-meta">#</span><span class="bash"> 发布是发布变量名，不是引用变量的值，所以前面不写 $ 符号</span><br>export JAVA_HOME PATH<br></code></pre></td></tr></table></figure>
+
+<p>保存退出vim后，使用source命令执行/etc/profile脚本，让脚本中发布的环境变量生效。但是仅限于当前进程，如果想让新环境变量全局生效，可以reboot。 </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">source /etc/profile<br></code></pre></td></tr></table></figure>
+
+<p>验证一下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">echo $JAVA_HOME<br>echo $PATH<br>java -version<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="第四节-安装Tomcat"><a href="#第四节-安装Tomcat" class="headerlink" title="第四节 安装Tomcat"></a>第四节 安装Tomcat</h3><h4 id="1-具体安装步骤"><a href="#1-具体安装步骤" class="headerlink" title="1. 具体安装步骤"></a>1. 具体安装步骤</h4><ol>
+<li><p>使用xftp将资料中的Tomcat的压缩包传输到虚拟机的<code>/opt</code>目录中</p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_046.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>解压Tomcat的压缩包</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd /opt<br>tar -zxvf /opt/apache-tomcat-8.5.32.tar.gz<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="2-操作Tomcat"><a href="#2-操作Tomcat" class="headerlink" title="2. 操作Tomcat"></a>2. 操作Tomcat</h4><ol>
+<li><p>启动 Tomcat </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">/opt/apache-tomcat-8.5.32/bin/startup.sh<br></code></pre></td></tr></table></figure></li>
+<li><p>停止 Tomcat </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">/opt/apache-tomcat-8.5.32/bin/shutdown.sh<br></code></pre></td></tr></table></figure></li>
+<li><p>查看日志 </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">tail -F /opt/apache-tomcat-8.5.32/logs/catalina.out<br></code></pre></td></tr></table></figure></li>
+<li><p>部署 war 包放在 webapps 目录下 </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">/opt/apache-tomcat-8.5.32/webapps<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>注意: </p>
+<ul>
+<li>在 Linux 系统本地使用火狐浏览器访问可以使用 localhost</li>
+<li>在 Windows 系统访问 Linux 服务器端的 Tomcat 需要使用 LInux 的 IP 地址,并且要保证防火墙关闭，或者放行了8080端口</li>
+</ul>
+<p>开发阶段可以关闭防火墙，关闭防火墙的命令:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">systemctl stop firewalld.service<br></code></pre></td></tr></table></figure>
+
+<p>在开发阶段可以禁止防火墙开机自启动:<code>systemctl disable firewalld.service</code></p>
+<p>让防火墙放行8080端口的命令:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">firewall-cmd --add-port=8080/tcp --permanent<br><span class="hljs-meta">#</span><span class="bash"> 放行端口后一定要重新加载防火墙配置</span><br>firewall-cmd --reload<br></code></pre></td></tr></table></figure>
+
+<h3 id="第三节-安装MySQL-安装之前一定要快照"><a href="#第三节-安装MySQL-安装之前一定要快照" class="headerlink" title="第三节 安装MySQL(安装之前一定要快照)"></a>第三节 安装MySQL(安装之前一定要快照)</h3><h4 id="1-卸载系统预装-mariadb"><a href="#1-卸载系统预装-mariadb" class="headerlink" title="1. 卸载系统预装 mariadb"></a>1. 卸载系统预装 mariadb</h4><ol>
+<li><p>查询系统中预装的mariadb</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">rpm -qa | grep mariadb --color<br></code></pre></td></tr></table></figure></li>
+<li><p>删除系统中预装的mariadb(如果第一步没查到就不删)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">rpm -e --nodeps 第一步查询到的结果<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>注：MySQL 被 Oracle 收购，社区担心将来 MySQL 被 Oracle 关闭开源模式，和 Oracle 数据库一样变成商业化运作。所以社区开发了一个 MySQL 的社区版，内部和 MySQL 一样，只是名字不同，这就是 mariadb。但是我们当前在 Linux 系统中已经预装的 mariadb 只是一个残片，不能直接使用。所以还是要先卸载。 </p>
+<h4 id="2-具体安装步骤-1"><a href="#2-具体安装步骤-1" class="headerlink" title="2. 具体安装步骤"></a>2. 具体安装步骤</h4><h5 id="2-1-将mysql的压缩包拷贝到虚拟机中"><a href="#2-1-将mysql的压缩包拷贝到虚拟机中" class="headerlink" title="2.1 将mysql的压缩包拷贝到虚拟机中"></a>2.1 将mysql的压缩包拷贝到虚拟机中</h5><ol>
+<li><p>在虚拟机中的<code>/usr/local</code>中创建一个<code>mysql</code>目录</p>
+</li>
+<li><p>使用xftp将mysql压缩包拷贝到<code>/usr/local/mysql</code>目录中</p>
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_047.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+</ol>
+<h5 id="2-2-解压MySQL的tar包"><a href="#2-2-解压MySQL的tar包" class="headerlink" title="2.2 解压MySQL的tar包"></a>2.2 解压MySQL的tar包</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd /usr/local/mysql<br>tar -zxvf mysql-5.7.25-1.el7.x86_64.rpm-bundle.tar.gz<br></code></pre></td></tr></table></figure>
+
+<h5 id="2-3-安装MySQL-下述步骤依次执行"><a href="#2-3-安装MySQL-下述步骤依次执行" class="headerlink" title="2.3 安装MySQL,下述步骤依次执行"></a>2.3 安装MySQL,下述步骤依次执行</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">rpm -ivh mysql-community-common-5.7.25-1.el7.x86_64.rpm<br>rpm -ivh mysql-community-libs-5.7.25-1.el7.x86_64.rpm<br>rpm -ivh mysql-community-devel-5.7.25-1.el7.x86_64.rpm<br>rpm -ivh mysql-community-libs-compat-5.7.25-1.el7.x86_64.rpm<br>rpm -ivh mysql-community-client-5.7.25-1.el7.x86_64.rpm<br>rpm -ivh mysql-community-server-5.7.25-1.el7.x86_64.rpm<br></code></pre></td></tr></table></figure>
+
+<h5 id="2-4-修改MySQL的字符集配置"><a href="#2-4-修改MySQL的字符集配置" class="headerlink" title="2.4 修改MySQL的字符集配置"></a>2.4 修改MySQL的字符集配置</h5><p>MySql默认使用的字符集是latin1，即：iso-8859-1，是不支持中文的。</p>
+<p>要想让MySql支持中文，需要通过配置文件设置指定MySql使用utf-8字符集才可以。</p>
+<p>修改MySql的字符集：</p>
+<p>使用vim打开mysql的配置文件：  vim /etc/my.cnf</p>
+<p>进入编辑模式,在[mysqld]后边添加内容：<code>character-set-server=utf8</code></p>
+<p>注意：别在 vim 的一般模式下直接粘贴！<strong>一定要进入编辑模式</strong>！ </p>
+<h5 id="2-5-启动MySQL服务"><a href="#2-5-启动MySQL服务" class="headerlink" title="2.5 启动MySQL服务"></a>2.5 启动MySQL服务</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">systemctl start mysqld<br></code></pre></td></tr></table></figure>
+
+<h5 id="2-6-设置MySQL服务开机自启动"><a href="#2-6-设置MySQL服务开机自启动" class="headerlink" title="2.6 设置MySQL服务开机自启动"></a>2.6 设置MySQL服务开机自启动</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">systemctl enable mysqld<br></code></pre></td></tr></table></figure>
+
+<h5 id="2-7-查看MySQL初始密码"><a href="#2-7-查看MySQL初始密码" class="headerlink" title="2.7 查看MySQL初始密码"></a>2.7 查看MySQL初始密码</h5><p>安装MySQL的过程中会自动生成初始密码，我们可以在<code>/var/log/mysqld.log</code>文件中进行查看</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat /var/log/mysqld.log | grep &quot;temporary password&quot; --color<br></code></pre></td></tr></table></figure>
+
+<p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_048.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="2-8-使用初始密码登录MySQL"><a href="#2-8-使用初始密码登录MySQL" class="headerlink" title="2.8 使用初始密码登录MySQL"></a>2.8 使用初始密码登录MySQL</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">mysql -uroot -p&quot;初始密码&quot;<br></code></pre></td></tr></table></figure>
+
+<p>注意: p和初始密码之间千万不能空格</p>
+<h5 id="2-9-修改root的密码"><a href="#2-9-修改root的密码" class="headerlink" title="2.9 修改root的密码"></a>2.9 修改root的密码</h5><p>在使用初始密码登录mysql之后，依次执行下面三行命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">set global validate_password_length=4;<br>set global validate_password_policy=LOW;<br>set password = password(&#x27;root&#x27;);<br></code></pre></td></tr></table></figure>
+
+<p>第一次修改密码一定要按照上述三步来做，修改完之后你如果想将密码改成其它的密码，你可以在退出mysql之后执行（需要在未登录mysql的情况下执行）：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">mysqladmin -uroot -p <span class="hljs-keyword">password</span> 新密码  <span class="hljs-comment">-- 新密码不需要加上引号</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="3-在宿主机上用SqlYog远程连接虚拟机上的MySQL"><a href="#3-在宿主机上用SqlYog远程连接虚拟机上的MySQL" class="headerlink" title="3. 在宿主机上用SqlYog远程连接虚拟机上的MySQL"></a>3. 在宿主机上用SqlYog远程连接虚拟机上的MySQL</h4><h5 id="3-1-会遇到的问题"><a href="#3-1-会遇到的问题" class="headerlink" title="3.1 会遇到的问题"></a>3.1 会遇到的问题</h5><h6 id="3-1-1-被防火墙拦截"><a href="#3-1-1-被防火墙拦截" class="headerlink" title="3.1.1 被防火墙拦截"></a>3.1.1 被防火墙拦截</h6><p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_049.png" srcset="/img/loading.gif" lazyload></p>
+<p>解决方案是关闭防火墙或者是让防火墙放行<code>3306</code>端口</p>
+<p>关闭防火墙命令:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">systemctl stop firewalld.service<br></code></pre></td></tr></table></figure>
+
+<p>放行3306端口的操作:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">firewall-cmd --add-port=3306/tcp --permanent<br><span class="hljs-meta">#</span><span class="bash"> 放行端口后一定要重新加载防火墙配置</span><br>firewall-cmd --reload<br></code></pre></td></tr></table></figure>
+
+<h6 id="3-1-2-MySQL服务器不允许远程访问"><a href="#3-1-2-MySQL服务器不允许远程访问" class="headerlink" title="3.1.2 MySQL服务器不允许远程访问"></a>3.1.2 MySQL服务器不允许远程访问</h6><p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_050.png" srcset="/img/loading.gif" lazyload></p>
+<p>解决方案是让<code>root</code>用户能够远程访问MySQL服务器:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql"># 允许远程访问:创建一个新的root对象，并且指定这个root对象对所有数据库里面的所有表都有所有权限，并且指定这个root用户的密码是123456<br>grant all on *.* to &#x27;root&#x27;@&#x27;%&#x27; identified by &#x27;123456&#x27;;<br># 刷新设置<br>flush privileges;<br></code></pre></td></tr></table></figure>
+
+<p>解决上述俩问题之后，就可以使用宿主机中的SQLYog远程连接访问虚拟机中的MySQL了</p>
+<h2 id="第六章-VMWare软件联网原理说明与故障解决"><a href="#第六章-VMWare软件联网原理说明与故障解决" class="headerlink" title="第六章 VMWare软件联网原理说明与故障解决"></a>第六章 VMWare软件联网原理说明与故障解决</h2><h3 id="第一节-NAT的原理"><a href="#第一节-NAT的原理" class="headerlink" title="第一节 NAT的原理"></a>第一节 NAT的原理</h3><p><img src="http://www.slx.blue/2021/12/16/Linux-02/tu_051.png" srcset="/img/loading.gif" lazyload></p>
+<p>NAT模式，利用虚拟的NAT设备以及虚拟DHCP服务器来使虚拟机连接外网，而VMware Network Adapter VMnet8虚拟网卡是用来与虚拟机通信的。 </p>
+<h3 id="第二节-常见的问题"><a href="#第二节-常见的问题" class="headerlink" title="第二节 常见的问题"></a>第二节 常见的问题</h3><h4 id="1-Windows端虚拟网卡虚拟网络连接丢失"><a href="#1-Windows端虚拟网卡虚拟网络连接丢失" class="headerlink" title="1. Windows端虚拟网卡虚拟网络连接丢失"></a>1. Windows端虚拟网卡虚拟网络连接丢失</h4><p>也就是在你的网络连接中丢失了<code>VMware Network Adapter VMnet8</code>虚拟网卡</p>
+<p>修复办法：</p>
+<ul>
+<li>首先将Linux系统关机。</li>
+<li>打开“虚拟网络编辑器”</li>
+<li>点击“还原默认设置”（不保证和之前是同一个网段，所以大概率IP地址网段会变）</li>
+<li>如果修复了虚拟网卡和虚拟网络连接<ul>
+<li>进入Linux系统修改IP地址，还是要求和虚拟网络编辑器中限定的网段一致</li>
+</ul>
+</li>
+<li>如果没有修复成功尝试下面操作<ul>
+<li>安装CCleaner软件</li>
+<li>清理注册表</li>
+</ul>
+</li>
+<li>重新进入“虚拟网络编辑器”执行“还原默认设置”</li>
+<li>如果还没有解决，可以尝试卸载VMWare并清理残留重新安装VMWare</li>
+<li>如果还不行，重装Windows系统</li>
+</ul>
+<h4 id="2-虚拟网络连接IP地址乱了"><a href="#2-虚拟网络连接IP地址乱了" class="headerlink" title="2. 虚拟网络连接IP地址乱了"></a>2. 虚拟网络连接IP地址乱了</h4><p>虚拟网卡还在，虚拟网络连接也在，但是和 NAT 方式对应的虚拟网络连接的 IP 不是 192.168.xxx.xxx 了，而是169.254.xxx.xxx。此时已经没法和 Linux 的 IP 保持同一个网段了。</p>
+<p>此时唯一的办法：在虚拟网络编辑器中“还原默认设置”。让 VMWare 的虚拟网络编辑器重置网络连接。</p>
+<h4 id="3-各方面正常就是连不上"><a href="#3-各方面正常就是连不上" class="headerlink" title="3. 各方面正常就是连不上"></a>3. 各方面正常就是连不上</h4><p>检查一下是不是 Windows 系统中 VMware 的服务没有启动，如果是就把服务启动起来。或虚拟机网卡使用的是仅主机模式，而 Linux 中 IP 地址使用的是 NAT 模式的网段。 </p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Linux/">Linux</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Linux/">Linux</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客目前大部分文章都是参考尚硅谷或者源于尚硅谷的学习资料！<a href="http://www.atguigu.com/" rel="nofollow noopener"官网地址！</a> 
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/12/19/redis-01/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">redis-入门</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/16/Linux-01/">
+                        <span class="hidden-mobile">Linux-入门</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/weixin.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
