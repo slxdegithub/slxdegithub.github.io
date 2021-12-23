@@ -1,0 +1,609 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Blue~u~u~u">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Docker安装RabbitMQ和HelloWord入门1.安装1.docker search rabbitmq  &#x2F;&#x2F;搜索镜像  2.docker pull rabbitmq   &#x2F;&#x2F;默认安装最新的版本  如果不安装最新版加上版本号即可  3.docker run -d --hostname my-rabbit --name rabbit -p 15672:15672 -p 5672:5672">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RabbitMQ-Docker安装">
+<meta property="og:url" content="http://www.slx.blue/2021/12/23/RabbitMQ/index.html">
+<meta property="og:site_name" content="Blue~u~u~u~u">
+<meta property="og:description" content="Docker安装RabbitMQ和HelloWord入门1.安装1.docker search rabbitmq  &#x2F;&#x2F;搜索镜像  2.docker pull rabbitmq   &#x2F;&#x2F;默认安装最新的版本  如果不安装最新版加上版本号即可  3.docker run -d --hostname my-rabbit --name rabbit -p 15672:15672 -p 5672:5672">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.slx.blue/2021/12/23/RabbitMQ/search.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/23/RabbitMQ/image-20211223093300459.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/23/RabbitMQ/web.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/23/RabbitMQ/image-20211223094453233.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/23/RabbitMQ/image-20211223094604783.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/23/RabbitMQ/image-20211223094804470.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/23/RabbitMQ/image-20211223095539504.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/23/RabbitMQ/image-20211223095603218.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/23/RabbitMQ/image-20211223095355716.png">
+<meta property="og:image" content="http://www.slx.blue/2021/12/23/RabbitMQ/image-20211223141604710.png">
+<meta property="article:published_time" content="2021-12-23T02:01:00.000Z">
+<meta property="article:modified_time" content="2021-12-23T06:19:31.754Z">
+<meta property="article:author" content="Blue~u~u~u">
+<meta property="article:tag" content="RabbitMQ">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://www.slx.blue/2021/12/23/RabbitMQ/search.png">
+  
+  
+  <title>RabbitMQ-Docker安装 - Blue~u~u~u~u</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Blue~u~u</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="RabbitMQ-Docker安装">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-12-23 10:01" pubdate>
+        2021年12月23日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.4k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      14 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">RabbitMQ-Docker安装</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：8 小时前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="Docker安装RabbitMQ和HelloWord入门"><a href="#Docker安装RabbitMQ和HelloWord入门" class="headerlink" title="Docker安装RabbitMQ和HelloWord入门"></a>Docker安装RabbitMQ和HelloWord入门</h1><h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><p>1.<code>docker search rabbitmq</code>  //搜索镜像</p>
+<p><img src="http://www.slx.blue/2021/12/23/RabbitMQ/search.png" srcset="/img/loading.gif" lazyload alt="image-20211223092829902"></p>
+<p>2.<code>docker pull rabbitmq</code> </p>
+<blockquote>
+<p>//默认安装最新的版本  如果不安装最新版加上版本号即可</p>
+</blockquote>
+<p>3.<code>docker run -d --hostname my-rabbit --name rabbit -p 15672:15672 -p 5672:5672 rabbitmq</code></p>
+<blockquote>
+<p>映射端口 名字自己随意取</p>
+</blockquote>
+<p>4.docker ps </p>
+<blockquote>
+<p><img src="http://www.slx.blue/2021/12/23/RabbitMQ/image-20211223093300459.png" srcset="/img/loading.gif" lazyload></p>
+</blockquote>
+<p>5.进入容器</p>
+<blockquote>
+<p>docker exec -it <code>镜像ID</code> /bin/bash</p>
+</blockquote>
+<p>6.进入镜像后 开启 web 管理插件</p>
+<blockquote>
+<p>rabbitmq-plugins enable rabbitmq_management</p>
+</blockquote>
+<p>7.ctrl+p+q退出当前容器  让容器后台运行</p>
+<p>8.浏览器进入 IP替换成自己服务器或者linux的  账号和密码默认都是guest</p>
+<blockquote>
+<p>http://<code>IP</code>:15672/</p>
+<p><img src="http://www.slx.blue/2021/12/23/RabbitMQ/web.png" srcset="/img/loading.gif" lazyload alt="image-20211223093934827"></p>
+</blockquote>
+<p>9.如果登录进不去可能是防火墙拦截了，需要开放15672端口，自己的虚拟机可以直接关闭防火墙</p>
+<h2 id="2-创建新用户"><a href="#2-创建新用户" class="headerlink" title="2.创建新用户"></a>2.创建新用户</h2><p>1.进入容器</p>
+<blockquote>
+<p>docker exec -it <code>镜像ID</code> /bin/bash</p>
+</blockquote>
+<p>2.添加账号   admin和123456对应账号密码 随意设置</p>
+<blockquote>
+<p>创建账号<br>rabbitmqctl add_user admin123456</p>
+</blockquote>
+<p>3.给admin设置管理员角色</p>
+<blockquote>
+<p>rabbitmqctl set_user_tags admin administrator</p>
+</blockquote>
+<p>4.给admin设置权限</p>
+<blockquote>
+<p>语法 ：set_permissions [-p <vhostpath>] <user> <conf> <write> <read></read></write></conf></user></vhostpath></p>
+<p>命令：rabbitmqctl set_permissions -p “/“ admin “.<em>“ “.</em>“ “.*”   //给admin用户设置所有权限 </p>
+<p>//用户 user_admin 具有/vhost1 这个 virtual host 中所有资源的配置、写、读权限</p>
+<p>设置完可以去浏览器登录</p>
+<p><img src="http://www.slx.blue/2021/12/23/RabbitMQ/image-20211223094453233.png" srcset="/img/loading.gif" lazyload alt="image-20211223094453233"></p>
+</blockquote>
+<p>当然也可以在web界面直接设置</p>
+<p><img src="http://www.slx.blue/2021/12/23/RabbitMQ/image-20211223094604783.png" srcset="/img/loading.gif" lazyload alt="image-20211223094604783"></p>
+<p>5.查看当前用户和角色</p>
+<blockquote>
+<p>docker exec -it 镜像ID /bin/bash</p>
+<p>rabbitmqctl list_users</p>
+<p><img src="http://www.slx.blue/2021/12/23/RabbitMQ/image-20211223094804470.png" srcset="/img/loading.gif" lazyload alt="image-20211223094804470"></p>
+</blockquote>
+<ol start="6">
+<li>重置命令<br> 1.关闭应用的命令为</li>
+</ol>
+<blockquote>
+<p>rabbitmqctl stop_app</p>
+</blockquote>
+<p>  2.清除的命令为</p>
+<blockquote>
+<p>rabbitmqctl reset</p>
+</blockquote>
+<p>  3.重新启动命令为</p>
+<blockquote>
+<p>rabbitmqctl start_app</p>
+</blockquote>
+<h2 id="3-RabbitMQ的HelloWord"><a href="#3-RabbitMQ的HelloWord" class="headerlink" title="3.RabbitMQ的HelloWord"></a>3.RabbitMQ的HelloWord</h2><p>1.导入依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--指定 jdk 编译版本--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">source</span>&gt;</span>8<span class="hljs-tag">&lt;/<span class="hljs-name">source</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">target</span>&gt;</span>8<span class="hljs-tag">&lt;/<span class="hljs-name">target</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--rabbitmq 依赖客户端--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.rabbitmq<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>amqp-client<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.8.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--操作文件流的一个依赖--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>commons-io<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>commons-io<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.6<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.slf4j<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>slf4j-simple<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.7.25<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>compile<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>2.编写入门程序（如果是云服务器，记得开启5672端口，不然连接不上）</p>
+<p>1.生产者 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Producer</span> </span>&#123;<br>    <span class="hljs-comment">//队列名称</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String QUEUE_NAME =<span class="hljs-string">&quot;hello&quot;</span>;<br><br>    <span class="hljs-comment">//发消息、</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span>  </span>&#123;<br>        <span class="hljs-comment">//创建一个链接工厂</span><br>        ConnectionFactory factory = <span class="hljs-keyword">new</span> ConnectionFactory();<br>        <span class="hljs-comment">//工厂IP 链接RabbitMQ的队列</span><br>        factory.setHost(<span class="hljs-string">&quot;自己的服务器IP&quot;</span>);<br>        <span class="hljs-comment">//用户名</span><br>        factory.setUsername(<span class="hljs-string">&quot;admin&quot;</span>);<br>        <span class="hljs-comment">//密码</span><br>        factory.setPassword(<span class="hljs-string">&quot;123&quot;</span>);<br>        factory.setPort(<span class="hljs-number">5672</span>); <span class="hljs-comment">//默认端口</span><br><br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">//创建链接</span><br>            Connection connection = factory.newConnection();<br>            <span class="hljs-comment">//获取信道   交换机可以省略 采用默认的交换机</span><br>            <span class="hljs-comment">//channel 实现了自动 close 接口 自动关闭 不需要显示关闭</span><br>            Channel channel = connection.createChannel();<br>        <span class="hljs-comment">/*</span><br><span class="hljs-comment">            生成一个队列</span><br><span class="hljs-comment">            1.队列名称</span><br><span class="hljs-comment">            2.队列里面的消息是否持久化(磁盘中) 默认情况消息存储在内存中</span><br><span class="hljs-comment">            3.改队列是否只供一个消费者进行消费,是否进行消息共享，</span><br><span class="hljs-comment">                true:只能一个消费者消费</span><br><span class="hljs-comment">                false:可以多个消费者消费</span><br><span class="hljs-comment">            4.是否自动删除 最后一个消费者端开连接后 该队列是否自动删除 如果是true自动删除 false不自动删除</span><br><span class="hljs-comment">         */</span><br>            channel.queueDeclare(QUEUE_NAME,<span class="hljs-keyword">true</span>,<span class="hljs-keyword">false</span>,<span class="hljs-keyword">false</span>,<span class="hljs-keyword">null</span>);<br>            <span class="hljs-comment">//发消息</span><br>            String message = <span class="hljs-string">&quot;Hello RabbitMQ2&quot;</span>;<br>        <span class="hljs-comment">/*</span><br><span class="hljs-comment">            1.发送一个消费者</span><br><span class="hljs-comment">            2.路由的Key值是哪个 本次是队列的名称</span><br><span class="hljs-comment">            3.其他参数信息</span><br><span class="hljs-comment">         */</span><br>            channel.basicPublish(<span class="hljs-string">&quot;&quot;</span>,QUEUE_NAME,<span class="hljs-keyword">null</span>,message.getBytes());<br>            System.out.println(<span class="hljs-string">&quot;消息发送完成&quot;</span>);<br>        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">catch</span> (TimeoutException e) &#123;<br>            e.printStackTrace();<br>        &#125;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>2.消费者</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Consumer</span> </span>&#123;<br>    <span class="hljs-comment">//队列名称</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String QUEUE_NAME =<span class="hljs-string">&quot;hello&quot;</span>;<br><br>    <span class="hljs-comment">//接受消息</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> IOException, TimeoutException </span>&#123;<br>        <span class="hljs-comment">//创建一个链接工厂</span><br>        ConnectionFactory factory = <span class="hljs-keyword">new</span> ConnectionFactory();<br>        <span class="hljs-comment">//工厂IP 链接RabbitMQ的队列</span><br>        factory.setHost(<span class="hljs-string">&quot;自己的服务器IP&quot;</span>);<br>        <span class="hljs-comment">//用户名</span><br>        factory.setUsername(<span class="hljs-string">&quot;admin&quot;</span>);<br>        <span class="hljs-comment">//密码</span><br>        factory.setPassword(<span class="hljs-string">&quot;123&quot;</span>);<br>        factory.setPort(<span class="hljs-number">5672</span>); <span class="hljs-comment">//默认端口</span><br>        Connection connection = factory.newConnection();<br>        Channel channel = connection.createChannel();<br><br>        <span class="hljs-comment">//声明 写死右箭头 落地大可好</span><br>        DeliverCallback deliverCallback = (consumerTag,message) -&gt; &#123;<br>            System.out.println(<span class="hljs-keyword">new</span> String(message.getBody()));<br>        &#125;;<br><br>        <span class="hljs-comment">//取消消息的回调</span><br>        CancelCallback cancelCallback = consumerTag -&gt;&#123;<br>            System.out.println(<span class="hljs-string">&quot;消息被中断&quot;</span> );<br>        &#125;;<br><br>        <span class="hljs-comment">/*</span><br><span class="hljs-comment">            消费者消费消息</span><br><span class="hljs-comment">            1.消费哪个队列</span><br><span class="hljs-comment">            2.消费成功之后是否要自动应答</span><br><span class="hljs-comment">                true 自动应答</span><br><span class="hljs-comment">                false 手动应答</span><br><span class="hljs-comment">            3.消费者接收消息的回调</span><br><span class="hljs-comment">            4.消费者取消消费的回调</span><br><span class="hljs-comment">         */</span><br>        channel.basicConsume(QUEUE_NAME,<span class="hljs-keyword">true</span>,deliverCallback,cancelCallback);<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>3.发送消息后即可在web上看到消息</p>
+<blockquote>
+<p><img src="http://www.slx.blue/2021/12/23/RabbitMQ/image-20211223095539504.png" srcset="/img/loading.gif" lazyload alt="image-20211223095539504"></p>
+<p><img src="http://www.slx.blue/2021/12/23/RabbitMQ/image-20211223095603218.png" srcset="/img/loading.gif" lazyload alt="image-20211223095603218"></p>
+</blockquote>
+<p><img src="http://www.slx.blue/2021/12/23/RabbitMQ/image-20211223095355716.png" srcset="/img/loading.gif" lazyload alt="image-20211223095355716"></p>
+<h2 id="4-常见错误"><a href="#4-常见错误" class="headerlink" title="4.常见错误"></a>4.常见错误</h2><blockquote>
+<p>Stats in management UI are disabled on this node</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs xml">#进入rabbitmq容器<br>docker exec -it &#123;rabbitmq容器名称或者id&#125; /bin/bash<br><br>#进入容器后，cd到以下路径<br>cd /etc/rabbitmq/conf.d/<br><br>#修改 management_agent.disable_metrics_collector = false<br>echo management_agent.disable_metrics_collector = false &gt; management_agent.disable_metrics_collector.conf<br><br>#退出容器<br>exit<br><br>#重启rabbitmq容器<br>docker retart &#123;rabbitmq容器id&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="http://www.slx.blue/2021/12/23/RabbitMQ/image-20211223141604710.png" srcset="/img/loading.gif" lazyload alt="image-20211223141604710"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/RabbitMQ/">RabbitMQ</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/RabbitMQ/">RabbitMQ</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客目前大部分文章都是参考尚硅谷或者源于尚硅谷的学习资料！<a href="http://www.atguigu.com/" rel="nofollow noopener"官网地址！</a> 
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/12/23/%E6%88%91%E7%9A%84%E5%A5%B6%E5%A5%B6/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">我的奶奶</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/19/redis-02/">
+                        <span class="hidden-mobile">redis-进阶</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/weixin.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
