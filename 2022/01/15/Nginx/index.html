@@ -1,0 +1,730 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Blue~u~u~u">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="NginxNginx (“engine x”) 是一个高性能的HTTP和反向代理服务器,特点是占有内存少，并发能力强，事实上nginx的并发能力确实在同类型的网页服务器中表现较好，中国大陆使用nginx网站用户有：百度、京东、新浪、网易、腾讯、淘宝等 Nginx可以作为静态页面的web服务器，同时还支持CGI协议的动态语言，比如perl、php等。但是不支持java。Java程序只能通过与tomc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx">
+<meta property="og:url" content="http://www.slx.blue/2022/01/15/Nginx/index.html">
+<meta property="og:site_name" content="Blue~u~u~u~u">
+<meta property="og:description" content="NginxNginx (“engine x”) 是一个高性能的HTTP和反向代理服务器,特点是占有内存少，并发能力强，事实上nginx的并发能力确实在同类型的网页服务器中表现较好，中国大陆使用nginx网站用户有：百度、京东、新浪、网易、腾讯、淘宝等 Nginx可以作为静态页面的web服务器，同时还支持CGI协议的动态语言，比如perl、php等。但是不支持java。Java程序只能通过与tomc">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n001.png?versionId=CAEQKBiBgMC08tnx8hciIDYzMjFlOWFmZGE4ZDQwMzBiZDIwNjJjZWMzYzE1YTQw">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n002.png?versionId=CAEQKBiBgMCT9Nnx8hciIDY3ZDAzODY1ZGQwMzQyNGRhZTYzYTJmODYxNjBiNjFj">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n003.png?versionId=CAEQKBiBgIDH7tnx8hciIGQxYjFmZTE5NzJmMTQzMmZhNzNkN2E5MDBlZmZlZWYz">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n004.png?versionId=CAEQKBiBgICP6tnx8hciIGNhMDBmY2UxNWU1MjQzODI5N2NmYjRlNjcwYjZjMWZj">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n005.png?versionId=CAEQKBiBgICr6tnx8hciIGEwNzMyZjNmNjVhYjRjY2ViZDRkY2YzNTY4ZWQ3YTJk">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n006.png?versionId=CAEQKBiBgMCF9Nnx8hciIGJkYzVlYTRkMmY2NDQwNzliYjlhYTdlNzM3NWEyODJl">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n007.png?versionId=CAEQKBiBgIDE5dnx8hciIDI0OTczYjRkNmI4ZDRlODA4ZWJhMDRhYWI5NmQyMWIz">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n008.png?versionId=CAEQKBiBgMDq89nx8hciIDE0OGUxYjk2YzAyNDQ1MDk5MzBhNmY5YjZhODU0ZWY5">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n009.png?versionId=CAEQKBiBgICT8dnx8hciIDVmYmQ1MTAzNGUyNjQzMDZiZDRjOGMxNTFhZWFjMmNi">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n010.png?versionId=CAEQKBiBgMCq29nx8hciIDdlYWJjYzE4ZjNlNzRmYmQ5YzA5ZDY0MjExMzhhYjNi">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n011.png?versionId=CAEQKBiBgMCX6tnx8hciIGQzZDgzMTI2NjJmYjQyNzZhZWJjNjIwZWVkMmRlMDY4">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n012.png?versionId=CAEQKBiBgIDZ3Nnx8hciIDVjMTJiZTVhM2Q5YjQ3NzliNWExZTk1MDg2NWI3YTg5">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n013.png?versionId=CAEQKBiBgMCH2Nnx8hciIGRhNzVhMzZiZWY2YzRmOTg5OWFjZjdlZTgzMTJjNDRh">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n014.png?versionId=CAEQKBiBgIDg2tnx8hciIGU2YTc5NGYxNWU2ODRhMWZhZjBlOTc0Y2I2ZGZiZmJl">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n015.png?versionId=CAEQKBiBgMD.2dnx8hciIDgyMDhjOTc0MDA0NzQ5MTNiODNkYTdjMmYxNTBiZDMx">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n016.png?versionId=CAEQKBiBgIC82dnx8hciIDVjNzNkNDVhMjlkMTRhYWNiMDM1ZGZkMzQ0ZDI5Y2U0">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n017.png?versionId=CAEQKBiBgMDr0tnx8hciIDI4Yzg1YWNmNjdmOTRkMDFiYjMyMDBjMzNjMzNkYzFk">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n018.png?versionId=CAEQKBiBgID90Nnx8hciIDRhNjI2MGFhMDg0NTRhYzY5MWY2NDRhYWEyZmZmZmZj">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n019.png?versionId=CAEQKBiBgICz0Nnx8hciIGRiNWNmY2ZlYzJmNDQ2N2U4ZjBiY2U0Mjc2OGVmYmQy">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n020.png?versionId=CAEQKBiBgMD92Nnx8hciIGE4MDk5ZjAzMjc2YTQ5MWFhYjcyMDJjMTRmOWZjNjYz">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n021.png?versionId=CAEQKBiBgIDv0tnx8hciIDAzZjE3Mjg5OTkyNTRiNTJiNWRhOGYyMzVlNDJhMDFl">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n023.png?versionId=CAEQKBiBgMDdy9nx8hciIGQwYzUwMjVlYjJhYjQ3M2RiNWM4NWIzZjMxMDhkOWI4">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n024.png?versionId=CAEQKBiBgMDs0Nnx8hciIGE4MjU4YWRhNjIxNDRmZDc4Zjc0MDgxZTc2MTMzNzQ5">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n026.png?versionId=CAEQKBiBgIC.ydnx8hciIDRmZmNjMWU3ZDlkYjQ3NDE5YjE4ZGY2MTc5ODI3ZWEy">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n027.png?versionId=CAEQKBiBgMCGydnx8hciIGU5YTliM2JkYWRiMDRjMjViYWYxNjZlYmNkZTFjNTkw">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n028.png?versionId=CAEQKBiBgICCydnx8hciIGM0ZWYzMzJlZWNmYjQ3OWQ4NDE0YTYzZDIyOTA5ZjZh">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n029.png?versionId=CAEQKBiBgMDGzNnx8hciIDBiOTQ4NTRjMTA0ZDQxNjJhNTU2NjVlNTNmZWRhMTg3">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n030.png?versionId=CAEQKBiBgICrwtnx8hciIGI0YTI2Nzk5ZTJlMTQ1Yzg4ZjkzN2FhNTMxNWRjNTUy">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n032.png?versionId=CAEQKBiBgMCWwtnx8hciIDA5MzZlMjM4OTNmMDQzMmI5ZmM1MTIyODg3NjUyYzU4">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n033.png?versionId=CAEQKBiBgMCby9nx8hciIGMwMGI4MWY3MzY5MTRlOWU5NTQyYzZjMTQ4YmVmZWNh">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n034.png?versionId=CAEQKBiBgIDgwtnx8hciIDdlM2ZiYmFiNzJhZTRjMWRiMDlmYzRlMjhmYWYxYjgw">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n035.png?versionId=CAEQKBiBgIDxwNnx8hciIGE5ZTJhNjVlNTlmYTQwNjg4Mzk1ZTcxMGFmMzg5ZjMz">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n036.png?versionId=CAEQKBiBgICYwNnx8hciIGU5ODlmOTdjMjFkZDRhOTliNDI3ZjVkNGZjMmZlMjA2">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n037.png?versionId=CAEQKBiBgMCQwNnx8hciIDY5NWE4ZTIyNmI4NzQ2MGE4MDQxYWFhY2NiZWM1ZGIx">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n038.png?versionId=CAEQKBiBgMCovtnx8hciIDU0MDI4ZGFiYTQyNDRiZjhiMWM4YWEwMDQ0ZjY2NzA0">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n039.png?versionId=CAEQKBiBgIDmv9nx8hciIDE0YWMyZTQ3ZWJlODRmZWU4NTA4ODdiODllYmIyZGQz">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n040.png?versionId=CAEQKBiBgIDVvdnx8hciIDNjNmM1YjhlMTczMDQxMDBiYzZhNmZmZDZjNmU2NDFk">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n041.png?versionId=CAEQKBiBgIDFvdnx8hciIDRmZGQ1OTIzODhlZjQ1OWQ4MzI5YTU4MWNjMDkwMWU0">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n042.png?versionId=CAEQKBiBgMCzvdnx8hciIDEyY2NjZGM2NjZiYzQ3YWI4ZTE2NTM3M2YxMmMzZGI5">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n043.png?versionId=CAEQKBiBgMDFvdnx8hciIDBhNWI4MDk0ZDdhZTQxOTJiY2NjZWIyM2E2MmUxYzZh">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n044.png?versionId=CAEQKBiBgIC.vtnx8hciIDZkOTdlMjFkYWZkNTQ2ODBhNjgwNGYzMmNhODNlMmVm">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n045.png?versionId=CAEQKBiBgMCDvdnx8hciIDAwMTU5OGJmNTZmNTQ5MmRhNzU5MTdiM2I5ZGM1OGFm">
+<meta property="article:published_time" content="2022-01-15T06:44:01.000Z">
+<meta property="article:modified_time" content="2022-01-15T06:45:49.824Z">
+<meta property="article:author" content="Blue~u~u~u">
+<meta property="article:tag" content="Nginx">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n001.png?versionId=CAEQKBiBgMC08tnx8hciIDYzMjFlOWFmZGE4ZDQwMzBiZDIwNjJjZWMzYzE1YTQw">
+  
+  
+  <title>Nginx - Blue~u~u~u~u</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Blue~u~u</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Nginx">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-01-15 14:44" pubdate>
+        2022年1月15日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      11k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      35 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Nginx</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 分钟前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a><a href="nginxx">Nginx</a></h1><p>Nginx (“engine x”) 是一个高性能的HTTP和反向代理服务器,特点是占有内存少，并发能力强，事实上nginx的并发能力确实在同类型的网页服务器中表现较好，中国大陆使用nginx网站用户有：百度、京东、新浪、网易、腾讯、淘宝等</p>
+<p>Nginx可以作为静态页面的web服务器，同时还支持CGI协议的动态语言，比如perl、php等。但是不支持java。Java程序只能通过与tomcat配合完成。Nginx专为性能优化而开发，性能是其最重要的考量,实现上非常注重效率 ，能经受高负载的考验,有报告表明能支持高达 50,000个并发连接数。</p>
+<p><a target="_blank" rel="noopener" href="https://lnmp.org/nginx.html">https://lnmp.org/nginx.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://news.netcraft.com/archives/category/web-server-survey/">https://news.netcraft.com/archives/category/web-server-survey/</a></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n001.png?versionId=CAEQKBiBgMC08tnx8hciIDYzMjFlOWFmZGE4ZDQwMzBiZDIwNjJjZWMzYzE1YTQw" srcset="/img/loading.gif" lazyload></p>
+<h3 id="1-1-Nginx优点"><a href="#1-1-Nginx优点" class="headerlink" title="1.1 Nginx优点"></a>1.1 Nginx优点</h3><p>Nginx 可以在大多数 UnixLinux OS 上编译运行，并有 Windows 移植版。 Nginx 的1.4.0稳定版已经于2013年4月24日发布，一般情况下，对于新建站点，建议使用最新稳定版作为生产版本。</p>
+<p>Nginx 是一个很强大的高性能Web和反向代理服务器，它具有很多非常优越的特性：<br>在连接高并发的情况下，Nginx是Apache服务器不错的替代品：Nginx能够支持高达 50,000 个并发连接数的响应</p>
+<h3 id="1-2-为什么使用Nginx"><a href="#1-2-为什么使用Nginx" class="headerlink" title="1.2 为什么使用Nginx"></a>1.2 为什么使用Nginx</h3><p>互联网飞速发展的今天,大用户量高并发已经成为互联网的主体.怎样能让一个网站能够承载几万个或几十万个用户的持续访问呢？这是一些中小网站急需解决的问题。用单机tomcat搭建的网站，在比较理想的状态下能够承受的并发访问量在150到200左右。按照并发访问量占总用户数量的5%到10%这样计算，单点tomcat网站的用户人数在1500到4000左右。对于一个为全国范围提供服务的网站显然是不够用的，为了解决这个问题引入了负载均衡方法。负载均衡就是一个web服务器解决不了的问题可以通过多个web服务器来平均分担压力来解决，并发过来的请求被平均分配到多个后台web服务器来处理，这样压力就被分解开来。</p>
+<p>负载均衡服务器分为两种:一种是通过硬件实现的负载均衡服务器，简称硬负载。另一种是通过软件来实现的负载均衡，简称软负载:例如apache和nginx。硬负载和软负载相比前者作用的网络层次比较多可以作用到socket接口的数据链路层对发出的请求进行分组转发但是价格成本比较贵，而软负载作用的层次在http协议层之上可以对http请求进行分组转发并且因为是开源的所以几乎是0成本，并且阿里巴巴，京东等电商网站使用的都是Nginx服务器。</p>
+<h3 id="1-3-正向代理"><a href="#1-3-正向代理" class="headerlink" title="1.3 正向代理"></a>1.3 正向代理</h3><p>Nginx不仅可以做反向代理，实现负载均衡。还能用作正向代理来进行上网等功能。</p>
+<p><strong>正向代理：</strong>如果把局域网外的Internet想象成一个巨大的资源库，则局域网中的客户端要访问Internet，则需要通过代理服务器来访问，这种代理服务就称为正向代理。</p>
+<p>一般情况下，如果没有特别说明，代理技术默认说的是正向代理技术。</p>
+<p>关于正向代理的概念如下： 正 向代理(forward)是一个位于客户端【用户A】和原始服务器(origin server)【服务器B】之间的服务器【代理服务器Z】，为了从原始服务器取得内容，用户A向代理服务器Z发送一个请求并指定目标(服务器B)，然后代理服务器Z向服务器B转交请求并将获得的内容返回给客户端。客户端必须要进行一些特别的设置才能使用正向代理。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n002.png?versionId=CAEQKBiBgMCT9Nnx8hciIDY3ZDAzODY1ZGQwMzQyNGRhZTYzYTJmODYxNjBiNjFj" srcset="/img/loading.gif" lazyload></p>
+<p>从上面的概念中，我们看出，文中所谓的正向代理就是代理服务器替代访问方【用户A】去访问目标服务器【服务器B】</p>
+<p>这就是正向代理的意义所在。而为什么要用代理服务器去代替访问方【用户A】去访问服务器B呢？这就要从代理服务器使用的意义说起。</p>
+<p>使用正向代理服务器作用主要有以下几点：</p>
+<p>① 访问本无法访问的服务器B，如下图</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n003.png?versionId=CAEQKBiBgIDH7tnx8hciIGQxYjFmZTE5NzJmMTQzMmZhNzNkN2E5MDBlZmZlZWYz" srcset="/img/loading.gif" lazyload></p>
+<p>我们抛除复杂的网络路由情节来看图，假设图中路由器从左到右命名为R1,R2假 设最初用户A要访问服务器B需要经过R1和R2路由器这样一个路由节点，如果路由器R1或者路由器R2发生故障，那么就无法访问服务器B了。但是如果用户 A让代理服务器Z去代替自己访问服务器B，由于代理服务器Z没有在路由器R1或R2节点中，而是通过其它的路由节点访问服务器B，那么用户A就可以得到服 务器B的数据了。现实中的例子就是“翻墙”。</p>
+<p>② 加速访问服务器B</p>
+<p>上图，防火墙作为网关，用来过滤外网对其的访问。假设用户A和用户B都设置了代理服务器，用户A允许访问互联网，而用户B不允许访问互联网（这个在代理服 务器Z上做限制）这样用户A因为授权，可以通过代理服务器访问到服务器B，而用户B因为没有被代理服务器Z授权，所以访问服务器B时，数据包会被直接丢 弃。</p>
+<p>⑤ 隐藏访问者的行踪</p>
+<p>如下图 ，我们可以看出服务器B并不知道访问自己的实际是用户A，因为代理服务器Z代替用户A去直接与服务器B进行交互。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n004.png?versionId=CAEQKBiBgICP6tnx8hciIGNhMDBmY2UxNWU1MjQzODI5N2NmYjRlNjcwYjZjMWZj" srcset="/img/loading.gif" lazyload></p>
+<p>我 们总结一下 正向代理是一个位于客户端和原始服务器(originserver)之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内 容返回给客户端。客户端必须设置正向代理服务器，当然前提是要知道正向代理服务器的IP地址，还有代理程序的端口。</p>
+<p><strong>总之一句话：正向代理，隐藏的是客户端</strong></p>
+<h3 id="1-4-反向代理"><a href="#1-4-反向代理" class="headerlink" title="1.4 反向代理"></a>1.4 反向代理</h3><p><strong>反向代理：</strong>其实客户端对代理是无感知的，因为客户端不需要任何配置就可以访问，我们只需要将请求发送到反向代理服务器，由反向代理服务器去选择目标服务器获取数据后，在返回给客户端，此时反向代理服务器和目标服务器对外就是一个服务器，暴露的是代理服务器地址，隐藏了真实服务器IP地址。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n005.png?versionId=CAEQKBiBgICr6tnx8hciIGEwNzMyZjNmNjVhYjRjY2ViZDRkY2YzNTY4ZWQ3YTJk" srcset="/img/loading.gif" lazyload></p>
+<p>反向代理正好与正向代理相反，对于客户端而言代理服务器就像是原始服务器，并且客户端不需要进行任何特别的设置。客户端向反向代理的命名空间(name-space)中的内容发送普通请求，接着反向代理将判断向何处(原始服务器)转交请求，并将获得的内容返回给客户端。</p>
+<p>使用反向代理服务器的作用如下：</p>
+<p>① 保护和隐藏原始资源服务器如下图</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n006.png?versionId=CAEQKBiBgMCF9Nnx8hciIGJkYzVlYTRkMmY2NDQwNzliYjlhYTdlNzM3NWEyODJl" srcset="/img/loading.gif" lazyload></p>
+<p>用户A始终认为它访问的是原始服务器B而不是代理服务器Z，但实用际上反向代理服务器接受用户A的应答，从原始资源服务器B中取得用户A的需求资源，然后发送给用户A。由于防火墙的作用，只允许代理服务器Z访问原始资源服务器B。尽管在这个虚拟的环境下，防火墙和反向代理的共同作用保护了原始资源服务器B，但用户A并不知情。</p>
+<p><strong>总之一句话：反向代理，隐藏的是服务器</strong></p>
+<h3 id="1-5-没有负载均衡情况"><a href="#1-5-没有负载均衡情况" class="headerlink" title="1.5 没有负载均衡情况"></a>1.5 没有负载均衡情况</h3><p>客户端发送多个请求到服务器，服务器处理请求，有一些可能要与数据库进行交互，服务器处理完毕后，再将结果返回给客户端。</p>
+<p> 这种架构模式对于早期的系统相对单一，并发请求相对较少的情况下是比较适合的，成本也低。但是随着信息数量的不断增长，访问量和数据量的飞速增长，以及系统业务的复杂度增加，这种架构会造成服务器相应客户端的请求日益缓慢，并发量特别大的时候，还容易造成服务器直接崩溃。很明显这是由于服务器性能的瓶颈造成的问题，那么如何解决这种情况呢？</p>
+<p>　　我们首先想到的可能是升级服务器的配置，比如提高CPU执行频率，加大内存等提高机器的物理性能来解决此问题，硬件的性能提升已经不能满足日益提升的需求了。最明显的一个例子，天猫双十一当天，某个热销商品的瞬时访问量是极其庞大的，那么类似上面的系统架构，将机器都增加到现有的顶级物理配置，都是不能够满足需求的。那么怎么办呢？</p>
+<p>上面的分析我们去掉了增加服务器物理配置来解决问题的办法，也就是说纵向解决问题的办法行不通了，那么横向增加服务器的数量呢？这时候集群的概念产生了，单个服务器解决不了，我们增加服务器的数量，然后将请求分发到各个服务器上，将原先请求集中到单个服务器上的情况改为将请求分发到多个服务器上，将负载分发到不同的服务器，也就是我们所说的<strong>负载均衡。</strong></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n007.png?versionId=CAEQKBiBgIDE5dnx8hciIDI0OTczYjRkNmI4ZDRlODA4ZWJhMDRhYWI5NmQyMWIz" srcset="/img/loading.gif" lazyload></p>
+<h3 id="1-6-负载均衡"><a href="#1-6-负载均衡" class="headerlink" title="1.6 负载均衡"></a>1.6 负载均衡</h3><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n008.png?versionId=CAEQKBiBgMDq89nx8hciIDE0OGUxYjk2YzAyNDQ1MDk5MzBhNmY5YjZhODU0ZWY5" srcset="/img/loading.gif" lazyload></p>
+<p>当反向代理服务器不止一个的时候，我们甚至可以把它们做成集群，当更多的用户访问资源服务器B的时候，让不同的代理服务器Z（x）去应答不同的用户，然后发送不同用户需要的资源。</p>
+<p>当然反向代理服务器像正向代理服务器一样拥有CACHE的作用，它可以缓存原始资源服务器B的资源，而不是每次都要向原始资源服务器B请求数据，特别是一些静态的数据，比如图片和文件，如果这些反向代理服务器能够做到和用户X来自同一个网络，那么用户X访问反向代理服务器X，就会得到很高质量的速度。如下图</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n009.png?versionId=CAEQKBiBgICT8dnx8hciIDVmYmQ1MTAzNGUyNjQzMDZiZDRjOGMxNTFhZWFjMmNi" srcset="/img/loading.gif" lazyload></p>
+<h1 id="第二章-Nginx安装"><a href="#第二章-Nginx安装" class="headerlink" title="第二章 Nginx安装"></a><a href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-nginx%E5%AE%89%E8%A3%85">第二章 Nginx安装</a></h1><h3 id="2-1-Nginx下载"><a href="#2-1-Nginx下载" class="headerlink" title="2.1 Nginx下载"></a>2.1 Nginx下载</h3><p>官方网站：<a target="_blank" rel="noopener" href="http://nginx.org/">http://nginx.org/</a></p>
+<p>### 2.2 Nginx在windows下安装</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n010.png?versionId=CAEQKBiBgMCq29nx8hciIDdlYWJjYzE4ZjNlNzRmYmQ5YzA5ZDY0MjExMzhhYjNi" srcset="/img/loading.gif" lazyload></p>
+<p>双击 nginx.exe ， 一闪而过</p>
+<p>在浏览器中访问 <code>localhost:80</code></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n011.png?versionId=CAEQKBiBgMCX6tnx8hciIGQzZDgzMTI2NjJmYjQyNzZhZWJjNjIwZWVkMmRlMDY4" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2-3-Nginx在linux下安装"><a href="#2-3-Nginx在linux下安装" class="headerlink" title="2.3 Nginx在linux下安装"></a>2.3 Nginx在linux下安装</h3><h4 id="2-3-1-进入nginx官网，下载"><a href="#2-3-1-进入nginx官网，下载" class="headerlink" title="2.3.1 进入nginx官网，下载"></a>2.3.1 进入nginx官网，下载</h4><p><a target="_blank" rel="noopener" href="http://nginx.org/">http://nginx.org/</a> nginx-1.12.2.tar.gz</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n012.png?versionId=CAEQKBiBgIDZ3Nnx8hciIDVjMTJiZTVhM2Q5YjQ3NzliNWExZTk1MDg2NWI3YTg5" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n013.png?versionId=CAEQKBiBgMCH2Nnx8hciIGRhNzVhMzZiZWY2YzRmOTg5OWFjZjdlZTgzMTJjNDRh" srcset="/img/loading.gif" lazyload></p>
+<h4 id="2-3-2-需要的安装包"><a href="#2-3-2-需要的安装包" class="headerlink" title="2.3.2 需要的安装包"></a>2.3.2 需要的安装包</h4><p>pcre-8.37.tar.gz</p>
+<p>openssl-1.0.1t.tar.gz</p>
+<p>zlib-1.2.8.tar.gz</p>
+<p>nginx-1.12.2.tar.gz</p>
+<h4 id="2-3-3-在线安装nginx"><a href="#2-3-3-在线安装nginx" class="headerlink" title="2.3.3 在线安装nginx"></a>2.3.3 在线安装nginx</h4><h5 id="第一步，安装pcre"><a href="#第一步，安装pcre" class="headerlink" title="第一步，安装pcre"></a><a href="#%E7%AC%AC%E4%B8%80%E6%AD%A5-%E5%AE%89%E8%A3%85pcre">第一步，安装pcre</a></h5><p>第一步 联网下载pcre</p>
+<p>wget <a target="_blank" rel="noopener" href="http://downloads.sourceforge.net/project/pcre/pcre/8.37/pcre-8.37.tar.gz">http://downloads.sourceforge.net/project/pcre/pcre/8.37/pcre-8.37.tar.gz</a></p>
+<p>第二步 解压压缩文件</p>
+<p>使用命令 tar -zxvf pcre-8.37.tar.gz</p>
+<p>第三步 ./configure完成后，回到pcre目录下执行make，最后执行make install</p>
+<p>第四步 pcre-config –version 检查版本</p>
+<h5 id="第二步，安装openssl-、zlib-、-gcc-依赖"><a href="#第二步，安装openssl-、zlib-、-gcc-依赖" class="headerlink" title="第二步，安装openssl 、zlib 、 gcc 依赖"></a><a href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5-%E5%AE%89%E8%A3%85openssl-zlib-gcc-%E4%BE%9D%E8%B5%96">第二步，安装openssl 、zlib 、 gcc 依赖</a></h5><figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nsis">yum -y install make <span class="hljs-literal">zlib</span> <span class="hljs-literal">zlib</span>-devel gcc-c++ libtool  openssl openssl-devel<br></code></pre></td></tr></table></figure>
+
+<h5 id="第三步，安装nginx"><a href="#第三步，安装nginx" class="headerlink" title="第三步，安装nginx"></a><a href="#%E7%AC%AC%E4%B8%89%E6%AD%A5-%E5%AE%89%E8%A3%85nginx">第三步，安装nginx</a></h5><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">使用命令解压 <br>./configure<br>make &amp;&amp; make install<br>进入目录 <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/nginx/</span>sbin   执行./nginx 启动服务<br></code></pre></td></tr></table></figure>
+
+<h5 id="第四步，关闭防火墙，访问nginx"><a href="#第四步，关闭防火墙，访问nginx" class="headerlink" title="第四步，关闭防火墙，访问nginx"></a><a href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5-%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99-%E8%AE%BF%E9%97%AEnginx">第四步，关闭防火墙，访问nginx</a></h5><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">在windows系统中访问linux中nginx，默认不能访问的，因为防火墙问题</span><br><span class="hljs-comment">关闭防火墙</span><span class="hljs-literal">-</span><span class="hljs-comment">开放访问的端口号，80端口</span><br><br><span class="hljs-comment">查看开放的端口号</span><br><span class="hljs-comment">firewall</span><span class="hljs-literal">-</span><span class="hljs-comment">cmd</span> --<span class="hljs-comment">list</span><span class="hljs-literal">-</span><span class="hljs-comment">all</span><br><br><span class="hljs-comment">设置开放的服务或端口号</span><br><span class="hljs-comment">firewall</span><span class="hljs-literal">-</span><span class="hljs-comment">cmd</span> --<span class="hljs-comment">add</span><span class="hljs-literal">-</span><span class="hljs-comment">service=http</span> --<span class="hljs-comment">permanent</span><br><span class="hljs-comment">firewall</span><span class="hljs-literal">-</span><span class="hljs-comment">cmd</span> --<span class="hljs-comment">add</span><span class="hljs-literal">-</span><span class="hljs-comment">port=80/tcp</span> --<span class="hljs-comment">permanent</span><br><br><span class="hljs-comment">重启防火墙</span><br><span class="hljs-comment">firewall</span><span class="hljs-literal">-</span><span class="hljs-comment">cmd</span> --<span class="hljs-comment">reload</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n014.png?versionId=CAEQKBiBgIDg2tnx8hciIGU2YTc5NGYxNWU2ODRhMWZhZjBlOTc0Y2I2ZGZiZmJl" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n015.png?versionId=CAEQKBiBgMD.2dnx8hciIDgyMDhjOTc0MDA0NzQ5MTNiODNkYTdjMmYxNTBiZDMx" srcset="/img/loading.gif" lazyload></p>
+<h1 id="第三章-Nginx配置与应用"><a href="#第三章-Nginx配置与应用" class="headerlink" title="第三章 Nginx配置与应用"></a><a href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-nginx%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%BA%94%E7%94%A8">第三章 Nginx配置与应用</a></h1><p>nginx 相关命令</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">验证配置是否正确: nginx -t<br><br>查看Nginx的版本号：nginx -V<br><br>启动Nginx：<span class="hljs-literal">start</span> nginx<br><br>快速停止或关闭Nginx：nginx -s <span class="hljs-literal">stop</span><br><br>正常停止或关闭Nginx：nginx -s quit<br><br>配置文件修改重装载命令：nginx -s reload<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-1．-Nginx虚拟机配置"><a href="#3-1．-Nginx虚拟机配置" class="headerlink" title="3.1． Nginx虚拟机配置"></a>3.1． Nginx虚拟机配置</h3><h4 id="3-1-1-测试针对ip地址进行配置"><a href="#3-1-1-测试针对ip地址进行配置" class="headerlink" title="3.1.1 测试针对ip地址进行配置"></a>3.1.1 测试针对ip地址进行配置</h4><p>主要是在描述nginx它是一个http服务器。它是apache的一个替代品。</p>
+<p>对于nginx虚拟机配置主要可以从三个方面入手:</p>
+<ol>
+<li>ip配置</li>
+<li>域名配置</li>
+<li>端口配置</li>
+</ol>
+<p>它的配置主要体现在 <code>nginx/conf/nginx.conf</code></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n016.png?versionId=CAEQKBiBgIC82dnx8hciIDVjNzNkNDVhMjlkMTRhYWNiMDM1ZGZkMzQ0ZDI5Y2U0" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n017.png?versionId=CAEQKBiBgMDr0tnx8hciIDI4Yzg1YWNmNjdmOTRkMDFiYjMyMDBjMzNjMzNkYzFk" srcset="/img/loading.gif" lazyload></p>
+<h4 id="3-1-1-2-测试针对于域名进行配置"><a href="#3-1-1-2-测试针对于域名进行配置" class="headerlink" title="3.1.1.2 测试针对于域名进行配置"></a>3.1.1.2 测试针对于域名进行配置</h4><p>问题:为什么通过域名可以访问到网站。</p>
+<p> DNS服务器—-域名解析服务器。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n018.png?versionId=CAEQKBiBgID90Nnx8hciIDRhNjI2MGFhMDg0NTRhYzY5MWY2NDRhYWEyZmZmZmZj" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs arcade">windows<span class="hljs-string">` 系统中 `</span>hosts<span class="hljs-string">` 文件所在位置 : `</span>C:\Windows\System32\drivers\etc<br>linux<span class="hljs-string">` 系统中 `</span>hosts<span class="hljs-string">` 文件所在位置 : `</span>/etc/hosts<br></code></pre></td></tr></table></figure>
+
+<p>修改<code>windows</code> 系统中的 <code>hosts</code> 文件，添加如下内容</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1</span> abc.com<br><span class="hljs-number">127.0.0.1</span> def.com<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n019.png?versionId=CAEQKBiBgICz0Nnx8hciIGRiNWNmY2ZlYzJmNDQ2N2U4ZjBiY2U0Mjc2OGVmYmQy" srcset="/img/loading.gif" lazyload></p>
+<p>域名作用:可以方便记忆。修改 <code>nginx.conf</code></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n020.png?versionId=CAEQKBiBgMD92Nnx8hciIGE4MDk5ZjAzMjc2YTQ5MWFhYjcyMDJjMTRmOWZjNjYz" srcset="/img/loading.gif" lazyload></p>
+<p>请求：<code>http://abc.com/</code> 或者<code>http://def.com/</code></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n021.png?versionId=CAEQKBiBgIDv0tnx8hciIDAzZjE3Mjg5OTkyNTRiNTJiNWRhOGYyMzVlNDJhMDFl" srcset="/img/loading.gif" lazyload></p>
+<h4 id="3-1-1-3-测试针对于端口进行配置"><a href="#3-1-1-3-测试针对于端口进行配置" class="headerlink" title="3.1.1.3 测试针对于端口进行配置"></a>3.1.1.3 测试针对于端口进行配置</h4><p>修改配置文件</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n023.png?versionId=CAEQKBiBgMDdy9nx8hciIGQwYzUwMjVlYjJhYjQ3M2RiNWM4NWIzZjMxMDhkOWI4" srcset="/img/loading.gif" lazyload></p>
+<p>请求路径</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n024.png?versionId=CAEQKBiBgMDs0Nnx8hciIGE4MjU4YWRhNjIxNDRmZDc4Zjc0MDgxZTc2MTMzNzQ5" srcset="/img/loading.gif" lazyload></p>
+<h3 id="3-2-Nginx反向代理"><a href="#3-2-Nginx反向代理" class="headerlink" title="3.2 Nginx反向代理"></a>3.2 Nginx反向代理</h3><p>实现效果：使用nginx反向代理，访问 <code>www.localhost:80.com</code> 直接跳转到 <code>127.0.0.1:8080</code></p>
+<p>反向代理请求流程图</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n026.png?versionId=CAEQKBiBgIC.ydnx8hciIDRmZmNjMWU3ZDlkYjQ3NDE5YjE4ZGY2MTc5ODI3ZWEy" srcset="/img/loading.gif" lazyload></p>
+<p>Nginx反向代理 ，配置文件</p>
+<blockquote>
+<p>注意：如果反向代理失败，去掉下划线，直接使用serverlist;</p>
+</blockquote>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n027.png?versionId=CAEQKBiBgMCGydnx8hciIGU5YTliM2JkYWRiMDRjMjViYWYxNjZlYmNkZTFjNTkw" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs json">worker_processes  <span class="hljs-number">1</span>;<br><br>events &#123;<br>    worker_connections  1024;<br>&#125;<br><br>http &#123;<br>    include       mime.types;<br>    default_type  application/octet-stream;<br><br>    sendfile        on;<br>   <br>    keepalive_timeout  65;<br>	<br>	# 反向代理配置<br>	upstream server_list&#123;<br>	   # 这个是tomcat的访问路径<br>	   server localhost:<span class="hljs-number">8080</span>;<br>	   <br>	&#125;<br><br>    server &#123;<br>        listen       80;<br>        server_name  localhost;<br><br>        location / &#123;<br>            root   html;<br>            # 注意：如果反向代理失败，去掉下划线，直接使用serverlist;<br>			proxy_pass http:<span class="hljs-comment">//server_list;</span><br>            index  index.html index.htm;<br>        &#125;<br><br>        error_page   <span class="hljs-number">500</span> <span class="hljs-number">502</span> <span class="hljs-number">503</span> <span class="hljs-number">504</span>  /<span class="hljs-number">50</span>x.html;<br>        location = /<span class="hljs-number">50</span>x.html &#123;<br>            root   html;<br>        &#125;<br>      <br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>双击打开tomcat ，启动tomcat ，请求的是nginx的地址，代理到tomcat 的 页面</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n028.png?versionId=CAEQKBiBgICCydnx8hciIGM0ZWYzMzJlZWNmYjQ3OWQ4NDE0YTYzZDIyOTA5ZjZh" srcset="/img/loading.gif" lazyload></p>
+<h1 id="第四章-nginx负载均衡"><a href="#第四章-nginx负载均衡" class="headerlink" title="第四章 nginx负载均衡"></a><a href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-nginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1">第四章 nginx负载均衡</a></h1><p>随着互联网信息的爆炸性增长，负载均衡（load balance）已经不再是一个很陌生的话题，顾名思义，负载均衡即是将负载分摊到不同的服务单元，既保证服务的可用性，又保证响应足够快，给用户很好的体验。快速增长的访问量和数据流量催生了各式各样的负载均衡产品，很多专业的负载均衡硬件提供了很好的功能，但却价格不菲，这使得负载均衡软件大受欢迎，nginx就是其中的一个，在linux下有Nginx、LVS、Haproxy等等服务可以提供负载均衡服务，而且Nginx提供了几种分配方式(策略)：</p>
+<h3 id="4-1-实现效果"><a href="#4-1-实现效果" class="headerlink" title="4.1 实现效果"></a>4.1 实现效果</h3><p>浏览器地址栏输入地址 <a target="_blank" rel="noopener" href="http://192.168.137.129/edu/a.html%EF%BC%8C%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E6%95%88%E6%9E%9C%EF%BC%8C%E5%B0%86%E8%AF%B7%E6%B1%82%E5%B9%B3%E5%9D%87%E5%88%86%E9%85%8D%E5%88%B08080%E5%92%8C8081%E4%B8%A4%E5%8F%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E3%80%82">http://192.168.137.129/edu/a.html，负载均衡效果，将请求平均分配到8080和8081两台服务器上。</a></p>
+<h3 id="4-2-准备工作"><a href="#4-2-准备工作" class="headerlink" title="4.2 准备工作"></a>4.2 准备工作</h3><p>（1）准备两台tomcat服务器，一台8080，一台9999</p>
+<p>（2）在两台tomcat里面webapps目录中</p>
+<h3 id="4-3-轮询（默认）"><a href="#4-3-轮询（默认）" class="headerlink" title="4.3 轮询（默认）"></a>4.3 轮询（默认）</h3><p>每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，能自动剔除。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n029.png?versionId=CAEQKBiBgMDGzNnx8hciIDBiOTQ4NTRjMTA0ZDQxNjJhNTU2NjVlNTNmZWRhMTg3" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-comment"># 反向代理配置</span><br>	<span class="hljs-attribute">upstream</span> server_list&#123;<br>	   <span class="hljs-comment"># 这个是tomcat的访问路径</span><br>	   <span class="hljs-attribute">server</span> localhost:<span class="hljs-number">8080</span>;<br>	   <span class="hljs-attribute">server</span> localhost:<span class="hljs-number">9999</span>;<br>	&#125;<br></code></pre></td></tr></table></figure>
+
+<p>完整配置</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">worker_processes</span>  <span class="hljs-number">1</span>;<br><br><span class="hljs-section">events</span> &#123;<br>    <span class="hljs-attribute">worker_connections</span>  <span class="hljs-number">1024</span>;<br>&#125;<br><br><span class="hljs-section">http</span> &#123;<br>    <span class="hljs-attribute">include</span>       mime.types;<br>    <span class="hljs-attribute">default_type</span>  application/octet-stream;<br><br>    <span class="hljs-attribute">sendfile</span>        <span class="hljs-literal">on</span>;<br>   <br>    <span class="hljs-attribute">keepalive_timeout</span>  <span class="hljs-number">65</span>;<br>	<br>	<span class="hljs-comment"># 反向代理配置</span><br>	<span class="hljs-attribute">upstream</span> server_list&#123;<br>	   <span class="hljs-comment"># 这个是tomcat的访问路径</span><br>	   <span class="hljs-attribute">server</span> localhost:<span class="hljs-number">8080</span>;<br>	   <span class="hljs-attribute">server</span> localhost:<span class="hljs-number">9999</span>;<br>	&#125;<br><br>    <span class="hljs-section">server</span> &#123;<br>        <span class="hljs-attribute">listen</span>       <span class="hljs-number">80</span>;<br>        <span class="hljs-attribute">server_name</span>  localhost;<br><br>        <span class="hljs-attribute">location</span> / &#123;<br>            <span class="hljs-attribute">root</span>   html;<br>			<span class="hljs-attribute">proxy_pass</span> http://server_list;<br>            <span class="hljs-attribute">index</span>  index.html index.htm;<br>        &#125;<br><br>        <span class="hljs-attribute">error_page</span>   <span class="hljs-number">500</span> <span class="hljs-number">502</span> <span class="hljs-number">503</span> <span class="hljs-number">504</span>  /50x.html;<br>        <span class="hljs-attribute">location</span> = /50x.html &#123;<br>            <span class="hljs-attribute">root</span>   html;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>使用 两台服务器 ，拷贝一个tomcat</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n030.png?versionId=CAEQKBiBgICrwtnx8hciIGI0YTI2Nzk5ZTJlMTQ1Yzg4ZjkzN2FhNTMxNWRjNTUy" srcset="/img/loading.gif" lazyload></p>
+<p>修改 <code>conf</code> 文件下面的 <code>server.xml</code> 配置文件 , 分别修改三个端口号</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;Server <span class="hljs-attribute">port</span>=<span class="hljs-string">&quot;18005&quot;</span> <span class="hljs-attribute">shutdown</span>=<span class="hljs-string">&quot;SHUTDOWN&quot;</span>&gt;<br><br>&lt;Connector <span class="hljs-attribute">port</span>=<span class="hljs-string">&quot;9999&quot;</span> <span class="hljs-attribute">protocol</span>=<span class="hljs-string">&quot;HTTP/1.1&quot;</span><br>               <span class="hljs-attribute">connectionTimeout</span>=<span class="hljs-string">&quot;20000&quot;</span><br>               <span class="hljs-attribute">redirectPort</span>=<span class="hljs-string">&quot;8443&quot;</span> /&gt;<br>               <br>&lt;Connector <span class="hljs-attribute">port</span>=<span class="hljs-string">&quot;18009&quot;</span> <span class="hljs-attribute">protocol</span>=<span class="hljs-string">&quot;AJP/1.3&quot;</span> <span class="hljs-attribute">redirectPort</span>=<span class="hljs-string">&quot;8443&quot;</span> /&gt;               <br></code></pre></td></tr></table></figure>
+
+<p>修改两台 <code>tomcat</code> 服务器下面 <code>webapps\ROOT\index.jsp</code></p>
+<p>分别加上 标记 ，用以区分</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css">&lt;<span class="hljs-selector-tag">h1</span>&gt;<span class="hljs-selector-tag">main</span>&lt;/<span class="hljs-selector-tag">h1</span>&gt;<br><br>&lt;<span class="hljs-selector-tag">h1</span>&gt;back&lt;/<span class="hljs-selector-tag">h1</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n032.png?versionId=CAEQKBiBgMCWwtnx8hciIDA5MzZlMjM4OTNmMDQzMmI5ZmM1MTIyODg3NjUyYzU4" srcset="/img/loading.gif" lazyload></p>
+<h3 id="4-4-weight-权重"><a href="#4-4-weight-权重" class="headerlink" title="4.4 weight 权重"></a>4.4 weight 权重</h3><p>所谓的负载均衡简单说就是将一台服务原来承受的压力由多台服务器来分配，可以在nginx中实现tomcat集群，通过weight来分配权重。</p>
+<p>weight 代表权重，默认为1,权重越高被分配的客户端越多</p>
+<p>指定轮询几率，weight和访问比率成正比，用于后端服务器性能不均的情况。 例如：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># 反向代理配置</span><br>upstream server_list&#123;<br><span class="hljs-comment"># 这个是tomcat的访问路径</span><span class="hljs-built_in"></span><br><span class="hljs-built_in">server </span>localhost:8080 <span class="hljs-attribute">weight</span>=5;<span class="hljs-built_in"></span><br><span class="hljs-built_in">server </span>localhost:9999 <span class="hljs-attribute">weight</span>=1;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n033.png?versionId=CAEQKBiBgMCby9nx8hciIGMwMGI4MWY3MzY5MTRlOWU5NTQyYzZjMTQ4YmVmZWNh" srcset="/img/loading.gif" lazyload></p>
+<h3 id="4-5-ip-hash"><a href="#4-5-ip-hash" class="headerlink" title="4.5 ip_hash"></a>4.5 ip_hash</h3><p>每个请求按访问ip的hash值分配，这样每个访问客户端会固定访问一个后端服务器，</p>
+<p>可以解决会话Session丢失的问题</p>
+<figure class="highlight roboconf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs roboconf">upstream backserver &#123; <br>		<span class="hljs-attribute">ip_hash; </span><br><span class="hljs-attribute">		server 127.0.0.1</span>:8080; <br>		<span class="hljs-attribute">server 127.0.0.1</span>:9090; <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>不管刷新多少遍，始终访问的是同一台tomcat服务器</p>
+<h3 id="4-6-最少连接"><a href="#4-6-最少连接" class="headerlink" title="4.6 最少连接"></a>4.6 最少连接</h3><p>web请求会被转发到连接数最少的服务器上</p>
+<figure class="highlight roboconf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs roboconf">upstream backserver &#123; <br>	<span class="hljs-attribute">least_conn;</span><br><span class="hljs-attribute">	server 127.0.0.1</span>:8080; <br>	<span class="hljs-attribute">server 127.0.0.1</span>:9090; <br>&#125;	<br></code></pre></td></tr></table></figure>
+
+<h3 id="4-5-Nginx-tomcat集群-redis实现session共享"><a href="#4-5-Nginx-tomcat集群-redis实现session共享" class="headerlink" title="4.5 Nginx+tomcat集群+redis实现session共享"></a>4.5 Nginx+tomcat集群+redis实现session共享</h3><h4 id="4-5-1-Session共享问题演示"><a href="#4-5-1-Session共享问题演示" class="headerlink" title="4.5.1 Session共享问题演示"></a>4.5.1 Session共享问题演示</h4><ol>
+<li>在tomcat中创建项目myweb</li>
+<li>分别启动两个tomcat,查看sessionid值</li>
+<li><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n034.png?versionId=CAEQKBiBgIDgwtnx8hciIDdlM2ZiYmFiNzJhZTRjMWRiMDlmYzRlMjhmYWYxYjgw" srcset="/img/loading.gif" lazyload></li>
+</ol>
+<h4 id="4-5-2-Session共享问题解决"><a href="#4-5-2-Session共享问题解决" class="headerlink" title="4.5.2 Session共享问题解决"></a>4.5.2 Session共享问题解决</h4><p>思想:将原来由每一个tomcat管理的session统一存储到redis中管理</p>
+<p><strong>版本：</strong> apache-tomcat-8.5.9、nginx-1.8.0、redis_2.8.9</p>
+<p><strong>github地址：</strong><code>https://github.com/mzd123/session_manager</code>c 读者可以直接下载体验一下。</p>
+<p><strong>实现：</strong></p>
+<p>1、下载：<code>https://github.com/ran-jit/tomcat-cluster-redis-session-manager/wiki</code></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n035.png?versionId=CAEQKBiBgIDxwNnx8hciIGE5ZTJhNjVlNTlmYTQwNjg4Mzk1ZTcxMGFmMzg5ZjMz" srcset="/img/loading.gif" lazyload></p>
+<p>2、解压之后。将jar包放入tomcat的lib中（注意是tomcat/lib中，不是我们自己项目的lib）</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n036.png?versionId=CAEQKBiBgICYwNnx8hciIGU5ODlmOTdjMjFkZDRhOTliNDI3ZjVkNGZjMmZlMjA2" srcset="/img/loading.gif" lazyload></p>
+<p>拷贝到两个tomcat的lib目录下面</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n037.png?versionId=CAEQKBiBgMCQwNnx8hciIDY5NWE4ZTIyNmI4NzQ2MGE4MDQxYWFhY2NiZWM1ZGIx" srcset="/img/loading.gif" lazyload></p>
+<p>3、配置解压之后的redis-data-cache.properties（根据你的redis配置吧）。配置完将这个文件放入tomcat/conf文件夹中。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n038.png?versionId=CAEQKBiBgMCovtnx8hciIDU0MDI4ZGFiYTQyNDRiZjhiMWM4YWEwMDQ0ZjY2NzA0" srcset="/img/loading.gif" lazyload></p>
+<p>4、配置tomcat/cong/context.xml,增加如下两行。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n039.png?versionId=CAEQKBiBgIDmv9nx8hciIDE0YWMyZTQ3ZWJlODRmZWU4NTA4ODdiODllYmIyZGQz" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;Valve <span class="hljs-attribute">className</span>=<span class="hljs-string">&quot;tomcat.request.session.redis.SessionHandlerValve&quot;</span>/&gt;<br>&lt;Manager <span class="hljs-attribute">className</span>=<span class="hljs-string">&quot;tomcat.request.session.redis.SessionManager&quot;</span>/&gt;<br></code></pre></td></tr></table></figure>
+
+<p>5、注意：因为tomcat-redis-session-manager这个版本的不同，classname会随着变化，2.0.4的版本是叫这两个。其实可以打开你下载的tomcat-cluster-redis-session-manager.jar看看他到底叫什么（不少小伙伴，本人第一次搞也是，网上代码一抄，发现tomcat启动就报类找不到。。。你classname都填错了，当然找不到了，能找到就奇怪了。。。）</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n040.png?versionId=CAEQKBiBgIDVvdnx8hciIDNjNmM1YjhlMTczMDQxMDBiYzZhNmZmZDZjNmU2NDFk" srcset="/img/loading.gif" lazyload></p>
+<p><strong>测试：</strong></p>
+<p>1、nginx配置：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">worker_processes</span>  <span class="hljs-number">1</span>;<br><br><span class="hljs-section">events</span> &#123;<br>    <span class="hljs-attribute">worker_connections</span>  <span class="hljs-number">1024</span>;<br>&#125;<br><br><span class="hljs-section">http</span> &#123;<br>    <span class="hljs-attribute">include</span>       mime.types;<br>    <span class="hljs-attribute">default_type</span>  application/octet-stream;<br><br>    <span class="hljs-attribute">sendfile</span>        <span class="hljs-literal">on</span>;<br>   <br>    <span class="hljs-attribute">keepalive_timeout</span>  <span class="hljs-number">65</span>;<br>	<br>	<span class="hljs-comment"># 反向代理配置</span><br>	<span class="hljs-attribute">upstream</span> server_list&#123;<br>	   <span class="hljs-comment"># 这个是tomcat的访问路径</span><br>	   <span class="hljs-attribute">server</span> localhost:<span class="hljs-number">8080</span>;<br>	   <span class="hljs-attribute">server</span> localhost:<span class="hljs-number">9999</span>;<br>	&#125;<br><br>    <span class="hljs-section">server</span> &#123;<br>        <span class="hljs-attribute">listen</span>       <span class="hljs-number">80</span>;<br>        <span class="hljs-attribute">server_name</span>  localhost;<br><br>        <span class="hljs-attribute">location</span> / &#123;<br>            <span class="hljs-attribute">root</span>   html;<br>			<span class="hljs-attribute">proxy_pass</span> http://server_list;<br>            <span class="hljs-attribute">index</span>  index.html index.htm;<br>        &#125;<br><br>        <span class="hljs-attribute">error_page</span>   <span class="hljs-number">500</span> <span class="hljs-number">502</span> <span class="hljs-number">503</span> <span class="hljs-number">504</span>  /50x.html;<br>        <span class="hljs-attribute">location</span> = /50x.html &#123;<br>            <span class="hljs-attribute">root</span>   html;<br>        &#125;<br>      <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>2、准备两个tomcat，一个端口为8090，一个为9999</p>
+<p>3、tomcat中jsp代码：新建 <code>webapps\myweb\index.jsp</code></p>
+<figure class="highlight vbscript-html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs vbscript-html"><span class="vbscript">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> import=<span class="hljs-string">&quot;java.util.*&quot;</span> pageEncoding=<span class="hljs-string">&quot;UTF-8&quot;</span>%&gt;</span><span class="xml">  </span><br><span class="xml"></span><span class="vbscript">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> import=<span class="hljs-string">&quot;java.text.SimpleDateFormat&quot;</span>%&gt;</span><span class="xml"></span><br><span class="xml"></span><span class="vbscript">&lt;%  </span><br><span class="vbscript">  <span class="hljs-built_in">request</span>.getSession().setAttribute(<span class="hljs-string">&quot;mzd&quot;</span>,<span class="hljs-string">&quot;123&quot;</span>);</span><br><span class="vbscript">  SimpleDateFormat simpleDateFormat=<span class="hljs-keyword">new</span> SimpleDateFormat(<span class="hljs-string">&quot;YYYY-MM-dd HH:mm:ss&quot;</span>);</span><br><span class="vbscript">  String date=simpleDateFormat.format(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>());</span><br><span class="vbscript">%&gt;</span><span class="xml">  </span><br><span class="xml"></span><br><span class="xml"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">HTML</span> <span class="hljs-meta-keyword">PUBLIC</span> <span class="hljs-meta-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span>&gt;</span>  </span><br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>  </span><br><span class="xml">  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>   </span><br><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>tomcat1<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>  </span><br><span class="xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>  </span><br><span class="xml">  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>  </span><br><span class="xml">        SessionID:</span><span class="vbscript">&lt;%=session.getId()%&gt;</span><span class="xml">  </span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">BR</span>&gt;</span>  </span><br><span class="xml">        当前时间为:</span><span class="vbscript">&lt;%=date%&gt;</span><span class="xml">  </span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">BR</span>&gt;</span>  </span><br><span class="xml">        SessionPort:</span><span class="vbscript">&lt;%=<span class="hljs-built_in">request</span>.getServerPort()%&gt;</span><span class="xml">  </span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">BR</span>&gt;</span>  </span><br><span class="xml">        mzd的值为：</span><span class="vbscript">&lt;%=session.getAttribute(<span class="hljs-string">&quot;mzd&quot;</span>)%&gt;</span><span class="xml">  </span><br><span class="xml">       <span class="hljs-tag">&lt;<span class="hljs-name">BR</span>&gt;</span>  </span><br><span class="xml">        </span><span class="vbscript">&lt;%  </span><br><span class="vbscript">        out.println(<span class="hljs-string">&quot;这是tomcat1&quot;</span>);  </span><br><span class="vbscript">        %&gt;</span><span class="xml"> </span><br><span class="xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>  </span><br><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span> </span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight vbscript-html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs vbscript-html"><span class="vbscript">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> import=<span class="hljs-string">&quot;java.util.*&quot;</span> pageEncoding=<span class="hljs-string">&quot;UTF-8&quot;</span>%&gt;</span><span class="xml"> </span><br><span class="xml"></span><span class="vbscript">&lt;%@ page language=<span class="hljs-string">&quot;java&quot;</span> import=<span class="hljs-string">&quot;java.text.SimpleDateFormat&quot;</span>%&gt;</span><span class="xml"></span><br><span class="xml"></span><span class="vbscript">&lt;%  </span><br><span class="vbscript">   SimpleDateFormat simpleDateFormat=<span class="hljs-keyword">new</span> SimpleDateFormat(<span class="hljs-string">&quot;YYYY-MM-dd HH:mm:ss&quot;</span>);</span><br><span class="vbscript">   String date=simpleDateFormat.format(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>());</span><br><span class="vbscript">%&gt;</span><span class="xml">  </span><br><span class="xml"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">HTML</span> <span class="hljs-meta-keyword">PUBLIC</span> <span class="hljs-meta-string">&quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;</span>&gt;</span>  </span><br><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>  </span><br><span class="xml">  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>   </span><br><span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>tomcat2<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>  </span><br><span class="xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>  </span><br><span class="xml">  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>  </span><br><span class="xml">        SessionID:</span><span class="vbscript">&lt;%=session.getId()%&gt;</span><span class="xml">  </span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">BR</span>&gt;</span>  </span><br><span class="xml">        当前时间为:</span><span class="vbscript">&lt;%=date%&gt;</span><span class="xml">  </span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">BR</span>&gt;</span>  </span><br><span class="xml">        SessionPort:</span><span class="vbscript">&lt;%=<span class="hljs-built_in">request</span>.getServerPort()%&gt;</span><span class="xml">  </span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">BR</span>&gt;</span>  </span><br><span class="xml">        mzd的值为：</span><span class="vbscript">&lt;%=session.getAttribute(<span class="hljs-string">&quot;mzd&quot;</span>)%&gt;</span><span class="xml">  </span><br><span class="xml">       <span class="hljs-tag">&lt;<span class="hljs-name">BR</span>&gt;</span>  </span><br><span class="xml">        </span><span class="vbscript">&lt;%  </span><br><span class="vbscript">        out.println(<span class="hljs-string">&quot;这是tomcat2&quot;</span>);  </span><br><span class="vbscript">        %&gt;</span><span class="xml"> </span><br><span class="xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>  </span><br><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>  </span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n041.png?versionId=CAEQKBiBgIDFvdnx8hciIDRmZGQ1OTIzODhlZjQ1OWQ4MzI5YTU4MWNjMDkwMWU0" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n042.png?versionId=CAEQKBiBgMCzvdnx8hciIDEyY2NjZGM2NjZiYzQ3YWI4ZTE2NTM3M2YxMmMzZGI5" srcset="/img/loading.gif" lazyload></p>
+<p>5 乱码问题</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n043.png?versionId=CAEQKBiBgMDFvdnx8hciIDBhNWI4MDk0ZDdhZTQxOTJiY2NjZWIyM2E2MmUxYzZh" srcset="/img/loading.gif" lazyload></p>
+<p>解决方案 ，如果设置 jsp 编码还是不行，在看看浏览器编码格式，浏览器默认是GBK</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n044.png?versionId=CAEQKBiBgIC.vtnx8hciIDZkOTdlMjFkYWZkNTQ2ODBhNjgwNGYzMmNhODNlMmVm" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Ngnix/Nginx/n045.png?versionId=CAEQKBiBgMCDvdnx8hciIDAwMTU5OGJmNTZmNTQ5MmRhNzU5MTdiM2I5ZGM1OGFm" srcset="/img/loading.gif" lazyload></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Nginx/">Nginx</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Nginx/">Nginx</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客目前大部分文章都是参考尚硅谷或者源于尚硅谷的学习资料！<a href="http://www.atguigu.com/" rel="nofollow noopener"官网地址！</a> 
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/01/13/Distributed%20transaction/">
+                        <span class="hidden-mobile">分布式事务</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/weixin.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
