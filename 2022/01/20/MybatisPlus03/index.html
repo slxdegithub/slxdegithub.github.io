@@ -1,0 +1,554 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Blue~u~u~u">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Mybatis-plus条件构造器各种用法（三）一、wapper介绍1、Wrapper家族在MP中我们可以使用通用Mapper（BaseMapper）实现基本查询，也可以使用自定义Mapper（自定义XML）来实现更高级的查询。当然你也可以结合条件构造器来方便的实现更多的高级查询。  Wrapper ： 条件构造抽象类，最顶端父类     AbstractWrapper ： 用于查询条件封装，生成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mybatis-plus条件构造器各种用法（三）">
+<meta property="og:url" content="http://www.slx.blue/2022/01/20/MybatisPlus03/index.html">
+<meta property="og:site_name" content="Blue~u~u~u~u">
+<meta property="og:description" content="Mybatis-plus条件构造器各种用法（三）一、wapper介绍1、Wrapper家族在MP中我们可以使用通用Mapper（BaseMapper）实现基本查询，也可以使用自定义Mapper（自定义XML）来实现更高级的查询。当然你也可以结合条件构造器来方便的实现更多的高级查询。  Wrapper ： 条件构造抽象类，最顶端父类     AbstractWrapper ： 用于查询条件封装，生成">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/MybatisPlus/27b56b5e-39a6-42ba-b7ed-4f109b6ad7bf.png">
+<meta property="article:published_time" content="2022-01-20T02:55:37.000Z">
+<meta property="article:modified_time" content="2022-01-20T02:57:59.584Z">
+<meta property="article:author" content="Blue~u~u~u">
+<meta property="article:tag" content="MybatisPlus">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/MybatisPlus/27b56b5e-39a6-42ba-b7ed-4f109b6ad7bf.png">
+  
+  
+  <title>Mybatis-plus条件构造器各种用法（三） - Blue~u~u~u~u</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Blue~u~u</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Mybatis-plus条件构造器各种用法（三）">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-01-20 10:55" pubdate>
+        2022年1月20日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      18 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Mybatis-plus条件构造器各种用法（三）</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：3 分钟前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="Mybatis-plus条件构造器各种用法（三）"><a href="#Mybatis-plus条件构造器各种用法（三）" class="headerlink" title="Mybatis-plus条件构造器各种用法（三）"></a>Mybatis-plus条件构造器各种用法（三）</h1><h1 id="一、wapper介绍"><a href="#一、wapper介绍" class="headerlink" title="一、wapper介绍"></a><strong>一、wapper介绍</strong></h1><h2 id="1、Wrapper家族"><a href="#1、Wrapper家族" class="headerlink" title="1、Wrapper家族"></a>1、Wrapper家族</h2><p>在MP中我们可以使用通用Mapper（BaseMapper）实现基本查询，也可以使用自定义Mapper（自定义XML）来实现更高级的查询。当然你也可以结合条件构造器来方便的实现更多的高级查询。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/MybatisPlus/27b56b5e-39a6-42ba-b7ed-4f109b6ad7bf.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Wrapper ： 条件构造抽象类，最顶端父类  </p>
+<p>  AbstractWrapper ： 用于查询条件封装，生成 sql 的 where 条件</p>
+<p>​    QueryWrapper ： 查询条件封装</p>
+<p>​    UpdateWrapper ： Update 条件封装</p>
+<p>  AbstractLambdaWrapper ： 使用Lambda 语法</p>
+<p>​    LambdaQueryWrapper ：用于Lambda语法使用的查询Wrapper</p>
+<p>​    LambdaUpdateWrapper ： Lambda 更新封装Wrapper</p>
+<h2 id="2、创建测试类"><a href="#2、创建测试类" class="headerlink" title="2、创建测试类"></a>2、创建测试类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@SpringBootTest</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WrapperTests</span> </span>&#123;<br>    <br>    <span class="hljs-meta">@Resource</span><br>    <span class="hljs-keyword">private</span> UserMapper userMapper;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="二、QueryWrapper"><a href="#二、QueryWrapper" class="headerlink" title="二、QueryWrapper"></a>二、QueryWrapper</h1><h2 id="1、例1：组装查询条件"><a href="#1、例1：组装查询条件" class="headerlink" title="1、例1：组装查询条件"></a><strong>1</strong>、例1：组装查询条件</h2><p>查询名字中包含n，年龄大于等于10且小于等于20，email不为空的用户</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test1</span><span class="hljs-params">()</span> </span>&#123;<br>    QueryWrapper&lt;User&gt; queryWrapper = <span class="hljs-keyword">new</span> QueryWrapper&lt;&gt;();<br>    queryWrapper<br>        .like(<span class="hljs-string">&quot;name&quot;</span>,<span class="hljs-string">&quot;n&quot;</span>)<br>        .between(<span class="hljs-string">&quot;age&quot;</span>, <span class="hljs-number">10</span>, <span class="hljs-number">20</span>)<br>        .isNotNull(<span class="hljs-string">&quot;email&quot;</span>);<br>    List&lt;User&gt; users = userMapper.selectList(queryWrapper);<br>    users.forEach(System.out::println);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2、例2：组装排序条件"><a href="#2、例2：组装排序条件" class="headerlink" title="2、例2：组装排序条件"></a><strong>2、例2：组装排序条件</strong></h2><p>按年龄降序查询用户，如果年龄相同则按id升序排列</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test2</span><span class="hljs-params">()</span> </span>&#123;<br>    QueryWrapper&lt;User&gt; queryWrapper = <span class="hljs-keyword">new</span> QueryWrapper&lt;&gt;();<br>    queryWrapper<br>        .orderByDesc(<span class="hljs-string">&quot;age&quot;</span>)<br>        .orderByAsc(<span class="hljs-string">&quot;id&quot;</span>);<br>    List&lt;User&gt; users = userMapper.selectList(queryWrapper);<br>    users.forEach(System.out::println);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="3、例3：组装删除条件"><a href="#3、例3：组装删除条件" class="headerlink" title="3、例3：组装删除条件"></a><strong>3、例3：组装删除条件</strong></h2><p>删除email为空的用户</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test3</span><span class="hljs-params">()</span> </span>&#123;<br>    QueryWrapper&lt;User&gt; queryWrapper = <span class="hljs-keyword">new</span> QueryWrapper&lt;&gt;();<br>    queryWrapper.isNull(<span class="hljs-string">&quot;email&quot;</span>);<br>    <span class="hljs-keyword">int</span> result = userMapper.delete(queryWrapper); <span class="hljs-comment">//条件构造器也可以构建删除语句的条件</span><br>    System.out.println(<span class="hljs-string">&quot;delete return count = &quot;</span> + result);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="4、例4：条件的优先级"><a href="#4、例4：条件的优先级" class="headerlink" title="4、例4：条件的优先级"></a>4、例4：条件的优先级</h2><p>查询名字中包含n，且（年龄小于18或email为空的用户），并将这些用户的年龄设置为18，邮箱设置为 <a href="mailto:&#x75;&#x73;&#x65;&#114;&#x40;&#97;&#116;&#103;&#117;&#105;&#103;&#x75;&#x2e;&#x63;&#111;&#109;">&#x75;&#x73;&#x65;&#114;&#x40;&#97;&#116;&#103;&#117;&#105;&#103;&#x75;&#x2e;&#x63;&#111;&#109;</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test4</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">//修改条件</span><br>    QueryWrapper&lt;User&gt; queryWrapper = <span class="hljs-keyword">new</span> QueryWrapper&lt;&gt;();<br>    queryWrapper<br>        .like(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;n&quot;</span>)<br>        .and(i -&gt; i.lt(<span class="hljs-string">&quot;age&quot;</span>, <span class="hljs-number">18</span>).or().isNull(<span class="hljs-string">&quot;email&quot;</span>)); <span class="hljs-comment">//lambda表达式内的逻辑优先运算</span><br>    User user = <span class="hljs-keyword">new</span> User();<br>    user.setAge(<span class="hljs-number">18</span>);<br>    user.setEmail(<span class="hljs-string">&quot;user@atguigu.com&quot;</span>);<br>    <span class="hljs-keyword">int</span> result = userMapper.update(user, queryWrapper);<br>    System.out.println(result);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>5、例5：组装select子句</strong></p>
+<p>查询所有用户的用户名和年龄</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test5</span><span class="hljs-params">()</span> </span>&#123;<br>    QueryWrapper&lt;User&gt; queryWrapper = <span class="hljs-keyword">new</span> QueryWrapper&lt;&gt;();<br>    queryWrapper.select(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;age&quot;</span>);<br>    <br>    <span class="hljs-comment">//selectMaps()返回Map集合列表，通常配合select()使用，避免User对象中没有被查询到的列值为null</span><br>    List&lt;Map&lt;String, Object&gt;&gt; maps = userMapper.selectMaps(queryWrapper);<span class="hljs-comment">//返回值是Map列表</span><br>    maps.forEach(System.out::println);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="6、例6：实现子查询"><a href="#6、例6：实现子查询" class="headerlink" title="6、例6：实现子查询"></a><strong>6、例6：实现子查询</strong></h2><p>查询id不大于3的所有用户的id列表</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test6</span><span class="hljs-params">()</span> </span>&#123;<br>    QueryWrapper&lt;User&gt; queryWrapper = <span class="hljs-keyword">new</span> QueryWrapper&lt;&gt;();<br>    queryWrapper.inSql(<span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-string">&quot;select id from user where id &lt;= 3&quot;</span>);<br>    <span class="hljs-comment">//selectObjs的使用场景：只返回一列</span><br>    List&lt;Object&gt; objects = userMapper.selectObjs(queryWrapper);<span class="hljs-comment">//返回值是Object列表</span><br>    objects.forEach(System.out::println);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id><a href="#" class="headerlink" title></a></h2><p>但上面的方式容易引发sql注入</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">queryWrapper.inSql(<span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-string">&quot;select id from user where id &lt;= 3 or true&quot;</span>); <span class="hljs-comment">// 或插叙出所有用户id</span><br></code></pre></td></tr></table></figure>
+
+<p>可是使用下面的查询方式替换</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">queryWrapper.in(<span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> );<br><span class="hljs-comment">// 或</span><br>queryWrapper.le(<span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-number">3</span> );<br></code></pre></td></tr></table></figure>
+
+<h1 id="三、UpdateWrapper"><a href="#三、UpdateWrapper" class="headerlink" title="三、UpdateWrapper"></a>三、UpdateWrapper</h1><h2 id="例7：需求同例4"><a href="#例7：需求同例4" class="headerlink" title="例7：需求同例4"></a><strong>例7：需求同例4</strong></h2><p>查询名字中包含n，且（年龄小于18或email为空的用户），并将这些用户的年龄设置为18，邮箱设置为 <a href="mailto:&#x75;&#x73;&#x65;&#114;&#x40;&#x61;&#116;&#x67;&#117;&#105;&#x67;&#117;&#x2e;&#99;&#111;&#109;">&#x75;&#x73;&#x65;&#114;&#x40;&#x61;&#116;&#x67;&#117;&#105;&#x67;&#117;&#x2e;&#99;&#111;&#109;</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test7</span><span class="hljs-params">()</span> </span>&#123;<br>    <br>    <span class="hljs-comment">//组装set子句</span><br>    UpdateWrapper&lt;User&gt; updateWrapper = <span class="hljs-keyword">new</span> UpdateWrapper&lt;&gt;();<br>    updateWrapper<br>        .set(<span class="hljs-string">&quot;age&quot;</span>, <span class="hljs-number">18</span>)<br>        .set(<span class="hljs-string">&quot;email&quot;</span>, <span class="hljs-string">&quot;user@atguigu.com&quot;</span>)<br>        .like(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;n&quot;</span>)<br>        .and(i -&gt; i.lt(<span class="hljs-string">&quot;age&quot;</span>, <span class="hljs-number">18</span>).or().isNull(<span class="hljs-string">&quot;email&quot;</span>)); <span class="hljs-comment">//lambda表达式内的逻辑优先运算</span><br>    <span class="hljs-comment">//这里必须要创建User对象，否则无法应用自动填充。如果没有自动填充，可以设置为null</span><br>    User user = <span class="hljs-keyword">new</span> User();<br>    <span class="hljs-keyword">int</span> result = userMapper.update(user, updateWrapper);<br>    System.out.println(result);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="四、condition"><a href="#四、condition" class="headerlink" title="四、condition"></a>四、condition</h1><h2 id="例8：动态组装查询条件"><a href="#例8：动态组装查询条件" class="headerlink" title="例8：动态组装查询条件"></a>例8：动态组装查询条件</h2><p>查询名字中包含n，年龄大于10且小于20的用户，查询条件来源于用户输入，是可选的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test8</span><span class="hljs-params">()</span> </span>&#123;<br>    <br>    <span class="hljs-comment">//定义查询条件，有可能为null（用户未输入）</span><br>    String name = <span class="hljs-keyword">null</span>;<br>    Integer ageBegin = <span class="hljs-number">10</span>;<br>    Integer ageEnd = <span class="hljs-number">20</span>;<br>    QueryWrapper&lt;User&gt; queryWrapper = <span class="hljs-keyword">new</span> QueryWrapper&lt;&gt;();<br>    <span class="hljs-keyword">if</span>(StringUtils.isNotBlank(name))&#123;<br>        queryWrapper.like(<span class="hljs-string">&quot;name&quot;</span>,<span class="hljs-string">&quot;n&quot;</span>);<br>    &#125;<br>    <span class="hljs-keyword">if</span>(ageBegin != <span class="hljs-keyword">null</span>)&#123;<br>        queryWrapper.ge(<span class="hljs-string">&quot;age&quot;</span>, ageBegin);<br>    &#125;<br>    <span class="hljs-keyword">if</span>(ageEnd != <span class="hljs-keyword">null</span>)&#123;<br>        queryWrapper.le(<span class="hljs-string">&quot;age&quot;</span>, ageEnd);<br>    &#125;<br>    List&lt;User&gt; users = userMapper.selectList(queryWrapper);<br>    users.forEach(System.out::println);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>上面的实现方案没有问题，但是代码比较复杂，我们可以使用带condition参数的重载方法构建查询条件，简化代码的编写</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test8Condition</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">//定义查询条件，有可能为null（用户未输入）</span><br>    String name = <span class="hljs-keyword">null</span>;<br>    Integer ageBegin = <span class="hljs-number">10</span>;<br>    Integer ageEnd = <span class="hljs-number">20</span>;<br>    QueryWrapper&lt;User&gt; queryWrapper = <span class="hljs-keyword">new</span> QueryWrapper&lt;&gt;();<br>    queryWrapper<br>        .like(StringUtils.isNotBlank(name), <span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;n&quot;</span>)<br>        .ge(ageBegin != <span class="hljs-keyword">null</span>, <span class="hljs-string">&quot;age&quot;</span>, ageBegin)<br>        .le(ageEnd != <span class="hljs-keyword">null</span>, <span class="hljs-string">&quot;age&quot;</span>, ageEnd);<br>    List&lt;User&gt; users = userMapper.selectList(queryWrapper);<br>    users.forEach(System.out::println);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="五、LambdaXxxWrapper"><a href="#五、LambdaXxxWrapper" class="headerlink" title="五、LambdaXxxWrapper"></a>五、LambdaXxxWrapper</h1><h2 id="1、例9：Query-需求同例8"><a href="#1、例9：Query-需求同例8" class="headerlink" title="1、例9：Query - 需求同例8"></a>1、例9：Query - 需求同例8</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test9</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">//定义查询条件，有可能为null（用户未输入）</span><br>    String name = <span class="hljs-keyword">null</span>;<br>    Integer ageBegin = <span class="hljs-number">10</span>;<br>    Integer ageEnd = <span class="hljs-number">20</span>;<br>    LambdaQueryWrapper&lt;User&gt; queryWrapper = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();<br>    queryWrapper<br>        <span class="hljs-comment">//避免使用字符串表示字段，防止运行时错误</span><br>        .like(StringUtils.isNotBlank(name), User::getName, <span class="hljs-string">&quot;n&quot;</span>)<br>        .ge(ageBegin != <span class="hljs-keyword">null</span>, User::getAge, ageBegin)<br>        .le(ageEnd != <span class="hljs-keyword">null</span>, User::getAge, ageEnd);<br>    List&lt;User&gt; users = userMapper.selectList(queryWrapper);<br>    users.forEach(System.out::println);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2、例10：Update-需求同例4"><a href="#2、例10：Update-需求同例4" class="headerlink" title="2、例10：Update - 需求同例4"></a>2、例10：Update - 需求同例4</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test10</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">//组装set子句</span><br>    LambdaUpdateWrapper&lt;User&gt; updateWrapper = <span class="hljs-keyword">new</span> LambdaUpdateWrapper&lt;&gt;();<br>    updateWrapper<br>        .set(User::getAge, <span class="hljs-number">18</span>)<br>        .set(User::getEmail, <span class="hljs-string">&quot;user@atguigu.com&quot;</span>)<br>        .like(User::getName, <span class="hljs-string">&quot;n&quot;</span>)<br>        .and(i -&gt; i.lt(User::getAge, <span class="hljs-number">18</span>).or().isNull(User::getEmail)); <span class="hljs-comment">//lambda表达式内的逻辑优先运算</span><br>    <br>    User user = <span class="hljs-keyword">new</span> User();<br>    <span class="hljs-keyword">int</span> result = userMapper.update(user, updateWrapper);<br>    System.out.println(result);<br>&#125;<br></code></pre></td></tr></table></figure>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/MybatisPlus/">MybatisPlus</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/MybatisPlus/">MybatisPlus</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客目前大部分文章都是参考尚硅谷或者源于尚硅谷的学习资料！<a href="http://www.atguigu.com/" rel="nofollow noopener"官网地址！</a> 
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/01/20/MybatisPlus01/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Mybatis-plus快速入门及增删改查（一）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/01/20/MybatisPlus02/">
+                        <span class="hidden-mobile">Mybatis-plus常用注解及插件（二）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/weixin.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
