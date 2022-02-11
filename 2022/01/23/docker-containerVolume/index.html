@@ -18,7 +18,7 @@
   
     <meta name="description" content="Docker容器卷踩坑： ​    Docker挂载主机目录访问如果出现cannot open directory .: Permission denied  解决办法：在挂载目录后多加一个–privileged&#x3D;true参数即可  如果是CentOS7安全模块会比之前系统版本加强，不安全的会先禁止，所以目录挂载的情况被默认为不安全的行为，在SELinux里面挂载目录被禁止掉了额，如果要开启，我们">
 <meta property="og:type" content="article">
-<meta property="og:title" content="docker-containerVolume">
+<meta property="og:title" content="Docker容器卷学习笔记">
 <meta property="og:url" content="http://www.slx.blue/2022/01/23/docker-containerVolume/index.html">
 <meta property="og:site_name" content="Blue~u~u~u~u">
 <meta property="og:description" content="Docker容器卷踩坑： ​    Docker挂载主机目录访问如果出现cannot open directory .: Permission denied  解决办法：在挂载目录后多加一个–privileged&#x3D;true参数即可  如果是CentOS7安全模块会比之前系统版本加强，不安全的会先禁止，所以目录挂载的情况被默认为不安全的行为，在SELinux里面挂载目录被禁止掉了额，如果要开启，我们">
@@ -29,14 +29,14 @@
 <meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/docker/dk14.png">
 <meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/docker/dk15.png">
 <meta property="article:published_time" content="2022-01-23T11:28:48.000Z">
-<meta property="article:modified_time" content="2022-01-23T11:42:47.290Z">
+<meta property="article:modified_time" content="2022-01-24T03:43:32.690Z">
 <meta property="article:author" content="Blue~u~u~u">
 <meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/docker/dk11.png">
   
   
-  <title>docker-containerVolume - Blue~u~u~u~u</title>
+  <title>Docker容器卷学习笔记 - Blue~u~u~u~u</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -194,7 +194,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="docker-containerVolume">
+            <span class="h2" id="subtitle" title="Docker容器卷学习笔记">
               
             </span>
 
@@ -261,11 +261,11 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">docker-containerVolume</h1>
+            <h1 style="display: none">Docker容器卷学习笔记</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：16 小时前
+                  本文最后更新于：18 天前
                 
               </p>
             
@@ -394,7 +394,7 @@
                     
                       <a href="/2022/01/23/docker-linux/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">docker-linux</span>
+                        <span class="hidden-mobile">linux安装Docker及常见的坑</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -403,7 +403,7 @@
                     
                     
                       <a href="/2022/01/23/docker-command/">
-                        <span class="hidden-mobile">docker-command</span>
+                        <span class="hidden-mobile">Docker常用命令笔记</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
