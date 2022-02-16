@@ -19,7 +19,7 @@
   <meta name="description" content="spring-day02第一章 基于注解管理bean第一节 IOC的相关注解及包扫描1. 注解的优势和 XML 配置文件一样，注解本身并不能执行，注解本身仅仅只是做一个标记，具体的功能是框架检测到注解标记的位置，然后针对这个位置按照注解标记的功能来执行具体操作。使用注解开发比使用XML更加简洁明了 2. 包扫描使用注解进行Bean管理必须要在xml配置文件中进行包扫描，这样的话spring-fra">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spring-day02-annotation">
-<meta property="og:url" content="http://www.slx.blue/2021/12/06/spring-day02/index.html">
+<meta property="og:url" content="http://slx.cool/2021/12/06/spring-day02/index.html">
 <meta property="og:site_name" content="Blue~u~u~u~u">
 <meta property="og:description" content="spring-day02第一章 基于注解管理bean第一节 IOC的相关注解及包扫描1. 注解的优势和 XML 配置文件一样，注解本身并不能执行，注解本身仅仅只是做一个标记，具体的功能是框架检测到注解标记的位置，然后针对这个位置按照注解标记的功能来执行具体操作。使用注解开发比使用XML更加简洁明了 2. 包扫描使用注解进行Bean管理必须要在xml配置文件中进行包扫描，这样的话spring-fra">
 <meta property="og:locale" content="zh_CN">
@@ -74,7 +74,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"slx.cool","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -617,7 +617,7 @@ var now = new Date();
 
 function createtime() {
     //此处修改你的建站时间或者网站上线时间
-    var grt = new Date('12/02/2021 21:39:00');
+    var grt = new Date('11/02/2021 21:39:00');
     now.setTime(now.getTime() + 250);
     days = (now - grt) / 1000 / 60 / 60 / 24;
 

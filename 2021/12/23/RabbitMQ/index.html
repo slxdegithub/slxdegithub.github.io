@@ -19,7 +19,7 @@
   <meta name="description" content="Docker安装RabbitMQ和HelloWord入门1.安装1.docker search rabbitmq  &#x2F;&#x2F;搜索镜像  2.docker pull rabbitmq   &#x2F;&#x2F;默认安装最新的版本  如果不安装最新版加上版本号即可  3.docker run -d --hostname my-rabbit --name rabbit -p 15672:15672 -p 5672:5672">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RabbitMQ-Docker安装">
-<meta property="og:url" content="http://www.slx.blue/2021/12/23/RabbitMQ/index.html">
+<meta property="og:url" content="http://slx.cool/2021/12/23/RabbitMQ/index.html">
 <meta property="og:site_name" content="Blue~u~u~u~u">
 <meta property="og:description" content="Docker安装RabbitMQ和HelloWord入门1.安装1.docker search rabbitmq  &#x2F;&#x2F;搜索镜像  2.docker pull rabbitmq   &#x2F;&#x2F;默认安装最新的版本  如果不安装最新版加上版本号即可  3.docker run -d --hostname my-rabbit --name rabbit -p 15672:15672 -p 5672:5672">
 <meta property="og:locale" content="zh_CN">
@@ -77,7 +77,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"slx.cool","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -500,7 +500,7 @@ var now = new Date();
 
 function createtime() {
     //此处修改你的建站时间或者网站上线时间
-    var grt = new Date('12/02/2021 21:39:00');
+    var grt = new Date('11/02/2021 21:39:00');
     now.setTime(now.getTime() + 250);
     days = (now - grt) / 1000 / 60 / 60 / 24;
 
