@@ -1,0 +1,1000 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="Blue~u~u~u">
+  <meta name="author" content="Blue~u~u~u">
+  <meta name="keywords" content="">
+  <meta name="description" content="计算机网络OSI七层模型： 应用层（Application Layer）：只关心业务逻辑，不关心数据的传输 比如微信，只关心谁发消息给了谁，不关心发了什么消息  表现层（Presentation Layer）： 负责写上用于传输的数据格式，并转换数据格式  会话层（Session Layer）：负责管理两个联网实体间的连接  传输层（Transport Layer）：负责将数据从一个实体（一个服务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络学习笔记">
+<meta property="og:url" content="http://www.slx.blue/2022/02/17/ComputerNetwork/index.html">
+<meta property="og:site_name" content="Blue~u~u~u~u">
+<meta property="og:description" content="计算机网络OSI七层模型： 应用层（Application Layer）：只关心业务逻辑，不关心数据的传输 比如微信，只关心谁发消息给了谁，不关心发了什么消息  表现层（Presentation Layer）： 负责写上用于传输的数据格式，并转换数据格式  会话层（Session Layer）：负责管理两个联网实体间的连接  传输层（Transport Layer）：负责将数据从一个实体（一个服务">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP01.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP02.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP04.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP05.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP06.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP07.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP08.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP09.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP10.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP11.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP03.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP39.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP12.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP13.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP14.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP15.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP16.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP17.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP18.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP19.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP20.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP21.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP22.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP23.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP24.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP25.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP26.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP27.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP28.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP29.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP31.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP40.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP32.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP33.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP34.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP35.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP36.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP12.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP38.png">
+<meta property="article:published_time" content="2022-02-17T09:09:21.000Z">
+<meta property="article:modified_time" content="2022-02-17T09:10:28.028Z">
+<meta property="article:author" content="Blue~u~u~u">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP01.png">
+  
+  <title>计算机网络学习笔记 - Blue~u~u~u~u</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"/>
+<script src="/live2d-widget/autoload.js"></script>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Blue~u~u</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="计算机网络学习笔记">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-02-17 17:09" pubdate>
+        2022年2月17日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      7.7k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      24 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">计算机网络学习笔记</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 分钟前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h1><h2 id="OSI七层模型："><a href="#OSI七层模型：" class="headerlink" title="OSI七层模型："></a>OSI七层模型：</h2><ul>
+<li><p><strong>应用层</strong>（Application Layer）：只关心业务逻辑，不关心数据的传输</p>
+<p>比如微信，只关心谁发消息给了谁，不关心发了什么消息</p>
+</li>
+<li><p><strong>表现层</strong>（Presentation Layer）：</p>
+<p>负责写上用于传输的数据格式，并转换数据格式</p>
+</li>
+<li><p><strong>会话层</strong>（Session Layer）：负责管理两个联网实体间的连接</p>
+</li>
+<li><p><strong>传输层</strong>（Transport Layer）：负责将数据从一个实体（一个服务或应用）传输到另一个实体，但不负责数据传输的方式。</p>
+<p>功能：</p>
+<ol>
+<li>数据分隔重组：将数据拆分后按顺序重组</li>
+<li>纠错：在数据传输过程出现问题后才去方式进行纠正</li>
+<li>管理链接：处理数据的频繁交换</li>
+<li>流量控制：控制传输数据的速率</li>
+<li>端口寻址：标明参与传输的实体的端口号</li>
+<li>数据的加密解密等</li>
+</ol>
+</li>
+<li><p><strong>网络层</strong>（）：负责把一个封包从一个<code>IP</code>地址传输到另一个<code>IP</code>地址</p>
+<p>功能</p>
+<p>一个结点收到一个封包之后，如何把这个封包传递到下一个节点？</p>
+<p>通过路由算法选择路线。</p>
+</li>
+<li><p><strong>数据链路层</strong>：确保两个临近设备间数据的传输，并隐藏底层实现</p>
+<ul>
+<li>帧同步：两个设备之间传输时的协商数率问题</li>
+<li>数据纠错</li>
+</ul>
+</li>
+<li><p><strong>物理层</strong>：封装和隐藏具体的传输手段，并提供稳定的传输接口</p>
+</li>
+</ul>
+<p><strong>OSI的问题</strong>：</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP01.png" srcset="/img/loading.gif" lazyload alt="image-20220215194031387"></p>
+<h2 id="TCP-IP-互联网协群"><a href="#TCP-IP-互联网协群" class="headerlink" title="TCP/IP 互联网协群"></a>TCP/IP 互联网协群</h2><h3 id="需要解决的五个问题"><a href="#需要解决的五个问题" class="headerlink" title="需要解决的五个问题"></a><strong>需要解决的五个问题</strong></h3><p><strong>1.报文拆分</strong></p>
+<ul>
+<li>数据量大，网络底层设备不支持</li>
+<li>数据量大，复用路径</li>
+</ul>
+<p><strong>2.增加协议头</strong></p>
+<ul>
+<li>数据分块后在接收端需要重组，所以需要使用头部来添加一些描述字段</li>
+<li>数据块 =》 头部（协议头） +数据（消息体）</li>
+</ul>
+<p><strong>3.数据在相邻设备间传递数据</strong></p>
+<p><strong>4.路由和寻址</strong></p>
+<p>路由算法：通过算法寻找下一个要到达的节点</p>
+<p><strong>5.数据重组</strong></p>
+<p>拆分后如何重组</p>
+<h3 id="五层模型"><a href="#五层模型" class="headerlink" title="五层模型"></a>五层模型</h3><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP02.png" srcset="/img/loading.gif" lazyload alt="image-20220215200249011"></p>
+<p><strong>五层模型和<code>OSI</code>的区别：</strong></p>
+<ul>
+<li>删除了会话层，会话是虚拟概念，不是必须的</li>
+<li>删除了表示层，数据压缩，数据格式转换不是应用必须的</li>
+</ul>
+<p><strong>TCP协议的可选性：</strong></p>
+<p>传输层：<code>TPC</code>协议，<code>UPD</code>协议，<code>TLS</code>/<code>SSL</code>，<code>SCTP</code>等</p>
+<p>网络层：<code>IP</code>协议（<code>IPV4</code>/<code>IPV6</code>）,<code>ICMP</code>协议，<code>IPSec</code>协议</p>
+<h2 id="TCP协议"><a href="#TCP协议" class="headerlink" title="TCP协议"></a>TCP协议</h2><h3 id="什么是链接？"><a href="#什么是链接？" class="headerlink" title="什么是链接？"></a>什么是链接？</h3><ul>
+<li>是虚拟、抽象的概念</li>
+<li>能让两个通信的程序间确保彼此都在线</li>
+<li>加快响应请求速度</li>
+<li>连接也被称为会话(Session)</li>
+<li>使通信更稳定、安全</li>
+<li>消耗更多资源</li>
+</ul>
+<h3 id="全双工的概念"><a href="#全双工的概念" class="headerlink" title="全双工的概念"></a>全双工的概念</h3><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP04.png" srcset="/img/loading.gif" lazyload alt="image-20220215201322353"></p>
+<h3 id="可靠性："><a href="#可靠性：" class="headerlink" title="可靠性："></a>可靠性：</h3><p>可靠性指数据保证无损传输</p>
+<ol>
+<li>使无序的数据复原为有顺序</li>
+<li>多播时每个接收方都获得无损副本</li>
+</ol>
+<h3 id="建立连接（三次握手）"><a href="#建立连接（三次握手）" class="headerlink" title="建立连接（三次握手）"></a>建立连接（三次握手）</h3><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP05.png" srcset="/img/loading.gif" lazyload alt="image-20220215202006662"></p>
+<h3 id="断开链接（四次握手）"><a href="#断开链接（四次握手）" class="headerlink" title="断开链接（四次握手）"></a>断开链接（四次握手）</h3><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP06.png" srcset="/img/loading.gif" lazyload alt="image-20220215202238769"></p>
+<h3 id="传输数据-报文拆分"><a href="#传输数据-报文拆分" class="headerlink" title="传输数据-报文拆分"></a>传输数据-报文拆分</h3><ol>
+<li>应用层数据很大时无法一次传输完</li>
+<li>拆分后可以实现并行传输</li>
+</ol>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP07.png" srcset="/img/loading.gif" lazyload alt="image-20220215202512146"></p>
+<h3 id="传输数据-顺序保证"><a href="#传输数据-顺序保证" class="headerlink" title="传输数据-顺序保证"></a>传输数据-顺序保证</h3><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP08.png" srcset="/img/loading.gif" lazyload></p>
+<p>如果TCP段特别多的时候，该如何进行排序？</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">时间窗口，每次排序固定在一个时间段内的数据，如果错过了时间窗口的数据后面再次到达，就会认为之前的时间窗口的数据不完整，会要求再次重发<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP09.png" srcset="/img/loading.gif" lazyload alt="image-20220215203108903"></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP10.png" srcset="/img/loading.gif" lazyload alt="image-20220215203301262"></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP11.png" srcset="/img/loading.gif" lazyload alt="image-20220215204216626"></p>
+<h3 id="流控能力"><a href="#流控能力" class="headerlink" title="流控能力"></a>流控能力</h3><ul>
+<li>主要目标，让发送方和接收方协商一个合理的收发速率，让两边都可以稳定的工作</li>
+<li>利用滑动窗口</li>
+</ul>
+<h2 id="IP协议"><a href="#IP协议" class="headerlink" title="IP协议"></a>IP协议</h2><p>IP协议（Internet Protocol）：网络层协议</p>
+<h3 id="IP协议可能遇到的问题"><a href="#IP协议可能遇到的问题" class="headerlink" title="IP协议可能遇到的问题"></a><strong>IP协议可能遇到的问题</strong></h3><p>1.封包损坏 2.丢包 3.重发 4.乱序</p>
+<h3 id="网络层要解决的三个问题"><a href="#网络层要解决的三个问题" class="headerlink" title="网络层要解决的三个问题"></a><strong>网络层要解决的三个问题</strong></h3><p>1.延迟  2.吞吐量 3.丢包率</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP03.png" srcset="/img/loading.gif" lazyload alt="image-20220217165041945"></p>
+<h3 id="IP协议的工作原理"><a href="#IP协议的工作原理" class="headerlink" title="IP协议的工作原理"></a><strong>IP协议的工作原理</strong></h3><ul>
+<li>分片(Fragmentation)</li>
+<li>增加协议头(IP Header)</li>
+<li>延迟、吞吐量、丢包率</li>
+<li>寻址(Addressing)</li>
+<li>路由(Routing)</li>
+</ul>
+<h3 id="IPv6和IPv4的主要区别"><a href="#IPv6和IPv4的主要区别" class="headerlink" title="IPv6和IPv4的主要区别"></a><strong>IPv6和IPv4的主要区别</strong></h3><p>区别一：地址</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP39.png" srcset="/img/loading.gif" lazyload alt="image-20220217165233575"></p>
+<p>区别二：寻址</p>
+<h3 id="Ipv6的主要优势："><a href="#Ipv6的主要优势：" class="headerlink" title="Ipv6的主要优势："></a><strong>Ipv6的主要优势：</strong></h3><ul>
+<li>解决了<strong>IP地址耗尽的问题</strong></li>
+<li>解决了<strong>网络区域、站点划分的问题</strong>。</li>
+<li>协议层<strong>支持多播</strong>。Ipv6可以有专门的地址用作多播。</li>
+<li>支持邻居发现协议，自动分配地址，做到了无状态接入设备。</li>
+</ul>
+<h2 id="UDP协议"><a href="#UDP协议" class="headerlink" title="UDP协议"></a>UDP协议</h2><p><strong>全称</strong>：User Datagram Protocol ，用户数据报文协议</p>
+<p><strong>定义</strong>：在传输层提供直接发送报文（Datagram）的能力，Datagram是数据层传输最小的协议</p>
+<p><strong>目标</strong>：发送报文，无法拆分数据？</p>
+<blockquote>
+<p>为什么不直接调用<code>IP</code>协议？</p>
+</blockquote>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-built_in">IP</span>协议只能把数据从一个网络接口发送到另一个网络接口，无法寻址到应用。而传输层的协议是host到host，<span class="hljs-built_in">IP</span>协议无法存储端口号，所以出现了UDP协议<br></code></pre></td></tr></table></figure>
+
+<h3 id="UDP和TCP的区别"><a href="#UDP和TCP的区别" class="headerlink" title="UDP和TCP的区别"></a>UDP和TCP的区别</h3><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP12.png" srcset="/img/loading.gif" lazyload alt="image-20220216213927327"></p>
+<p>TCP的本质是为了提供可靠的网络传输，因为要保证可靠性和有序性，所以导致了他的负载会很大，适合多数的web应用，会话，交易，推送，展示信息等等，数据的交换量不是很大，但是需要可靠性。</p>
+<p>UDP适合音视频的传输，比如视频或者电话，丢了一两个包一两个像素并没有什么影响，追求的就是速度。UDP适合广播场景，不需要等待别人的ACK。</p>
+<p>（1）聊天室是否适合UDP？</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">意义不大，聊天室的并发场景很大，传输并不是很大，但是必须保证高可用，不允许数据丢失，所以应该用TCP。但是如果能在保证可靠性的情况下，可以考虑用UPD做整合。<br></code></pre></td></tr></table></figure>
+
+<p>（2）HTTP协议是否适合UDP？</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">HTTP</span>协议是要保证可靠性，按理说是不适合的，但是后面出现了HTTP<span class="hljs-number">3</span>.<span class="hljs-number">0</span>就是建立UDP上个的，保证了可靠性。<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="HTTP协议"><a href="#HTTP协议" class="headerlink" title="HTTP协议"></a>HTTP协议</h2><ul>
+<li><p>HTTP协议（Hyper Text Transfer protocol）：应用层协议</p>
+<p>目标：是处理客户端和服务端之间的通信</p>
+</li>
+<li><p>DNS（Domain Name System）：域名解析系统。</p>
+</li>
+</ul>
+<h3 id="DNS工作原理："><a href="#DNS工作原理：" class="headerlink" title="DNS工作原理："></a>DNS工作原理：</h3><p>  <img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP13.png" srcset="/img/loading.gif" lazyload alt="image-20220217095339515"></p>
+<ul>
+<li><p>DNS Query的分级缓存策略</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP14.png" srcset="/img/loading.gif" lazyload alt="image-20220217100517334"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk">先查询浏览器的本地缓存(通常在内存中)<br>本地没缓存， 查找操作系统的hosts文件，该文件在linux中在<span class="hljs-regexp">/etc/</span>hosts里<br>上述步骤没有找到， DNS会查询本地服务提供商(ISP)<br>ISP没找到，请求指向Root根服务器，根服务器起到的是一个类似目录的作用，返回顶级域名服务器地址,比如www.baidu.com，查询返回的是.com顶级域名服务器的地址<br>浏览器发送请求给顶级域名服务器，返回权威域名服务器地址<br>浏览器发送Lookup请求给权威域名服务器， 找到具体DNS记录,返回给浏览器<br>浏览器缓存+本地服务商缓存就能拦住<span class="hljs-number">90</span>%的请求<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="DNS解析"><a href="#DNS解析" class="headerlink" title="DNS解析"></a>DNS解析</h3><p>  DNS的数据以记录形式存储，就叫DNS记录。DNS记录的种类非常多,<br>  有30多种。每条DNS记录描述了网址(URL)的一种关系。    </p>
+<ol>
+<li><p>A记录：定义主机的IP地址</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP15.png" srcset="/img/loading.gif" lazyload alt="image-20220217101427238"></p>
+</li>
+<li><p>AAAA记录：定义主机的IPv6地址</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP16.png" srcset="/img/loading.gif" lazyload alt="image-20220217101541258"></p>
+</li>
+<li><p>CNAME记录：定义域名的别名</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP17.png" srcset="/img/loading.gif" lazyload alt="image-20220217101631533"></p>
+</li>
+<li><p>MX记录（Mail exchanger record）：定义邮件服务器所在的位置。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP18.png" srcset="/img/loading.gif" lazyload alt="image-20220217101908077"></p>
+</li>
+<li><p>NS记录（Name Server Record）：定义DNS服务器所在的位置</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP19.png" srcset="/img/loading.gif" lazyload alt="image-20220217102129791"></p>
+</li>
+<li><p>SOA记录(Start of Authority Record):定义多个NS服务器中哪个是主服务器</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP20.png" srcset="/img/loading.gif" lazyload alt="image-20220217102526570"></p>
+</li>
+<li><p>TXT记录 ：提供一个文本信息</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP21.png" srcset="/img/loading.gif" lazyload alt="image-20220217102644743"></p>
+<p>一般用来在自己的网站添加规定的文本信息来证明这个网站是自己的。</p>
+</li>
+</ol>
+<h3 id="内容分发网络（CDN）"><a href="#内容分发网络（CDN）" class="headerlink" title="内容分发网络（CDN）"></a>内容分发网络（CDN）</h3><p>  cdn（Content Delivery NetWork）：将请求分散到全世界各地，分发流量，加快访问速度。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP22.png" srcset="/img/loading.gif" lazyload alt="image-20220217103057723"></p>
+<p>  但是CND上无法部署业务逻辑，更新慢，无法保证一致性，所以比较适合纯的静态资源比如图片，视频，脚本文件，样式文件等。</p>
+<h3 id="请求头-返回头"><a href="#请求头-返回头" class="headerlink" title="请求头/返回头"></a>请求头/返回头</h3><p>HTTP协议通过请求头和返回头控制协议工作。无论是请求头还是返<br>回头都是Key/Value的形式。</p>
+<ul>
+<li><p>Content-Length:发送/接收Body内容的字节数。</p>
+</li>
+<li><p>User-Agent:这个字段可以帮助统计客户端用了什么浏览器、操作系统等</p>
+</li>
+<li><p>Content-Type: 请求的时候，告知服务端数据的媒体类(MediaType/MIME<br>Type)。 返回的时候告知客户端，数据的媒体类型。</p>
+<ul>
+<li>text/html: HTML格式</li>
+<li>text/css: css文本</li>
+<li>application/json: JSON数据格式</li>
+<li>image/jpeg: /jpg图片格式</li>
+</ul>
+</li>
+<li><p>Origin：描述请求来源地址，可以为null，</p>
+<p>scheme://host:port</p>
+</li>
+<li><p>Accept:是HTTP协议协商能力的体现，用于建议服务端返回何种媒体类型<br>(MIME Type)</p>
+<p>比如：accept: application/json, Text/javascript, * /* ,q=0. 01</p>
+<p>*/ *代表所有类型(默认)<br>多个类型用逗号隔开例如: text/html, application/jison<br>Accept-Encoding:建议服务端发送哪种编码(压缩算法)<br>deflate, gzip; q=1 .0, * ;q=0.5<br>Accept-L anguage:建议服务端传递哪种语言信</p>
+</li>
+<li><p>Referer：告诉服务端打开当前页面的上一张页面的URL</p>
+<p>非浏览器环境有时候不发送Referer (或者虚拟Referer,通常是爬虫)</p>
+<p>常用于用户行为分析</p>
+</li>
+<li><p>Connection：决定HTTP链接（不是TCP链接）是否在当前事务完成后关闭<code>Http1.0</code>默认是close<br><code>Http1.1</code>后默认是keep-alive</p>
+</li>
+</ul>
+<h3 id="HTTP的方法"><a href="#HTTP的方法" class="headerlink" title="HTTP的方法"></a>HTTP的方法</h3><ul>
+<li>GET:从服务器获取资源</li>
+<li>POST:在服务器创建资源</li>
+<li>PUT:在服务器修改资源(幂等性)</li>
+<li>DELETE:在服务器删除资源</li>
+<li>OPTION :跨域部分讲解</li>
+<li>TRACE :用于显示调试信息多数网站不支持</li>
+<li>CONNECT:代理部分讲解</li>
+<li>PATCH :对资源进行部分更新(极少用)</li>
+</ul>
+<h3 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h3><h4 id="1XX：提供信息"><a href="#1XX：提供信息" class="headerlink" title="1XX：提供信息"></a><code>1XX</code>：提供信息</h4><ul>
+<li>100 continue     </li>
+<li>101 切换协议（switch protocol）</li>
+</ul>
+<h4 id="2XX-成功"><a href="#2XX-成功" class="headerlink" title="2XX: 成功"></a><code>2XX</code>: 成功</h4><ul>
+<li>200-OK </li>
+<li>201 - Created 已创建</li>
+<li>202 - Accepted 已接收</li>
+<li>203 - Non-Authoritative Information 非权威内容</li>
+<li>204 - No Content 没有内容</li>
+<li>205 - Reset Content 重置内容</li>
+<li>206 - Partial Content 服务器下发了部分内容（ranger header）</li>
+</ul>
+<h4 id="3XX：重定向"><a href="#3XX：重定向" class="headerlink" title="3XX：重定向"></a><code>3XX</code>：重定向</h4><ul>
+<li><p>300 - Multiple Choices用户请求了多个选项的资源(返回选项列表)</p>
+</li>
+<li><p>301 - <code>Moved Permanenty</code>永久转移</p>
+</li>
+<li><p>302 -Found资源被找到(以前是临时转移)</p>
+</li>
+<li><p>303 - See Other可以使用GET方法在另一-个URL找到资源</p>
+</li>
+<li><p>304 - Not Modified没有修改(缓存部分特别说明)</p>
+</li>
+<li><p>305 - Use Proxy需要代理</p>
+</li>
+<li><p>307 - Temporary Redirect临时重定向</p>
+</li>
+<li><p>308 - Permanent Redirect永久重定向</p>
+<p>301和308</p>
+<p>共同点：资源被永久的移动到新的地址</p>
+<p>差异：客户端收到308请求后，沿用旧的method（post/get/put）到新网址</p>
+<p>​           客户端收到301请求后，通常用户会向新地址发起GET请求</p>
+<p>302 / 303 / 309</p>
+<p>共同点：资源临时放到新地址</p>
+<p>差异：302是<code>http1.0</code>提出的)最早叫做Moved Temporarily;很多浏览器实现的时候没有遵照标准，把所有请求都重定向为GET，1999年标准委员会增加了303和307,并将302重新定义为Found。303告诉客户端使用GET方法重定向资源</p>
+</li>
+</ul>
+<h4 id="4XX：客户端错误"><a href="#4XX：客户端错误" class="headerlink" title="4XX：客户端错误"></a><code>4XX</code>：客户端错误</h4><ul>
+<li><p>400 - Bad Request请求格式错误</p>
+</li>
+<li><p>401 - Unauthorized没有授权一</p>
+</li>
+<li><p>402一Payment Required请先付费</p>
+</li>
+<li><p>403– Forbidden禁止访问</p>
+</li>
+<li><p>404 - Not Found没有找到</p>
+</li>
+<li><p>405 - Method Not Allowed方法不被允许</p>
+</li>
+<li><p>406 - Not Acceptable服务端可以提供的内容和客户端期待的不一样</p>
+<p>比如客户端Accept希望拿到一个<code>json</code>，但是服务器返回的是一个jpg</p>
+</li>
+</ul>
+<h4 id="5XX：服务端错误"><a href="#5XX：服务端错误" class="headerlink" title="5XX：服务端错误"></a><code>5XX</code>：服务端错误</h4><ul>
+<li>500 - Internal Server Error(内部服务器错误)</li>
+<li>501 - Not Implemented (没有实现)</li>
+<li>502 - Bad Gateway(网关错误)</li>
+<li>503 - Service Unavailable(服务不可用)</li>
+<li>504 - Gateway Timeout(网关超时)</li>
+<li>505 - HTTP Version Not Supported (版本不支持)</li>
+</ul>
+<h3 id="HTTP缓存"><a href="#HTTP缓存" class="headerlink" title="HTTP缓存"></a>HTTP缓存</h3><p>HTTP缓存最重要的配置项为Cache-Control HTTP返回头。不仅浏览器可<br>以缓存，浏览器和服务器之间的HTTP代理服务器也可以缓存。</p>
+<h4 id="强制缓存："><a href="#强制缓存：" class="headerlink" title="强制缓存："></a>强制缓存：</h4><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP23.png" srcset="/img/loading.gif" lazyload alt="image-20220217113559902"></p>
+<h4 id="协商缓存："><a href="#协商缓存：" class="headerlink" title="协商缓存："></a>协商缓存：</h4><p>协商缓存的行为是基于变更协商的。在缓存条目对应的资源发生生变化前,都使用浏览器缓存。因此协商缓存必须每次都请求服务端.</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP24.png" srcset="/img/loading.gif" lazyload alt="image-20220217114022949"></p>
+<p>Etag：服务端想实现协商缓存时可返回ETag,资源不变，ETag的数值也不会改变。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP25.png" srcset="/img/loading.gif" lazyload alt="image-20220217114231285"></p>
+<p>Last-Modifed(Depreciated):基于变更时间的协商缓存方案。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP26.png" srcset="/img/loading.gif" lazyload></p>
+<p>Keep-Alive:多次请求复用-个TCP连接。</p>
+<p>为什么要用keep-alive？</p>
+<p>因为TCP三次握手和证书还有协商密匙的传递都需要时间，所以为了节省网络成本，会考虑多次复用一个TCP请求链接。</p>
+<p>Keep-alive的断开</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP27.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>单个请求</strong>:请求完成后，在timeout时间内没第二E个请求进来则会关闭。<br><strong>多个请求</strong>:在一个请求响应之后,在timeout时间内有另一个请求进来， 就会<br>利用相同的TCP连接继续响应这个请求，直到没有更多请求进来，可以通过<br>max字段设定最多响应的请求数。</p>
+<p>keep-alive不是长链接，<code>webSocket</code>是长链接</p>
+<ul>
+<li><code>keep-alive</code>并不是长连接</li>
+<li><code>WebSocket</code>:长连接,提供在HTTP协议退化成TCP协议<br>的方式。让客户端和服务器之间保持很长时间的连接且不中断</li>
+</ul>
+<h2 id="加密、加密和证书"><a href="#加密、加密和证书" class="headerlink" title="加密、加密和证书"></a>加密、加密和证书</h2><p>加密:将明文信息变成不可读的密文内容，只有拥有解密方法的对象才能够<br>将密文还原成加密前的内容。</p>
+<p><strong>对称加密</strong>:加密/解密用一个秘钥，且加密方和解密方都知道秘钥，如DES ,3DES等。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP28.png" srcset="/img/loading.gif" lazyload alt="image-20220217141048459"></p>
+<p>当秘钥丢失的时候，信息容易泄露，或者被伪装成接收方发送方。</p>
+<p><strong>非对称加密</strong>:加密用一一个秘钥，解密用另一个秘钥且加密方- -般有2个秘钥，解密方有一个解密秘钥.非对称加密安全性高，但速度慢，如RSA算法.</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP29.png" srcset="/img/loading.gif" lazyload alt="image-20220217141719757"></p>
+<p><strong>摘要算法</strong>:就是将原文和摘要同时传输给接收方。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP31.png" srcset="/img/loading.gif" lazyload alt="image-20220217142813298"></p>
+<p>因为算法加密涉及到效率问题，如果原文不担心被看到，只担心被纂改的情况下，就可以把摘要和原文一起发送，因为两个东西不可能一起修改，而且摘要一般是密文。</p>
+<h2 id="HTTPS和HTTP2-0"><a href="#HTTPS和HTTP2-0" class="headerlink" title="HTTPS和HTTP2.0"></a>HTTPS和HTTP2.0</h2><p>为什么需要HTTPS？</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP40.png" srcset="/img/loading.gif" lazyload></p>
+<p>如果没有https协议，黑客就可以从任意一个结点获取这个明文，甚至纂改重发。</p>
+<p>HTTPS (HTTP Over SecureSocket Layer) :应用层协议</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP32.png" srcset="/img/loading.gif" lazyload alt="image-20220217145229343"></p>
+<h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p>HTTPS采用<strong>对称加密</strong>的方式加密传输的数据，然后对称加密的秘钥，采用<strong>非对称加密</strong>的方式进行协商。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP33.png" srcset="/img/loading.gif" lazyload alt="image-20220217145542862"></p>
+<p><strong>HTTP 1.1 keep-alive的问题</strong></p>
+<p>HTTP1.1协议的KeepAlive让多个请求复用一个TCP连接，非多路复用。优点:节省<br>TCP握手时间;缺点:一个请求阻塞，其它请求也全都阻塞。</p>
+<p><strong>HTTP 2.0的解决方案</strong><br>HTTP2.0协议，使用多路复用，优点: 一个请求阻塞了，其它请求依旧可以相应。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP34.png" srcset="/img/loading.gif" lazyload alt="image-20220217150327818"></p>
+<p>HTTP的头部压缩</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP35.png" srcset="/img/loading.gif" lazyload alt="image-20220217150535384"></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP36.png" srcset="/img/loading.gif" lazyload alt="image-20220217150642029"></p>
+<h2 id="同源策略、跨域"><a href="#同源策略、跨域" class="headerlink" title="同源策略、跨域"></a>同源策略、跨域</h2><p>已拦截跨源请求:同源策略禁止读取位于<a target="_blank" rel="noopener" href="http://localhost:8080/user/list">http://locaLhost:8080/user/list</a> 的远程资源。 (原因: CORS 头缺少’Access-Control Allow-Origin’) 。状态码: 200。</p>
+<h3 id="1、为什么会出现跨域问题？"><a href="#1、为什么会出现跨域问题？" class="headerlink" title="1、为什么会出现跨域问题？"></a>1、为什么会出现跨域问题？</h3><p>出于浏览器的同源策略限制。</p>
+<p>http的一个禁止协议，禁止当前网站的js脚本使用跨域资源的协议(防止跨站攻击)，但是该禁止协议不作<br>用于浏览器。除非，http请求中已经加入了允许跨域的协议。</p>
+<p>所谓同源（即指在同一个域）就是两个地址具有相同的协议（protocol）、主机（host）和端口号（port）</p>
+<p>以下情况都属于跨域：</p>
+<table>
+<thead>
+<tr>
+<th>跨域原因说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>二域名不同</td>
+<td><a target="_blank" rel="noopener" href="http://www.jd.com/">www.jd.com</a> 与 <a target="_blank" rel="noopener" href="http://www.taobao.com/">www.taobao.com</a></td>
+</tr>
+<tr>
+<td>域名相同，端口不同</td>
+<td><a target="_blank" rel="noopener" href="http://www.jd.com:8080/">www.jd.com:8080</a> 与 <a target="_blank" rel="noopener" href="http://www.jd.com:8081/">www.jd.com:8081</a></td>
+</tr>
+<tr>
+<td>一级域名不同</td>
+<td>miaosha.baidu.com 与 miaosha.baidu.cn</td>
+</tr>
+<tr>
+<td>协议不同</td>
+<td>http和https</td>
+</tr>
+</tbody></table>
+<p>http和https也属于跨域。</p>
+<p>一级二级域名不同则跨域，三四五及一下域名不同不跨域。</p>
+<p>如果域名和端口都相同，但是请求路径不同，不属于跨域，如：<a target="_blank" rel="noopener" href="http://www.jd.com/item">www.jd.com/item </a>和 <a target="_blank" rel="noopener" href="http://www.jd.com/goods">www.jd.com/goods</a></p>
+<p>同源策略会阻止一个域的javascript脚本和另外一个域的内容进行交互。</p>
+<p>而我们刚才是从localhost:5500端口去访问localhost:8080端口，这属于端口不同，跨域了。</p>
+<h3 id="2、解决跨域问题"><a href="#2、解决跨域问题" class="headerlink" title="2、解决跨域问题"></a>2、解决跨域问题</h3><ol>
+<li><p>Cors，Http允许跨域协议</p>
+<p>Spring早就给我们提供了解决方案，我们只需要在对应controller上添加一个注解就可以了</p>
+<p>我们在 UserController 类上添加跨域标签@CrossOrigin，再进行测试，则测试成功！</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@CrossOrigin</span> <span class="hljs-comment">//解决跨域问题</span><br></code></pre></td></tr></table></figure></li>
+<li><p>jsonp,利用js标签的一个漏洞</p>
+</li>
+<li><p>利用Ngnix的反向代理</p>
+</li>
+</ol>
+<p>Axios经常使用的拦截器</p>
+<blockquote>
+<p>在前后端分离的系统中，难以避免会出现跨域，在跨域情况下，cookie是不共享的，这样导致后端无法获取前端请求中的cookie，于是就不可避免的要求前端在发送请求时携带一些必要的cookie信息，如token用户凭证或者jsessionid会话id等信息，这就产生了前端拦截器的需求</p>
+</blockquote>
+<h2 id="常见面试题"><a href="#常见面试题" class="headerlink" title="常见面试题"></a>常见面试题</h2><p><strong>IPv4和IPv6的区别</strong></p>
+<ul>
+<li>地址不同(<code>Ipv4</code> 32位、<code>Ipv6</code> 128位) -&gt; 地址空间、数目不同</li>
+<li>地址分配不同(<code>IPv4</code> 资源是稀缺的，分配需要竞争 <code>IPv6</code>可以给每个人分配很多地址)  </li>
+<li>寻址方式不同: <code>IPv4</code>通过子网掩码计算网络地址; <code>IPv6</code>有 固定的计<br>算方式划分网络。</li>
+<li>地址解析策略不同(<code>IPv4</code>需要<code>ARP</code>， <code>IPv6</code>通过无状态的邻居发现)<br><code>DNS</code>不同(<code>IPv4</code> 是A记录，<code>IPv6</code>是<code>AAAA</code>记录)</li>
+</ul>
+<p><strong>为什么是三次握手四次挥手？</strong></p>
+<p><strong>TCP互联网协群的功能</strong></p>
+<p><strong>TCP和UDP的区别</strong></p>
+<ul>
+<li>面向流VS面向报文</li>
+<li>会话vs无会话</li>
+<li>头(大vs小)</li>
+<li>TCP保证正确性(可靠性) ,UDP不保证</li>
+<li>UDP实现广播成本低</li>
+<li>UDP的简约型没有约束它的构架模式，HTTP3.0是基于UDP建立的</li>
+</ul>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP12.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>TCP如何确保数据顺序？</strong></p>
+<ul>
+<li>为什么需要保证: TCP拆分封包的时候是顺序拆分的，但是包会无序的到达目的地。</li>
+<li>方法:利用(SEQ, ACK )编号确定封包的唯一性</li>
+<li>方法:利用滑动窗口存放没有排好序的封包，直到窗口中完全有序才发送ACK。如果有包丢失，就会一直不发ACK。 如果窗口大小是4，发送ABCD，如果只有BD到目的地，那么滑动窗口中是_ <em>B</em> D。</li>
+</ul>
+<p><strong>CDN更换图片?缓存更新?</strong></p>
+<p>CDN的实现就是只能DNS，重定向到拥有资源的最近的服务器，降低延迟。只能用另一张图片的URL把图片更换掉，相对快一点，缓存更新确实慢一点，就是慢慢的调度。因为本地有浏览器的强制缓存，都是天为级别的。</p>
+<p><strong>LRU是什么？</strong></p>
+<p>缓存置换:缓存满了后，每次创建新的缓存条目，就会删除最旧最早的缓存条目。</p>
+<p><strong>什么是https中间人攻击?</strong></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/ComputerNetwork/TP38.png" srcset="/img/loading.gif" lazyload alt="image-20220217161831540"></p>
+<p>黑客一定要先在客户端安装自己的CA证书。才能做到这一步，就是各种钓鱼</p>
+<p><strong>NIO有什么优势</strong></p>
+<ul>
+<li>Reactive模型+非阻塞(减少线程切换)</li>
+<li>内核级别拷贝内存到JVM (减少系统调用)</li>
+<li>缓冲区增加数据处理的灵活性(clear/flip等操作)</li>
+<li>处理I/O场景有明显性能优势 比如RPC调用，日志。</li>
+</ul>
+<p><strong>一次DNS查询最快和最慢差距有多大?</strong></p>
+<ul>
+<li><p>最快命中本地浏览器缓存</p>
+</li>
+<li><p>最慢需要到服务商(ISP) -&gt; Root服务器-&gt;顶级域名服务器-&gt;权威服务器，链路很长</p>
+<p>DNS是分级缓存策略，每级缓存都非常强大。</p>
+</li>
+</ul>
+<p><strong>HTTP keep-alive和http2.0的多路复用有什么区别?</strong></p>
+<ul>
+<li>keep-alive :复用TCP连接发送请求，节省了握手时间，本质还;是串行。</li>
+<li>http2.0多路复用:数据被打散成为小块，本质是并行。</li>
+</ul>
+<p><strong>强制缓存和协商缓存的区别</strong></p>
+<ul>
+<li>强制缓存强制执行，强制缓存不需要再发送请求给服务端。</li>
+<li>协商缓存需要发请求给服务端验数据版本，如果有新版本的数据就需要重新下发数据，如果没有就返回304 Not Modified。</li>
+</ul>
+<p><strong>正向代理和反向代理的区别？</strong></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客目前大部分文章都是参考尚硅谷或者源于尚硅谷的学习资料！<a href="http://www.atguigu.com/" rel="nofollow noopener"官网地址！</a> 
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/11/aliOss/">
+                        <span class="hidden-mobile">阿里云存储OSS学习笔记及入门案例</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/weixin.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+	<!--《添加网站运行时间 -->
+<br/>
+
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+var now = new Date(); 
+
+function createtime() {
+    //此处修改你的建站时间或者网站上线时间
+    var grt = new Date('11/02/2021 21:39:00');
+    now.setTime(now.getTime() + 250);
+    days = (now - grt) / 1000 / 60 / 60 / 24;
+
+    dnum = Math.floor(days);
+    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+        hnum = "0" + hnum;
+    }
+    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+        mnum = "0" + mnum;
+    }
+    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+        snum = "0" + snum;
+    }
+    document.getElementById("timeDate").innerHTML = " 本站已各种夹缝中安全运行 " + dnum + " 天 ";
+    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()", 250);
+</script>
+
+<!-- 添加网站运行时间》-->
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
