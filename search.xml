@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Linux环境搭建Nacos集群</title>
+      <link href="/2022/02/18/nacosCluster/"/>
+      <url>/2022/02/18/nacosCluster/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Linux环境搭建Nacos集群"><a href="#Linux环境搭建Nacos集群" class="headerlink" title="Linux环境搭建Nacos集群"></a>Linux环境搭建Nacos集群</h1><h2 id="1-环境准备"><a href="#1-环境准备" class="headerlink" title="1.环境准备"></a>1.环境准备</h2><p>​    需要1个nginx+3个nacos注册中心+1个mysql</p><p>​    Linux 64bit OS Linux/Unix/Mac  //推荐使用Linux系统</p><p>​    需要三个或三个以上的Nacos才能构成集群。</p><p>本次搭建使用的是<code>nacos-server-1.4.2.tar.gz</code> ， 下载地址</p><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/alibaba/</span>nacos<span class="hljs-regexp">/releases/</span>download<span class="hljs-regexp">/1.4.2/</span>nacos-server-<span class="hljs-number">1.4</span>.<span class="hljs-number">2</span>.tar.gz<br></code></pre></td></tr></table></figure><h2 id="2-开始搭建"><a href="#2-开始搭建" class="headerlink" title="2.开始搭建"></a>2.开始搭建</h2><ol><li><p><code>mysql</code>新建<code>nacos</code>的数据库，并执行脚本</p><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/alibaba/</span>nacos<span class="hljs-regexp">/blob/m</span>aster<span class="hljs-regexp">/config/</span>src<span class="hljs-regexp">/main/</span>resources<span class="hljs-regexp">/META-INF/</span>nacos-db.sql<br></code></pre></td></tr></table></figure><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos04.png" alt="image-20220218193332705"></p></li><li><p>先把<code>nacos-server-1.4.2.tar.gz</code>放到linux，可以使用xftp工具方便。</p><p>这里我选择放到/opt/nacoscluster下。解压三份并重命名</p><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos03.png" alt="image-20220218192428629"></p></li><li><p>进入三个节点conf/application.properties配置,更改数据库。</p><p><code>vim application.properties</code></p><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos09.png" alt="image-20220218193742922"></p><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">spring.datasource.platform</span>=mysql<br><span class="hljs-attr">db.num</span>=<span class="hljs-number">1</span><br><span class="hljs-attr">db.url.0</span>=jdbc:mysql://你的IP:<span class="hljs-number">3306</span>/nacos_config?characterEncoding=utf8&amp;connectTimeout=<span class="hljs-number">1000</span>&amp;socketTimeout=<span class="hljs-number">3000</span>&amp;autoReconnect=<span class="hljs-literal">true</span><br><span class="hljs-attr">db.user</span>=用户名<br><span class="hljs-attr">db.password</span>=密码<br></code></pre></td></tr></table></figure></li><li><p>三个节点/conf下配置cluster.conf，注意有个文件叫cluster.conf.example 那个文件只是做示例的</p><p>vim cluster.conf  配置集群IP和端口</p><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">192.168.2.128:8848</span><br><span class="hljs-number">192.168.2.128:8849</span><br><span class="hljs-number">192.168.2.128:8850</span><br></code></pre></td></tr></table></figure></li><li><p>启动三个结点前，建议修改一下内存大小，不然虚拟机内存可能不够用</p><p>切换到bin目录下，vim startup.sh</p><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos05.png" alt="image-20220218194149831"></p><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos06.png" alt="image-20220218194326354"></p></li><li><p>然后就可以启动了 ./startup.sh ,分别启动三个结点</p><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos07.png" alt="image-20220218194502302"></p></li><li><p>查看nacos状态</p><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">ps</span> -ef | <span class="hljs-keyword">grep</span> nacos<br></code></pre></td></tr></table></figure><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos01.png" alt="image-20220218191951545"></p><p>可以发现都启动成功了，接下来我们去浏览器随便访问一个nacos</p><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos02.png" alt="image-20220218192154392"></p></li></ol><h2 id="3-Ngnix配置"><a href="#3-Ngnix配置" class="headerlink" title="3.Ngnix配置"></a>3.Ngnix配置</h2><p>由ngnix作为负载均衡器,修改ngnix.conf</p><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos03.png" alt="image-20220218200129720"></p><p>切换到sbin目录下</p><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs gradle">.<span class="hljs-regexp">/nginx -c /u</span>sr<span class="hljs-regexp">/local/</span>nginx<span class="hljs-regexp">/conf/</span>nginx.conf<br><br>ps -ef|<span class="hljs-keyword">grep</span> nginx<br></code></pre></td></tr></table></figure><p>访问    <a href="https://192.168.2.128:666/nacos">https://192.168.2.128:666/nacos</a> </p><p>至此集群搭建成功，有条件可以用三台机器玩。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> nacos </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> nacos </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>计算机网络学习笔记</title>
       <link href="/2022/02/17/ComputerNetwork/"/>
       <url>/2022/02/17/ComputerNetwork/</url>

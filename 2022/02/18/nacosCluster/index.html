@@ -16,22 +16,30 @@
   <meta name="description" content="Blue~u~u~u">
   <meta name="author" content="Blue~u~u~u">
   <meta name="keywords" content="">
-  <meta name="description" content="Linux安装docker 确定你是centos7以上的版本 并且能联网 1cat &#x2F;etc&#x2F;redhat-release #查看centos的版本 各种环境 12345yum -y install gcc  #yum安装gcc相关yum -y install gcc-c++yum install -y yum-utils  #安装需要的软件包yum makecache fast  #更新yum软">
+  <meta name="description" content="Linux环境搭建Nacos集群1.环境准备​    需要1个nginx+3个nacos注册中心+1个mysql ​    Linux 64bit OS Linux&#x2F;Unix&#x2F;Mac  &#x2F;&#x2F;推荐使用Linux系统 ​    需要三个或三个以上的Nacos才能构成集群。 本次搭建使用的是nacos-server-1.4.2.tar.gz ， 下载地址 1https:&#x2F;&#x2F;github.com&#x2F;alib">
 <meta property="og:type" content="article">
-<meta property="og:title" content="linux安装Docker及常见的坑">
-<meta property="og:url" content="http://www.slx.blue/2022/01/23/docker-linux/index.html">
+<meta property="og:title" content="Linux环境搭建Nacos集群">
+<meta property="og:url" content="http://www.slx.blue/2022/02/18/nacosCluster/index.html">
 <meta property="og:site_name" content="Blue~u~u~u~u">
-<meta property="og:description" content="Linux安装docker 确定你是centos7以上的版本 并且能联网 1cat &#x2F;etc&#x2F;redhat-release #查看centos的版本 各种环境 12345yum -y install gcc  #yum安装gcc相关yum -y install gcc-c++yum install -y yum-utils  #安装需要的软件包yum makecache fast  #更新yum软">
+<meta property="og:description" content="Linux环境搭建Nacos集群1.环境准备​    需要1个nginx+3个nacos注册中心+1个mysql ​    Linux 64bit OS Linux&#x2F;Unix&#x2F;Mac  &#x2F;&#x2F;推荐使用Linux系统 ​    需要三个或三个以上的Nacos才能构成集群。 本次搭建使用的是nacos-server-1.4.2.tar.gz ， 下载地址 1https:&#x2F;&#x2F;github.com&#x2F;alib">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/docker/dk01.png">
-<meta property="article:published_time" content="2022-01-23T12:32:36.000Z">
-<meta property="article:modified_time" content="2022-01-24T03:43:02.638Z">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos04.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos03.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos09.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos05.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos06.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos07.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos01.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos02.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos03.png">
+<meta property="article:published_time" content="2022-02-18T12:35:34.000Z">
+<meta property="article:modified_time" content="2022-02-18T12:36:36.622Z">
 <meta property="article:author" content="Blue~u~u~u">
-<meta property="article:tag" content="docker">
+<meta property="article:tag" content="nacos">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/docker/dk01.png">
+<meta name="twitter:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos04.png">
   
-  <title>linux安装Docker及常见的坑 - Blue~u~u~u~u</title>
+  <title>Linux环境搭建Nacos集群 - Blue~u~u~u~u</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -193,7 +201,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="linux安装Docker及常见的坑">
+            <span class="h2" id="subtitle" title="Linux环境搭建Nacos集群">
               
             </span>
 
@@ -203,8 +211,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-01-23 20:32" pubdate>
-        2022年1月23日 晚上
+      <time datetime="2022-02-18 20:35" pubdate>
+        2022年2月18日 晚上
       </time>
     </span>
   
@@ -260,39 +268,61 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">linux安装Docker及常见的坑</h1>
+            <h1 style="display: none">Linux环境搭建Nacos集群</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：25 天前
+                  本文最后更新于：几秒前
                 
               </p>
             
             <div class="markdown-body">
-              <h3 id="Linux安装docker"><a href="#Linux安装docker" class="headerlink" title="Linux安装docker"></a>Linux安装docker</h3><ol>
-<li><p>确定你是<code>centos7</code>以上的版本 并且能联网</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">cat /etc/redhat-release #查看centos的版本<br></code></pre></td></tr></table></figure></li>
-<li><p>各种环境</p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">yum -y install gcc  <span class="hljs-comment">#yum安装gcc相关</span><br>yum -y install gcc-c++<br>yum install -y yum-utils  <span class="hljs-comment">#安装需要的软件包</span><br>yum makecache fast  <span class="hljs-comment">#更新yum软件包索引</span><br>yum update  <span class="hljs-comment">#。。。</span><br></code></pre></td></tr></table></figure></li>
-<li><p>设置stable镜像库 二选一</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs mysql">#官网版本 听说有坑<br>yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo<br><br>#建议版本 阿里<br>yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo<br></code></pre></td></tr></table></figure></li>
-<li><p>更新yum软件包索引</p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">yum makecache fast</span><br></code></pre></td></tr></table></figure></li>
-<li><p>下载安装docker</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">yum -y install docker-ce docker-ce-cli containerd.io<br></code></pre></td></tr></table></figure></li>
-<li><p>启动docker</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql">systemctl start docker<br><br>#查看docker状态<br>systemctl status docker<br></code></pre></td></tr></table></figure></li>
-<li><p>如果启动失败</p>
-<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/docker/dk01.png" srcset="/img/loading.gif" lazyload alt="image-20220106142830880"></p>
-</li>
-<li><p>更改配置文件</p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">vim /etc/docker/daemon.json<br><span class="hljs-comment">#有一些人安装的docker可能没有这个文件 没有的话就自己创建一个</span><br><span class="hljs-comment">#将这段复制进去   或者自己的阿里云加速器地址</span><br>&#123;<br> 	registry-mirrors<span class="hljs-string">&quot;:[&quot;</span>https://docker.mirrors.ustc.edu.cn<span class="hljs-string">&quot;]</span><br><span class="hljs-string">&#125;</span><br><span class="hljs-string"></span><br><span class="hljs-string">#重新加载</span><br><span class="hljs-string">systemctl daemon-reload</span><br><span class="hljs-string">#重启docker服务</span><br><span class="hljs-string">systemctl restart docker</span><br><span class="hljs-string"></span><br><span class="hljs-string">#查看docker状态</span><br><span class="hljs-string">systemctl status docker</span><br></code></pre></td></tr></table></figure></li>
-<li><p>上面能解决大部分人的问题。，但是如果还出错（<strong>比如我</strong>）</p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-comment">#把daemon.json 更名为daemon.conf</span><br>mv /etc/docker/daemon.json /etc/docker/daemon.conf<br><br><span class="hljs-comment">#然后</span><br>yum update xfsprogs<br><span class="hljs-comment">#重新加载</span><br>systemctl daemon-reload<br><span class="hljs-comment">#重启docker服务</span><br>systemctl restart docker<br><br><span class="hljs-comment">#手动启动</span><br>/usr/bin/dockerd<br><br><span class="hljs-comment">#然后莫名其妙就好了。。。</span><br></code></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="卸载docker"><a href="#卸载docker" class="headerlink" title="卸载docker"></a>卸载docker</h3><p>重新安装之前要记得卸掉 </p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-comment">#先停掉</span><br>systemctl stop docker<br><span class="hljs-comment">#查看安装旧版本的docker并卸载</span><br>yum remove docker-ce docker-ce-cli containerd.io<br><br>rm -rf /var/lib/docker<br>rm -rf /var/lib/containerd<br></code></pre></td></tr></table></figure>
+              <h1 id="Linux环境搭建Nacos集群"><a href="#Linux环境搭建Nacos集群" class="headerlink" title="Linux环境搭建Nacos集群"></a>Linux环境搭建Nacos集群</h1><h2 id="1-环境准备"><a href="#1-环境准备" class="headerlink" title="1.环境准备"></a>1.环境准备</h2><p>​    需要1个nginx+3个nacos注册中心+1个mysql</p>
+<p>​    Linux 64bit OS Linux/Unix/Mac  //推荐使用Linux系统</p>
+<p>​    需要三个或三个以上的Nacos才能构成集群。</p>
+<p>本次搭建使用的是<code>nacos-server-1.4.2.tar.gz</code> ， 下载地址</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/alibaba/</span>nacos<span class="hljs-regexp">/releases/</span>download<span class="hljs-regexp">/1.4.2/</span>nacos-server-<span class="hljs-number">1.4</span>.<span class="hljs-number">2</span>.tar.gz<br></code></pre></td></tr></table></figure>
 
+<h2 id="2-开始搭建"><a href="#2-开始搭建" class="headerlink" title="2.开始搭建"></a>2.开始搭建</h2><ol>
+<li><p><code>mysql</code>新建<code>nacos</code>的数据库，并执行脚本</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/alibaba/</span>nacos<span class="hljs-regexp">/blob/m</span>aster<span class="hljs-regexp">/config/</span>src<span class="hljs-regexp">/main/</span>resources<span class="hljs-regexp">/META-INF/</span>nacos-db.sql<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos04.png" srcset="/img/loading.gif" lazyload alt="image-20220218193332705"></p>
+</li>
+<li><p>先把<code>nacos-server-1.4.2.tar.gz</code>放到linux，可以使用xftp工具方便。</p>
+<p>这里我选择放到/opt/nacoscluster下。解压三份并重命名</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos03.png" srcset="/img/loading.gif" lazyload alt="image-20220218192428629"></p>
+</li>
+<li><p>进入三个节点conf/application.properties配置,更改数据库。</p>
+<p><code>vim application.properties</code></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos09.png" srcset="/img/loading.gif" lazyload alt="image-20220218193742922"></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">spring.datasource.platform</span>=mysql<br><span class="hljs-attr">db.num</span>=<span class="hljs-number">1</span><br><span class="hljs-attr">db.url.0</span>=jdbc:mysql://你的IP:<span class="hljs-number">3306</span>/nacos_config?characterEncoding=utf8&amp;connectTimeout=<span class="hljs-number">1000</span>&amp;socketTimeout=<span class="hljs-number">3000</span>&amp;autoReconnect=<span class="hljs-literal">true</span><br><span class="hljs-attr">db.user</span>=用户名<br><span class="hljs-attr">db.password</span>=密码<br></code></pre></td></tr></table></figure></li>
+<li><p>三个节点/conf下配置cluster.conf，注意有个文件叫cluster.conf.example 那个文件只是做示例的</p>
+<p>vim cluster.conf  配置集群IP和端口</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">192.168.2.128:8848</span><br><span class="hljs-number">192.168.2.128:8849</span><br><span class="hljs-number">192.168.2.128:8850</span><br></code></pre></td></tr></table></figure></li>
+<li><p>启动三个结点前，建议修改一下内存大小，不然虚拟机内存可能不够用</p>
+<p>切换到bin目录下，vim startup.sh</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos05.png" srcset="/img/loading.gif" lazyload alt="image-20220218194149831"></p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos06.png" srcset="/img/loading.gif" lazyload alt="image-20220218194326354"></p>
+</li>
+<li><p>然后就可以启动了 ./startup.sh ,分别启动三个结点</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos07.png" srcset="/img/loading.gif" lazyload alt="image-20220218194502302"></p>
+</li>
+<li><p>查看nacos状态</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">ps</span> -ef | <span class="hljs-keyword">grep</span> nacos<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos01.png" srcset="/img/loading.gif" lazyload alt="image-20220218191951545"></p>
+<p>可以发现都启动成功了，接下来我们去浏览器随便访问一个nacos</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos02.png" srcset="/img/loading.gif" lazyload alt="image-20220218192154392"></p>
+</li>
+</ol>
+<h2 id="3-Ngnix配置"><a href="#3-Ngnix配置" class="headerlink" title="3.Ngnix配置"></a>3.Ngnix配置</h2><p>由ngnix作为负载均衡器,修改ngnix.conf</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/nacos/nacos03.png" srcset="/img/loading.gif" lazyload alt="image-20220218200129720"></p>
+<p>切换到sbin目录下</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs gradle">.<span class="hljs-regexp">/nginx -c /u</span>sr<span class="hljs-regexp">/local/</span>nginx<span class="hljs-regexp">/conf/</span>nginx.conf<br><br>ps -ef|<span class="hljs-keyword">grep</span> nginx<br></code></pre></td></tr></table></figure>
+
+<p>访问    <a target="_blank" rel="noopener" href="https://192.168.2.128:666/nacos">https://192.168.2.128:666/nacos</a> </p>
+<p>至此集群搭建成功，有条件可以用三台机器玩。</p>
 
             </div>
             <hr>
@@ -302,7 +332,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/docker/">docker</a>
+                      <a class="hover-with-bg" href="/categories/nacos/">nacos</a>
                     
                   </div>
                 
@@ -310,7 +340,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
+                      <a class="hover-with-bg" href="/tags/nacos/">nacos</a>
                     
                   </div>
                 
@@ -327,18 +357,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/02/11/%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">单点登录学习笔记</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/01/23/docker-containerVolume/">
-                        <span class="hidden-mobile">Docker容器卷学习笔记</span>
+                      <a href="/2022/02/17/ComputerNetwork/">
+                        <span class="hidden-mobile">计算机网络学习笔记</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
