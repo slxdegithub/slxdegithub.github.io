@@ -1,0 +1,1068 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="Blue~u~u~u">
+  <meta name="author" content="Blue~u~u~u">
+  <meta name="keywords" content="">
+  <meta name="description" content="使用 Lock API 控制多线程第一节 HelloWorld1、卖票1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162public class Demo01HelloWorld &amp;#123;    &#x2F;&#x2F; 声明成员变量维">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JUC学习笔记（三）Lock API控制多线程">
+<meta property="og:url" content="http://www.slx.blue/2022/03/08/JUC03-LockApi/index.html">
+<meta property="og:site_name" content="Blue~u~u~u~u">
+<meta property="og:description" content="使用 Lock API 控制多线程第一节 HelloWorld1、卖票1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162public class Demo01HelloWorld &amp;#123;    &#x2F;&#x2F; 声明成员变量维">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-01.png?versionId=CAEQKRiBgICQr_2i.xciIGI1NTMyNmQxNzAzNjRjMWU4OTgwYWQ1YzE0N2NmZThk">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-02.png?versionId=CAEQKRiBgICMr_2i.xciIDhhMDdkOWQ2NGJjYjQxNjVhNzhkOTY0NzMyNmQ2NjFh">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-03.png?versionId=CAEQKRiBgMCHr_2i.xciIGIzM2M5NTkyMDY0MDQwYTlhZDI1MDM5OGY1YjlkMTgw">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-04.png?versionId=CAEQKRiBgMDHrf2i.xciIGE0MTE5MjI3MGRhNjRhMmM5MzRmNGMwNTM4NDZiNzI5">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-05.png?versionId=CAEQKRiBgMDQrf2i.xciIDEzNmU5MThiZjBmZjQyODFhMDZjN2M2ZWMzZDgzMWMx">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-06.png?versionId=CAEQKRiBgIC1rf2i.xciIDJmMmJhOWViNDdhNzQ0MDE4MTE0MDJiNDg4ZjU3Y2Uy">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-07.png?versionId=CAEQKRiBgMDArf2i.xciIGJhMzEyOGM3M2ZmZDRlNWViYzE4OGE4MmMyYjZjMTIw">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-08.png?versionId=CAEQKRiBgICbrf2i.xciIGM0YjMyNDdhZWMwMzQ1Nzk5MDI1NTRkYWQzYzA1NTVl">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-14.png?versionId=CAEQKRiBgMCi55Sj.xciIDA5NGYxMGI4NGMzYTQxYjQ4Zjg1NTcwYzNhZTY1YTE2">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-09.png?versionId=CAEQKRiCgICgrf2i.xciIGFlNzJkYjQwM2NjNjRlMzc4MTNiNmY0NTE4ZTRmZjNm">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-10.png?versionId=CAEQKRiBgMCOrf2i.xciIGMzNzY0NzBiMzBlZjQ1YzBhYTZmMzVlZjRlMTc4MWRk">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-11.png?versionId=CAEQKRiBgMCbrf2i.xciIDM5ZmI0OWYxYjMyNDQ1MmNhOGJlZjFjZDNlMWM0ZWM5">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-12.png?versionId=CAEQKRiBgICgrf2i.xciIDRiNzAwNjQ1OWVmZDQ0MjZhMGFiZGQ0NTA4MGFhNWZl">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-13.png?versionId=CAEQKRiBgMCPrf2i.xciIDY3YTdjMWNmZDBlYzQ0MzZiNmQzNDk1NWJmMTRjZWEy">
+<meta property="article:published_time" content="2022-03-08T10:13:47.000Z">
+<meta property="article:modified_time" content="2022-03-08T10:16:30.943Z">
+<meta property="article:author" content="Blue~u~u~u">
+<meta property="article:tag" content="JUC">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-01.png?versionId=CAEQKRiBgICQr_2i.xciIGI1NTMyNmQxNzAzNjRjMWU4OTgwYWQ1YzE0N2NmZThk">
+  
+  <title>JUC学习笔记（三）Lock API控制多线程 - Blue~u~u~u~u</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"/>
+<script src="/live2d-widget/autoload.js"></script>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Blue~u~u</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="JUC学习笔记（三）Lock API控制多线程">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-03-08 18:13" pubdate>
+        2022年3月8日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      32k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      99 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JUC学习笔记（三）Lock API控制多线程</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 分钟前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="使用-Lock-API-控制多线程"><a href="#使用-Lock-API-控制多线程" class="headerlink" title="使用 Lock API 控制多线程"></a>使用 Lock API 控制多线程</h1><h1 id="第一节-HelloWorld"><a href="#第一节-HelloWorld" class="headerlink" title="第一节 HelloWorld"></a>第一节 HelloWorld</h1><h2 id="1、卖票"><a href="#1、卖票" class="headerlink" title="1、卖票"></a>1、卖票</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo01HelloWorld</span> </span>&#123;<br><br>    <span class="hljs-comment">// 声明成员变量维护票库存</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> stock = <span class="hljs-number">100</span>;<br><br>    <span class="hljs-comment">// 创建锁对象</span><br>    <span class="hljs-comment">// 变量类型：java.util.concurrent.locks.Lock 接口</span><br>    <span class="hljs-comment">// 对象类型：Lock 接口的最常用的实现类 ReentrantLock</span><br>    <span class="hljs-keyword">private</span> Lock lock = <span class="hljs-keyword">new</span> ReentrantLock();<br><br>    <span class="hljs-comment">// 声明卖票的方法</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">saleTicket</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// 加锁</span><br>            lock.lock(); <span class="hljs-comment">// synchronized (this) &#123;</span><br><br>            <span class="hljs-keyword">if</span> (stock &gt; <span class="hljs-number">0</span>) &#123;<br>                <span class="hljs-comment">// 卖票的核心操作</span><br>                System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 卖了一张，还剩 &quot;</span> + --stock + <span class="hljs-string">&quot; 张票。&quot;</span>);<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 卖完了。&quot;</span>);<br>            &#125;<br><br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br>            <span class="hljs-comment">// 解锁</span><br>            lock.unlock(); <span class="hljs-comment">// &#125;</span><br>        &#125;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br><br>        <span class="hljs-comment">// 1、创建当前类对象</span><br>        Demo01HelloWorld demo = <span class="hljs-keyword">new</span> Demo01HelloWorld();<br>        <span class="hljs-comment">// 2、开启三个线程调用卖票方法</span><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">40</span>; i++) &#123;<br>                demo.saleTicket();<br>                <span class="hljs-keyword">try</span> &#123;<br>                    TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br>            &#125;<br>        &#125;, <span class="hljs-string">&quot;thread-01&quot;</span>).start();<br><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">40</span>; i++) &#123;<br>                demo.saleTicket();<br>                <span class="hljs-keyword">try</span> &#123;<br>                    TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br>            &#125;<br>        &#125;, <span class="hljs-string">&quot;thread-02&quot;</span>).start();<br><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">40</span>; i++) &#123;<br>                demo.saleTicket();<br>                <span class="hljs-keyword">try</span> &#123;<br>                    TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br>            &#125;<br>        &#125;, <span class="hljs-string">&quot;thread-03&quot;</span>).start();<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="2、需要注意的点"><a href="#2、需要注意的点" class="headerlink" title="2、需要注意的点"></a>2、需要注意的点</h2><h3 id="①确保锁被释放"><a href="#①确保锁被释放" class="headerlink" title="①确保锁被释放"></a>①确保锁被释放</h3><p>使用 Lock API 实现同步操作，是一种面向对象的编码风格。这种风格有很大的灵活性，同时可以在常规操作的基础上附加更强大的功能。但是也要求编写代码更加谨慎：如果忘记调用 lock.unlock() 方法则锁不会被释放，从而造成程序运行出错。</p>
+<h3 id="②加锁和解锁操作对称执行"><a href="#②加锁和解锁操作对称执行" class="headerlink" title="②加锁和解锁操作对称执行"></a>②加锁和解锁操作对称执行</h3><p>不管同步操作是一层还是多层，有多少个加锁操作，就应该相应的有多少个解锁操作。</p>
+<h3 id="③避免锁对象的线程私有化"><a href="#③避免锁对象的线程私有化" class="headerlink" title="③避免锁对象的线程私有化"></a>③避免锁对象的线程私有化</h3><p>锁对象如果是线程内部自己创建的，而且是自己独占的，其它线程访问不到这个对象，那么这个锁将无法实现<strong>『排他』</strong>效果，说白了就是：锁不住。</p>
+<h4 id="1-情况一局部变量：线程私有"><a href="#1-情况一局部变量：线程私有" class="headerlink" title="[1]情况一局部变量：线程私有"></a>[1]情况一局部变量：线程私有</h4><p>代码片段如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 声明一个方法卖票</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">saleTicket</span><span class="hljs-params">()</span> </span>&#123;<br><br>    <span class="hljs-comment">// 锁对象的线程私有化问题：在线程内部，让每个线程自己创建自己的锁。</span><br>    <span class="hljs-comment">// 对其它线程无法产生排他性的互斥效果：锁不住，监守自盗。</span><br>    Lock lock = <span class="hljs-keyword">new</span> ReentrantLock();<br></code></pre></td></tr></table></figure>
+
+
+
+<p>内存分析如下：</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-01.png?versionId=CAEQKRiBgICQr_2i.xciIGI1NTMyNmQxNzAzNjRjMWU4OTgwYWQ1YzE0N2NmZThk" srcset="/img/loading.gif" lazyload alt="images"></p>
+<h4 id="2-情况二局部变量：线程共享"><a href="#2-情况二局部变量：线程共享" class="headerlink" title="[2]情况二局部变量：线程共享"></a>[2]情况二局部变量：线程共享</h4><p>代码片段如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br><br>    <span class="hljs-comment">// 场景一：局部变量被多个线程共享</span><br>    <span class="hljs-comment">// 此时其实是锁得住的。</span><br>    Lock lock = <span class="hljs-keyword">new</span> ReentrantLock();<br><br>    <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>        lock.lock();<br>    &#125;, <span class="hljs-string">&quot;thread-a&quot;</span>).start();<br><br>    <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>        lock.lock();<br>    &#125;, <span class="hljs-string">&quot;thread-b&quot;</span>).start();<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>内存分析如下：</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-02.png?versionId=CAEQKRiBgICMr_2i.xciIDhhMDdkOWQ2NGJjYjQxNjVhNzhkOTY0NzMyNmQ2NjFh" srcset="/img/loading.gif" lazyload alt="images"></p>
+<h4 id="3-情况三成员变量：线程私有"><a href="#3-情况三成员变量：线程私有" class="headerlink" title="[3]情况三成员变量：线程私有"></a>[3]情况三成员变量：线程私有</h4><p>代码片段如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Phone</span> </span>&#123;<br><br>    <span class="hljs-keyword">private</span> Lock lock = <span class="hljs-keyword">new</span> ReentrantLock();<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sendShortMessage</span><span class="hljs-params">()</span> </span>&#123;<br>        lock.lock();<br>        System.out.println(lock.hashCode());<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            Phone phone = <span class="hljs-keyword">new</span> Phone();<br>            phone.sendShortMessage();<br>        &#125;,<span class="hljs-string">&quot;thread-a&quot;</span>).start();<br><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            Phone phone = <span class="hljs-keyword">new</span> Phone();<br>            phone.sendShortMessage();<br>        &#125;,<span class="hljs-string">&quot;thread-a&quot;</span>).start();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>内存分析如下：</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-03.png?versionId=CAEQKRiBgMCHr_2i.xciIGIzM2M5NTkyMDY0MDQwYTlhZDI1MDM5OGY1YjlkMTgw" srcset="/img/loading.gif" lazyload alt="images"></p>
+<h4 id="4-情况四成员变量：线程共享"><a href="#4-情况四成员变量：线程共享" class="headerlink" title="[4]情况四成员变量：线程共享"></a>[4]情况四成员变量：线程共享</h4><p>代码片段如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo01HelloWorld</span> </span>&#123;<br><br>    <span class="hljs-comment">// 声明成员变量保存票的库存</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> stock = <span class="hljs-number">100</span>;<br><br>    <span class="hljs-comment">// 声明成员变量维护 Lock 锁对象</span><br>    <span class="hljs-keyword">private</span> Lock lock = <span class="hljs-keyword">new</span> ReentrantLock();<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br><br>    <span class="hljs-comment">// 1、创建当前类的对象</span><br>    Demo01HelloWorld demo = <span class="hljs-keyword">new</span> Demo01HelloWorld();<br></code></pre></td></tr></table></figure>
+
+
+
+<p>内存分析如下：</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-04.png?versionId=CAEQKRiBgMDHrf2i.xciIGE0MTE5MjI3MGRhNjRhMmM5MzRmNGMwNTM4NDZiNzI5" srcset="/img/loading.gif" lazyload alt="images"></p>
+<h4 id="5-小结"><a href="#5-小结" class="headerlink" title="[5]小结"></a>[5]小结</h4><ul>
+<li><p>使用 Lock 对象实现同步锁，要求各个线程使用的是同一个对象。</p>
+</li>
+<li><p>那么各个线程它们使用的是不是同一个 ReentrantLock 对象，不能看表面。</p>
+<ul>
+<li>表面现象1：使用局部变量指向 ReentrantLock 对象。</li>
+<li>表面现象2：使用成员变量指向 ReentrantLock 对象。</li>
+</ul>
+</li>
+<li><p>本质：根据一系列引用的链条最终找的的 ReentrantLock 对象是不是</p>
+<p>堆空间中的同一个对象</p>
+<ul>
+<li>是：锁得住。</li>
+<li>否：锁不住。</li>
+</ul>
+</li>
+</ul>
+<h1 id="第二节-Lock-接口"><a href="#第二节-Lock-接口" class="headerlink" title="第二节 Lock 接口"></a>第二节 Lock 接口</h1><p>全类名：java.util.concurrent.locks.Lock</p>
+<p>方法功能说明：</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>void lock()</td>
+<td>加同步锁</td>
+</tr>
+<tr>
+<td>void unlock()</td>
+<td>解除同步锁</td>
+</tr>
+<tr>
+<td>boolean tryLock()</td>
+<td>尝试获取锁 返回 true：表示获取成功 返回 false：表示获取失败</td>
+</tr>
+<tr>
+<td>boolean tryLock(long time, TimeUnit unit)</td>
+<td>尝试获取锁，且等待指定时间 返回 true：表示获取成功 返回 false：表示获取失败</td>
+</tr>
+<tr>
+<td>void lockInterruptibly()</td>
+<td>以『支持响应中断』的模式获取锁</td>
+</tr>
+<tr>
+<td>Condition newCondition();</td>
+<td>获取用于线程间通信的 Condition 对象</td>
+</tr>
+</tbody></table>
+<h1 id="第三节-可重入锁"><a href="#第三节-可重入锁" class="headerlink" title="第三节 可重入锁"></a>第三节 可重入锁</h1><p>全类名：java.util.concurrent.locks.<strong>ReentrantLock</strong></p>
+<h2 id="1、基本用法"><a href="#1、基本用法" class="headerlink" title="1、基本用法"></a>1、基本用法</h2><ul>
+<li>基本要求1：将解锁操作放在 finally 块中，确保解锁操作能够被执行到。</li>
+<li>基本要求2：加锁和解锁操作要对称。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-comment">// 加锁</span><br>    lock.lock();<br>    <span class="hljs-comment">// 同步代码部分</span><br>&#125; <span class="hljs-keyword">catch</span>(Exception e) &#123;<br>    <span class="hljs-comment">// ...</span><br>&#125; <span class="hljs-keyword">finally</span> &#123;<br>    <span class="hljs-comment">// 解锁</span><br>    lock.unlock();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2、验证可重入性"><a href="#2、验证可重入性" class="headerlink" title="2、验证可重入性"></a>2、验证可重入性</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 声明卖票的方法</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">saleTicket</span><span class="hljs-params">()</span> </span>&#123;<br><br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-comment">// 加锁</span><br>        lock.lock(); <span class="hljs-comment">// synchronized (this) &#123;</span><br>        <span class="hljs-keyword">if</span> (stock &gt; <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-comment">// 卖票的核心操作</span><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 卖了一张，还剩 &quot;</span> + --stock + <span class="hljs-string">&quot; 张票。&quot;</span>);<br><br>            <span class="hljs-comment">// ❤❤❤❤❤❤❤❤❤❤❤可重入性验证❤❤❤❤❤❤❤❤❤❤❤</span><br>            <span class="hljs-keyword">this</span>.showMessage();<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 卖完了。&quot;</span>);<br>        &#125;<br><br>    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>        e.printStackTrace();<br>    &#125; <span class="hljs-keyword">finally</span> &#123;<br>        <span class="hljs-comment">// 解锁</span><br>        lock.unlock(); <span class="hljs-comment">// &#125;</span><br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// ❤❤❤❤❤❤❤❤❤❤❤可重入性验证❤❤❤❤❤❤❤❤❤❤❤</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">showMessage</span><span class="hljs-params">()</span> </span>&#123;<br><br>    <span class="hljs-keyword">try</span> &#123;<br>        lock.lock();<br>        System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; is working&quot;</span>);<br>    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>        e.printStackTrace();<br>    &#125; <span class="hljs-keyword">finally</span> &#123;<br>        lock.unlock();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="3、接口定义：tryLock"><a href="#3、接口定义：tryLock" class="headerlink" title="3、接口定义：tryLock()"></a>3、接口定义：tryLock()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo03TryLock</span> </span>&#123;<br><br>    <span class="hljs-keyword">private</span> Lock lock = <span class="hljs-keyword">new</span> ReentrantLock();<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">showMessage</span><span class="hljs-params">()</span> </span>&#123;<br><br>        <span class="hljs-keyword">boolean</span> lockResult = <span class="hljs-keyword">false</span>;<br><br>        <span class="hljs-keyword">try</span> &#123;<br><br>            <span class="hljs-comment">// 尝试获取锁</span><br>            <span class="hljs-comment">// 返回true：获取成功</span><br>            <span class="hljs-comment">// 返回false：获取失败</span><br>            lockResult = lock.tryLock();<br><br>            <span class="hljs-keyword">if</span> (lockResult) &#123;<br>                <span class="hljs-keyword">try</span> &#123;<br>                    TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br>                System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 得到了锁，正在工作&quot;</span>);<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 没有得到锁&quot;</span>);<br>            &#125;<br><br>        &#125;<span class="hljs-keyword">catch</span> (Exception e)&#123;<br>            e.printStackTrace();<br>        &#125;<span class="hljs-keyword">finally</span> &#123;<br><br>            <span class="hljs-comment">// 如果曾经得到了锁，那么就解锁</span><br>            <span class="hljs-keyword">if</span> (lockResult) &#123;<br>                lock.unlock();<br>            &#125;<br><br>        &#125;<br><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br><br>        <span class="hljs-comment">// 1、创建多个线程共同操作的对象</span><br>        Demo03TryLock demo = <span class="hljs-keyword">new</span> Demo03TryLock();<br><br>        <span class="hljs-comment">// 2、创建三个线程</span><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br><br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++) &#123;<br>                <span class="hljs-keyword">try</span> &#123;TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br>                demo.showMessage();<br>            &#125;<br>        &#125;, <span class="hljs-string">&quot;thread-01&quot;</span>).start();<br><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br><br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++) &#123;<br>                <span class="hljs-keyword">try</span> &#123;TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br>                demo.showMessage();<br>            &#125;<br><br>        &#125;, <span class="hljs-string">&quot;thread-02&quot;</span>).start();<br><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br><br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++) &#123;<br>                <span class="hljs-keyword">try</span> &#123;TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br>                demo.showMessage();<br>            &#125;<br><br>        &#125;, <span class="hljs-string">&quot;thread-03&quot;</span>).start();<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="4、接口定义：tryLock-time-timeUnit"><a href="#4、接口定义：tryLock-time-timeUnit" class="headerlink" title="4、接口定义：tryLock(time, timeUnit)"></a>4、接口定义：tryLock(time, timeUnit)</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo04TryLockWithTime</span> </span>&#123;<br>    <span class="hljs-keyword">private</span> Lock lock = <span class="hljs-keyword">new</span> ReentrantLock();<br><br>    <span class="hljs-comment">// 得到锁之后占用 5 秒</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">useLock</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            lock.lock();<br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 开始工作&quot;</span>);<br>            <span class="hljs-keyword">try</span> &#123;TimeUnit.SECONDS.sleep(<span class="hljs-number">5</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 结束工作&quot;</span>);<br><br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br>            lock.unlock();<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">// 在尝试获取锁的过程中，可以等待一定时间</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">waitLock</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">boolean</span> lockResult = <span class="hljs-keyword">false</span>;<br><br>        <span class="hljs-keyword">try</span> &#123;<br>		   <span class="hljs-comment">//不带超时时间的方式</span><br>            <span class="hljs-comment">//lockResult  = lock.tryLock();</span><br>            <span class="hljs-comment">// 尝试获取锁，并指定了等待时间</span><br>            lockResult = lock.tryLock(<span class="hljs-number">3</span>, TimeUnit.SECONDS);<br><br>            <span class="hljs-keyword">if</span> (lockResult) &#123;<br>                System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 得到了锁，开始工作&quot;</span>);<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 没有得到锁&quot;</span>);<br>            &#125;<br><br>        &#125;<span class="hljs-keyword">catch</span> (Exception e)&#123;<br>            e.printStackTrace();<br>        &#125;<span class="hljs-keyword">finally</span> &#123;<br>            <span class="hljs-keyword">if</span> (lockResult) &#123;<br>                lock.unlock();<br>            &#125;<br>        &#125;<br><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br><br>        <span class="hljs-comment">// 1、创建当前类对象</span><br>        Demo04TryLockWithTime demo = <span class="hljs-keyword">new</span> Demo04TryLockWithTime();<br><br>        <span class="hljs-comment">// 2、创建 A 线程占用锁</span><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            demo.useLock();<br>        &#125;, <span class="hljs-string">&quot;thread-a&quot;</span>).start();<br><br>        <span class="hljs-comment">// 3、创建 B 线程尝试获取锁</span><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            demo.waitLock();<br>        &#125;, <span class="hljs-string">&quot;thread-b&quot;</span>).start();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="5、实现类提供：公平锁"><a href="#5、实现类提供：公平锁" class="headerlink" title="5、实现类提供：公平锁"></a>5、实现类提供：公平锁</h2><h3 id="①概念"><a href="#①概念" class="headerlink" title="①概念"></a>①概念</h3><p>在 ReentrantLock 构造器中传入 boolean 类型的参数：</p>
+<ul>
+<li>true：创建公平锁（在锁上等待最长时间的线程有最高优先级）</li>
+<li>false：创建非公平锁</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ReentrantLock</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span> fair)</span> </span>&#123;<br>    sync = fair ? <span class="hljs-keyword">new</span> FairSync() : <span class="hljs-keyword">new</span> NonfairSync();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="②代码"><a href="#②代码" class="headerlink" title="②代码"></a>②代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo05FairLock</span> </span>&#123;<br><br>    <span class="hljs-keyword">private</span> Lock lock = <span class="hljs-keyword">new</span> ReentrantLock(<span class="hljs-keyword">true</span>);<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">printMessage</span><span class="hljs-params">()</span> </span>&#123;<br><br>        <span class="hljs-keyword">try</span> &#123;<br><br>            lock.lock();<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; say hello to you&quot;</span>);<br><br>            <span class="hljs-keyword">try</span> &#123;TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br><br>        &#125;<span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125;<span class="hljs-keyword">finally</span> &#123;<br>            lock.unlock();<br>        &#125;<br><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br><br>        <span class="hljs-comment">// 1、创建当前类的对象</span><br>        Demo05FairLock demo = <span class="hljs-keyword">new</span> Demo05FairLock();<br><br>        <span class="hljs-comment">// 2、创建三个线程，每个线程内调用 printMessage() 方法十次</span><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br><br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>                demo.printMessage();<br>            &#125;<br><br>        &#125;, <span class="hljs-string">&quot;thread-a&quot;</span>).start();<br><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br><br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>                demo.printMessage();<br>            &#125;<br><br>        &#125;, <span class="hljs-string">&quot;thread-b&quot;</span>).start();<br><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br><br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>                demo.printMessage();<br>            &#125;<br><br>        &#125;, <span class="hljs-string">&quot;thread-c&quot;</span>).start();<br><br><br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="③使用建议"><a href="#③使用建议" class="headerlink" title="③使用建议"></a>③使用建议</h3><ul>
+<li>公平锁对线程操作的吞吐量有限制，效率上不如非公平锁。</li>
+<li>如果没有特殊需要还是建议使用默认的非公平锁。</li>
+</ul>
+<h2 id="6、接口定义：lockInterruptibly"><a href="#6、接口定义：lockInterruptibly" class="headerlink" title="6、接口定义：lockInterruptibly()"></a>6、接口定义：lockInterruptibly()</h2><p>TIP</p>
+<p>lock：动词，加锁的动作</p>
+<p>Interruptibly：修饰动词的副词，表示可以被打断</p>
+<p>组合起来的含义：以可以被打断的方式加锁。具体来说就是如果线程是被 lockInterruptibly() 加的锁给阻塞的，那么这个阻塞状态可以被打断。</p>
+<h3 id="①响应中断"><a href="#①响应中断" class="headerlink" title="①响应中断"></a>①响应中断</h3><p>响应中断这个概念，我们这么解释：</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-05.png?versionId=CAEQKRiBgMDQrf2i.xciIDEzNmU5MThiZjBmZjQyODFhMDZjN2M2ZWMzZDgzMWMx" srcset="/img/loading.gif" lazyload alt="images"></p>
+<p>下图描述的是一个最基本的响应中断状态：</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-06.png?versionId=CAEQKRiBgIC1rf2i.xciIDJmMmJhOWViNDdhNzQ0MDE4MTE0MDJiNDg4ZjU3Y2Uy" srcset="/img/loading.gif" lazyload alt="images"></p>
+<p>默认情况下，对于调用了 sleep() 方法进入 TIME_WAITING 状态的线程，可以通过调用 interrupt() 方法打断。对此我们可以说：线程的 TIME_WAITING 状态支持响应中断。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br><br>        <span class="hljs-comment">// 1、创建线程对象</span><br>        Thread thread = <span class="hljs-keyword">new</span> Thread(() -&gt; &#123;<br><br>            <span class="hljs-comment">// 2、进入睡眠状态</span><br>            <span class="hljs-keyword">try</span> &#123;<br>                System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 开始睡了&quot;</span>);<br><br>                <span class="hljs-comment">// 概念：这个睡觉的状态能够被打断，那么我们就说这个状态支持响应中断</span><br>                Thread.sleep(<span class="hljs-number">20000</span>);<br>                System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 睡醒了&quot;</span>);<br>            &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>                e.printStackTrace();<br>            &#125;<br><br>        &#125;);<br><br>        <span class="hljs-comment">// 3、启动线程</span><br>        thread.start();<br><br>        <span class="hljs-comment">// 4、等一会儿再去打断</span><br>        <span class="hljs-keyword">try</span> &#123;TimeUnit.SECONDS.sleep(<span class="hljs-number">5</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br><br>        <span class="hljs-comment">// 5、调用 interrupt() 方法打断线程的 TIME_WAITING 状态</span><br>        thread.interrupt();<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>线程被打断后会抛出异常：</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-07.png?versionId=CAEQKRiBgMDArf2i.xciIGJhMzEyOGM3M2ZmZDRlNWViYzE4OGE4MmMyYjZjMTIw" srcset="/img/loading.gif" lazyload alt="image-20220308115517378"></p>
+<h3 id="②synchronized-方式下的阻塞状态无法被打断"><a href="#②synchronized-方式下的阻塞状态无法被打断" class="headerlink" title="②synchronized 方式下的阻塞状态无法被打断"></a>②synchronized 方式下的阻塞状态无法被打断</h3><p>结论：synchronized 导致的 blocked 状态不支持响应中断。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-08.png?versionId=CAEQKRiBgICbrf2i.xciIGM0YjMyNDdhZWMwMzQ1Nzk5MDI1NTRkYWQzYzA1NTVl" srcset="/img/loading.gif" lazyload alt="images"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br><br>        <span class="hljs-comment">// 1、创建一个对象作为锁对象</span><br>        Object lock = <span class="hljs-keyword">new</span> Object();<br><br>        <span class="hljs-comment">// 2、创建一个线程长期占用锁</span><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            <span class="hljs-keyword">synchronized</span> (lock) &#123;<br>                <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) &#123;&#125;<br>            &#125;<br>        &#125;, <span class="hljs-string">&quot;thread-a&quot;</span>).start();<br><br>        <span class="hljs-keyword">try</span> &#123;TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br><br>        <span class="hljs-comment">// 3、创建一个线程尝试获取锁</span><br>        Thread thread = <span class="hljs-keyword">new</span> Thread(() -&gt; &#123;<br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 开始痴痴的等待锁 。。。&quot;</span>);<br>            <span class="hljs-keyword">synchronized</span> (lock) &#123;<br>                <span class="hljs-comment">// ...</span><br>            &#125;<br>        &#125;, <span class="hljs-string">&quot;thread-b&quot;</span>);<br><br>        <span class="hljs-comment">// 4、启动线程</span><br>        thread.start();<br><br>        <span class="hljs-keyword">try</span> &#123;TimeUnit.SECONDS.sleep(<span class="hljs-number">3</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br><br>        <span class="hljs-comment">// 5、尝试打断当前线程的阻塞状态</span><br>        <span class="hljs-comment">// 程序运行效果：blocked 状态无法被打断，也可以说——由 synchronized 造成的阻塞状态不支持响应中断</span><br>        System.out.println(<span class="hljs-string">&quot;调用 thread.interrupt() 方法之前&quot;</span>);<br>        <span class="hljs-comment">// 尝试打断</span><br>        thread.interrupt();<br>        System.out.println(<span class="hljs-string">&quot;调用 thread.interrupt() 方法之后&quot;</span>);<br><br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>点击快照可以看到 thread-a处于RUNNABLE状态，thread-b 一直处于CLOCKED阻塞状态</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-14.png?versionId=CAEQKRiBgMCi55Sj.xciIDA5NGYxMGI4NGMzYTQxYjQ4Zjg1NTcwYzNhZTY1YTE2" srcset="/img/loading.gif" lazyload alt="image-20220308115933754"></p>
+<h3 id="③lockInterruptibly"><a href="#③lockInterruptibly" class="headerlink" title="③lockInterruptibly()"></a>③lockInterruptibly()</h3><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-09.png?versionId=CAEQKRiCgICgrf2i.xciIGFlNzJkYjQwM2NjNjRlMzc4MTNiNmY0NTE4ZTRmZjNm" srcset="/img/loading.gif" lazyload alt="images"></p>
+<p>lockInterruptibly() 方法表示获取锁但是没有得到的时候，在阻塞中等待其它线程释放锁的过程中，可以被打断。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo07LockInterruptibly</span> </span>&#123;<br><br>    <span class="hljs-keyword">private</span> Lock lock = <span class="hljs-keyword">new</span> ReentrantLock();<br><br>    <span class="hljs-comment">// 小强：持续占用锁。</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">useLock</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            lock.lock();<br>            <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) &#123;<br>                System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 正在占用锁&quot;</span>);<br>                <span class="hljs-keyword">try</span> &#123;TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br>            &#125;<br>        &#125;<span class="hljs-keyword">finally</span> &#123;<br>            lock.unlock();<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">// 小明：痴痴地等待小强释放锁</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">waitLock</span><span class="hljs-params">()</span> </span>&#123;<br>        System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 线程启动了&quot;</span>);<br><br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// 通过 lockInterruptibly() 方法获取锁，在没有获取到锁的阻塞过程中可以被打断</span><br>            lock.lockInterruptibly();<br>            <span class="hljs-comment">// ...</span><br>        &#125;<span class="hljs-keyword">finally</span> &#123;<br>            lock.unlock();<br>        &#125;<br><br>        System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 线程结束了&quot;</span>);<br><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br><br>        <span class="hljs-comment">// 1、创建当前类对象</span><br>        Demo07LockInterruptibly demo = <span class="hljs-keyword">new</span> Demo07LockInterruptibly();<br><br>        <span class="hljs-comment">// 2、创建占用锁的线程（小强）</span><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            demo.useLock();<br>        &#125;, <span class="hljs-string">&quot;thread-qiang&quot;</span>).start();<br><br>        Thread thread = <span class="hljs-keyword">new</span> Thread(() -&gt; &#123;<br>            demo.waitLock();<br>        &#125;, <span class="hljs-string">&quot;thread-ming&quot;</span>);<br>        thread.start();<br><br>        <span class="hljs-keyword">try</span> &#123;TimeUnit.SECONDS.sleep(<span class="hljs-number">3</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br><br>        <span class="hljs-comment">// 打断小明线程的阻塞状态</span><br>        thread.interrupt();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="第四节-读写锁"><a href="#第四节-读写锁" class="headerlink" title="第四节 读写锁"></a>第四节 读写锁</h1><h2 id="1、读写锁介绍"><a href="#1、读写锁介绍" class="headerlink" title="1、读写锁介绍"></a>1、读写锁介绍</h2><h3 id="①概念-1"><a href="#①概念-1" class="headerlink" title="①概念"></a>①概念</h3><p>在实际场景中，读操作不会改变数据，所以应该允许多个线程同时读取共享资源；但是如果一个线程想去写这些共享资源，就不应该允许其他线程对该资源进行读和写的操作了。</p>
+<p>针对这种场景，Java 的并发包提供了读写锁 <strong>ReentrantReadWriteLock</strong>，它表示两个锁，一个是<strong>读</strong>操作相关的锁，称为<strong>读锁</strong>，这是一种<strong>共享锁</strong>；一个是<strong>写</strong>相关的锁，称为<strong>写锁</strong>，这是一种<strong>排他锁</strong>，也叫<strong>独占锁</strong>、<strong>互斥锁</strong>。</p>
+<h3 id="②进入条件"><a href="#②进入条件" class="headerlink" title="②进入条件"></a>②进入条件</h3><h4 id="1-进入读锁的条件"><a href="#1-进入读锁的条件" class="headerlink" title="[1]进入读锁的条件"></a>[1]进入读锁的条件</h4><ul>
+<li>同一个线程内（可重入性角度）：<ul>
+<li>目前无锁：可以进入</li>
+<li>已经有读锁：可以进入</li>
+<li><strong>已经有写锁：可以进入（锁可以降级，权限可以收缩）</strong></li>
+</ul>
+</li>
+<li>不同线程之间（排他性角度）：<ul>
+<li>其他线程已经加了读锁：可以进入</li>
+<li><strong>其他线程已经加了写锁：不能进入</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="2-进入写锁的条件"><a href="#2-进入写锁的条件" class="headerlink" title="[2]进入写锁的条件"></a>[2]进入写锁的条件</h4><ul>
+<li>同一个线程内（可重入性角度）：<ul>
+<li>目前无锁：可以进入</li>
+<li><strong>已经有读锁：不能进入（锁不能升级，权限不拿扩大）</strong></li>
+<li>已经有写锁：可以进入</li>
+</ul>
+</li>
+<li>不同线程之间（排他性角度）：<ul>
+<li><strong>其他线程已经加了读锁：不能进入</strong></li>
+<li><strong>其他线程已经加了写锁：不能进入</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="③重要特性"><a href="#③重要特性" class="headerlink" title="③重要特性"></a>③重要特性</h3><h4 id="1-公平选择性"><a href="#1-公平选择性" class="headerlink" title="[1]公平选择性"></a>[1]公平选择性</h4><p>支持非公平（默认）和公平的锁获取方式，吞吐量还是非公平优于公平。</p>
+<h4 id="2-重进入"><a href="#2-重进入" class="headerlink" title="[2]重进入"></a>[2]重进入</h4><p>读锁和写锁都支持线程重进入：</p>
+<ul>
+<li>同一个线程：加读锁后再加读锁</li>
+<li>同一个线程：加写锁后再加写锁</li>
+</ul>
+<h4 id="3-锁降级"><a href="#3-锁降级" class="headerlink" title="[3]锁降级"></a>[3]锁降级</h4><p>在同一个线程内：读锁不能升级为写锁，但是写锁可以降级为读锁。</p>
+<h2 id="2、ReadWriteLock-接口"><a href="#2、ReadWriteLock-接口" class="headerlink" title="2、ReadWriteLock 接口"></a>2、ReadWriteLock 接口</h2><p>全类名：java.util.concurrent.locks.ReadWriteLock</p>
+<p>源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ReadWriteLock</span> </span>&#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Returns the lock used for reading.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> the lock used for reading.</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-function">Lock <span class="hljs-title">readLock</span><span class="hljs-params">()</span></span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Returns the lock used for writing.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> the lock used for writing.</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-function">Lock <span class="hljs-title">writeLock</span><span class="hljs-params">()</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>readLock() 方法用来获取读锁，writeLock() 方法用来获取写锁。也就是说将文件的读写操作分开，分成两种不同的锁来分配给线程，从而使得多个线程可以同时进行读操作。</p>
+<p>该接口下我们常用的实现类是：java.util.concurrent.locks.<strong>ReentrantReadWriteLock</strong></p>
+<h2 id="3、ReentrantReadWriteLock-和-Lock-的关系"><a href="#3、ReentrantReadWriteLock-和-Lock-的关系" class="headerlink" title="3、ReentrantReadWriteLock 和 Lock 的关系"></a>3、ReentrantReadWriteLock 和 Lock 的关系</h2><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-10.png?versionId=CAEQKRiBgMCOrf2i.xciIGMzNzY0NzBiMzBlZjQ1YzBhYTZmMzVlZjRlMTc4MWRk" srcset="/img/loading.gif" lazyload alt="images"></p>
+<h2 id="4、ReentrantReadWriteLock-类的整体结构"><a href="#4、ReentrantReadWriteLock-类的整体结构" class="headerlink" title="4、ReentrantReadWriteLock 类的整体结构"></a>4、ReentrantReadWriteLock 类的整体结构</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ReentrantReadWriteLock</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">ReadWriteLock</span>, <span class="hljs-title">java</span>.<span class="hljs-title">io</span>.<span class="hljs-title">Serializable</span> </span>&#123;<br><br>    <span class="hljs-comment">/** 读锁 */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ReentrantReadWriteLock.ReadLock readerLock;<br><br>    <span class="hljs-comment">/** 写锁 */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ReentrantReadWriteLock.WriteLock writerLock;<br><br>    <span class="hljs-keyword">final</span> Sync sync;<br><br>    <span class="hljs-comment">/** 使用默认（非公平）的排序属性创建一个新的 ReentrantReadWriteLock */</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ReentrantReadWriteLock</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">this</span>(<span class="hljs-keyword">false</span>);<br>    &#125;<br><br>    <span class="hljs-comment">/** 使用给定的公平策略创建一个新的 ReentrantReadWriteLock */</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ReentrantReadWriteLock</span><span class="hljs-params">(<span class="hljs-keyword">boolean</span> fair)</span> </span>&#123;<br>        sync = fair ? <span class="hljs-keyword">new</span> FairSync() : <span class="hljs-keyword">new</span> NonfairSync();<br>        readerLock = <span class="hljs-keyword">new</span> ReadLock(<span class="hljs-keyword">this</span>);<br>        writerLock = <span class="hljs-keyword">new</span> WriteLock(<span class="hljs-keyword">this</span>);<br>    &#125;<br><br>    <span class="hljs-comment">/** 返回用于写入操作的锁 */</span><br>    <span class="hljs-keyword">public</span> ReentrantReadWriteLock.<span class="hljs-function">WriteLock <span class="hljs-title">writeLock</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> writerLock; &#125;<br><br>    <span class="hljs-comment">/** 返回用于读取操作的锁 */</span><br>    <span class="hljs-keyword">public</span> ReentrantReadWriteLock.<span class="hljs-function">ReadLock  <span class="hljs-title">readLock</span><span class="hljs-params">()</span>  </span>&#123; <span class="hljs-keyword">return</span> readerLock; &#125;<br><br>    <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Sync</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AbstractQueuedSynchronizer</span> </span>&#123;&#125;<br><br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NonfairSync</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Sync</span> </span>&#123;&#125;<br><br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FairSync</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Sync</span> </span>&#123;&#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ReadLock</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Lock</span>, <span class="hljs-title">java</span>.<span class="hljs-title">io</span>.<span class="hljs-title">Serializable</span> </span>&#123;&#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WriteLock</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Lock</span>, <span class="hljs-title">java</span>.<span class="hljs-title">io</span>.<span class="hljs-title">Serializable</span> </span>&#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>ReentrantReadWriteLock 中有五个内部类，五个内部类之间也是相互关联的。内部类的关系如下图所示。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-11.png?versionId=CAEQKRiBgMCbrf2i.xciIDM5ZmI0OWYxYjMyNDQ1MmNhOGJlZjFjZDNlMWM0ZWM5" srcset="/img/loading.gif" lazyload alt="images"></p>
+<ul>
+<li>Sync 继承自 AQS</li>
+<li>NonfairSync 和 FairSync 是 Sync 类的子类</li>
+<li>ReadLock 和 WriteLock 实现了Lock接口</li>
+</ul>
+<p>总体结构图：</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-12.png?versionId=CAEQKRiBgICgrf2i.xciIDRiNzAwNjQ1OWVmZDQ0MjZhMGFiZGQ0NTA4MGFhNWZl" srcset="/img/loading.gif" lazyload alt="images"></p>
+<h2 id="5、效果对比"><a href="#5、效果对比" class="headerlink" title="5、效果对比"></a>5、效果对比</h2><h3 id="①情景设定"><a href="#①情景设定" class="headerlink" title="①情景设定"></a>①情景设定</h3><p>多个线程对同一个数据执行读操作。</p>
+<h3 id="②synchronized-方式"><a href="#②synchronized-方式" class="headerlink" title="②synchronized 方式"></a>②synchronized 方式</h3><h4 id="1-测试代码"><a href="#1-测试代码" class="headerlink" title="[1]测试代码"></a>[1]测试代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-keyword">void</span> <span class="hljs-title">readOperation</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br>        System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; is reading&quot;</span>);<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br><br>    ReadWriteLockDemo01 demo = <span class="hljs-keyword">new</span> ReadWriteLockDemo01();<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) &#123;<br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            demo.readOperation();<br>        &#125;, <span class="hljs-string">&quot;thread&quot;</span> + i).start();<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-执行效果"><a href="#2-执行效果" class="headerlink" title="[2]执行效果"></a>[2]执行效果</h4><p>每个线程都必须拿到锁才可以执行：</p>
+<blockquote>
+<p>thread<strong>0</strong> is reading<br>thread<strong>0</strong> is reading<br>thread<strong>0</strong> is reading<br>thread<strong>0</strong> is reading<br>thread<strong>0</strong> is reading<br>thread<strong>4</strong> is reading<br>thread<strong>4</strong> is reading<br>thread<strong>4</strong> is reading<br>thread<strong>4</strong> is reading<br>thread<strong>4</strong> is reading<br>thread<strong>3</strong> is reading<br>thread<strong>3</strong> is reading<br>thread<strong>3</strong> is reading<br>thread<strong>3</strong> is reading<br>thread<strong>3</strong> is reading<br>thread<strong>2</strong> is reading<br>thread<strong>2</strong> is reading<br>thread<strong>2</strong> is reading<br>thread<strong>2</strong> is reading<br>thread<strong>2</strong> is reading<br>thread<strong>1</strong> is reading<br>thread<strong>1</strong> is reading<br>thread<strong>1</strong> is reading<br>thread<strong>1</strong> is reading<br>thread<strong>1</strong> is reading</p>
+</blockquote>
+<h3 id="③ReentrantReadWriteLock-方式"><a href="#③ReentrantReadWriteLock-方式" class="headerlink" title="③ReentrantReadWriteLock 方式"></a>③ReentrantReadWriteLock 方式</h3><h4 id="1-测试代码-1"><a href="#1-测试代码-1" class="headerlink" title="[1]测试代码"></a>[1]测试代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> ReentrantReadWriteLock lock = <span class="hljs-keyword">new</span> ReentrantReadWriteLock();<br><span class="hljs-keyword">private</span> ReentrantReadWriteLock.ReadLock readLock = lock.readLock();<br><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">readOperation</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">try</span> &#123;<br>        readLock.lock();<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) &#123;<br>            TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);<br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; is reading&quot;</span>);<br>        &#125;<br>    &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>    &#125; <span class="hljs-keyword">finally</span> &#123;<br>        readLock.unlock();<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br><br>    ReadWriteLockDemo01 demo = <span class="hljs-keyword">new</span> ReadWriteLockDemo01();<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) &#123;<br>        <span class="hljs-keyword">new</span> Thread(() -&gt; &#123;<br>            demo.readOperation();<br>        &#125;, <span class="hljs-string">&quot;thread&quot;</span> + i).start();<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-执行效果-1"><a href="#2-执行效果-1" class="headerlink" title="[2]执行效果"></a>[2]执行效果</h4><p>读锁允许各个线程交替执行，大大提升了效率：</p>
+<blockquote>
+<p>thread<strong>0</strong> is reading thread<strong>2</strong> is reading thread<strong>3</strong> is reading thread<strong>4</strong> is reading thread<strong>1</strong> is reading thread<strong>2</strong> is reading thread<strong>1</strong> is reading thread<strong>4</strong> is reading</p>
+<p>……</p>
+</blockquote>
+<p>TIP</p>
+<p>注意：</p>
+<ul>
+<li>如果有一个线程已经占用了读锁，则此时其他线程如果要申请写锁，则申请写锁的线程会一直等待释放读锁。</li>
+<li>如果有一个线程已经占用了写锁，则此时其他线程如果申请写锁或者读锁，则申请的线程会一直等待释放写锁。</li>
+</ul>
+<h2 id="6、典型案例"><a href="#6、典型案例" class="headerlink" title="6、典型案例"></a>6、典型案例</h2><h3 id="①情景设定-1"><a href="#①情景设定-1" class="headerlink" title="①情景设定"></a>①情景设定</h3><p>使用 ReentrantReadWriteLock 进行读和写操作</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>操作</th>
+<th>测试目标</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>场景一</td>
+<td>多个线程同时获取读锁</td>
+<td>读锁可以共享</td>
+</tr>
+<tr>
+<td>场景二</td>
+<td>多线程获取写锁</td>
+<td>写锁不能共享</td>
+</tr>
+<tr>
+<td>场景三</td>
+<td>一个线程先获取读锁后其他线程获取写锁</td>
+<td>读排斥写</td>
+</tr>
+<tr>
+<td>场景四</td>
+<td>一个线程获取写锁后其他线程获取读锁</td>
+<td>写排斥读</td>
+</tr>
+<tr>
+<td>场景五</td>
+<td>同一个线程获取读锁后再去获取写锁</td>
+<td>读权限不能升级为写权限</td>
+</tr>
+<tr>
+<td>场景六</td>
+<td>同一个线程获取写锁后再去获取读锁</td>
+<td>写权限可以降级为读权限</td>
+</tr>
+<tr>
+<td>场景七</td>
+<td>同一个线程获取读锁之后再去获取读锁</td>
+<td>读锁可重入</td>
+</tr>
+<tr>
+<td>场景八</td>
+<td>同一个线程获取写锁之后再去所获写锁</td>
+<td>写锁可重入</td>
+</tr>
+<tr>
+<td>场景九</td>
+<td>同一个线程获取写锁之后再去获取读锁再继续获取写锁</td>
+<td>写锁里面读写都可获取</td>
+</tr>
+</tbody></table>
+<h3 id="①场景一：『读』可共享"><a href="#①场景一：『读』可共享" class="headerlink" title="①场景一：『读』可共享"></a>①场景一：『读』可共享</h3><p>结论: 多个线程可以<strong>同时获取读锁</strong></p>
+<h4 id="1-功能代码"><a href="#1-功能代码" class="headerlink" title="[1]功能代码"></a>[1]功能代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 场景一：『读』可共享</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Situation01</span> </span>&#123;<br><br>    <span class="hljs-keyword">private</span> ReentrantReadWriteLock lock = <span class="hljs-keyword">new</span> ReentrantReadWriteLock();<br>    <span class="hljs-keyword">private</span> ReentrantReadWriteLock.ReadLock readLock = lock.readLock();<br><br>    <span class="hljs-comment">// 只要都是加读锁的操作，各个线程间不需要彼此等待，可以同时并发执行</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">read</span><span class="hljs-params">()</span> </span>&#123;<br><br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// 加锁</span><br>            readLock.lock();<br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 开始执行读操作&quot;</span>);<br>            <span class="hljs-keyword">try</span> &#123; TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 结束执行读操作&quot;</span>);<br><br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br><br>            <span class="hljs-comment">// 释放锁</span><br>            readLock.unlock();<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-测试代码"><a href="#2-测试代码" class="headerlink" title="[2]测试代码"></a>[2]测试代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 场景一：创建 Situation01 对象</span><br>Situation01 situation01 = <span class="hljs-keyword">new</span> Situation01();<br><span class="hljs-comment">//创建十个线程</span><br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>    <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>        situation01.read();<br>    &#125;, <span class="hljs-string">&quot;thread&quot;</span> + i).start();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-打印效果"><a href="#3-打印效果" class="headerlink" title="[3]打印效果"></a>[3]打印效果</h4><blockquote>
+<p>thread0 开始执行读操作<br>thread1 开始执行读操作<br>thread2 开始执行读操作<br>thread3 开始执行读操作<br>thread4 开始执行读操作<br>thread5 开始执行读操作<br>thread6 开始执行读操作<br>thread7 开始执行读操作<br>thread8 开始执行读操作<br>thread9 开始执行读操作<br>thread6 结束执行读操作<br>thread7 结束执行读操作<br>thread8 结束执行读操作<br>thread9 结束执行读操作<br>thread2 结束执行读操作<br>thread3 结束执行读操作<br>thread4 结束执行读操作<br>thread0 结束执行读操作<br>thread5 结束执行读操作<br>thread1 结束执行读操作</p>
+</blockquote>
+<h3 id="②场景二：『写』互排斥"><a href="#②场景二：『写』互排斥" class="headerlink" title="②场景二：『写』互排斥"></a>②场景二：『写』互排斥</h3><p>结论：多个线程同时获取写锁，同一时间<strong>只有一个线程</strong>能获取到<strong>写</strong>锁</p>
+<h4 id="1-功能代码-1"><a href="#1-功能代码-1" class="headerlink" title="[1]功能代码"></a>[1]功能代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 场景二：『写』互排斥</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Situation02</span> </span>&#123;<br><br>    <span class="hljs-keyword">private</span> ReentrantReadWriteLock lock = <span class="hljs-keyword">new</span> ReentrantReadWriteLock();<br>    <span class="hljs-keyword">private</span> ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">write</span><span class="hljs-params">()</span> </span>&#123;<br><br>        <span class="hljs-keyword">try</span> &#123;<br><br>            writeLock.lock();<br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 开始执行写操作&quot;</span>);<br>            <span class="hljs-keyword">try</span> &#123;TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);&#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;&#125;<br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 结束执行写操作&quot;</span>);<br><br>            System.out.println();<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br><br>            writeLock.unlock();<br><br>        &#125;<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-测试代码-1"><a href="#2-测试代码-1" class="headerlink" title="[2]测试代码"></a>[2]测试代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 场景二：创建 Situation02 对象</span><br>Situation02 situation02 = <span class="hljs-keyword">new</span> Situation02();<br><br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>    <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>        situation02.write();<br>    &#125;).start();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-打印效果-1"><a href="#3-打印效果-1" class="headerlink" title="[3]打印效果"></a>[3]打印效果</h4><blockquote>
+<p>Thread-0 开始执行写操作<br>Thread-0 结束执行写操作</p>
+<p>Thread-1 开始执行写操作<br>Thread-1 结束执行写操作</p>
+<p>Thread-2 开始执行写操作<br>Thread-2 结束执行写操作</p>
+<p>Thread-3 开始执行写操作<br>Thread-3 结束执行写操作<br>……</p>
+</blockquote>
+<h3 id="③场景三：『读』排斥『写』"><a href="#③场景三：『读』排斥『写』" class="headerlink" title="③场景三：『读』排斥『写』"></a>③场景三：『读』排斥『写』</h3><p>结论：当对象具<strong>有读</strong>锁时，其他线程<strong>无法加上写</strong>锁</p>
+<h4 id="1-功能代码-2"><a href="#1-功能代码-2" class="headerlink" title="[1]功能代码"></a>[1]功能代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Situation03</span> </span>&#123;<br><br>    <span class="hljs-keyword">private</span> ReentrantReadWriteLock lock = <span class="hljs-keyword">new</span> ReentrantReadWriteLock();<br>    <span class="hljs-keyword">private</span> ReentrantReadWriteLock.ReadLock readLock = lock.readLock();<br>    <span class="hljs-keyword">private</span> ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();<br><br><br>    <span class="hljs-comment">// 只要都是加读锁的操作，各个线程间不需要彼此等待，可以同时并发执行</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">read</span><span class="hljs-params">()</span> </span>&#123;<br><br>        <span class="hljs-keyword">try</span> &#123;<br><br>            <span class="hljs-comment">// 加锁</span><br>            readLock.lock();<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 开始执行读操作&quot;</span>);<br><br>            TimeUnit.SECONDS.sleep(<span class="hljs-number">5</span>);<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 结束执行读操作&quot;</span>);<br><br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br><br>            <span class="hljs-comment">// 释放锁</span><br>            readLock.unlock();<br><br>        &#125;<br><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">write</span><span class="hljs-params">()</span> </span>&#123;<br><br>        <span class="hljs-keyword">try</span> &#123;<br><br>            writeLock.lock();<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 开始执行写操作&quot;</span>);<br><br>            TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 结束执行写操作&quot;</span>);<br><br>            System.out.println();<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br><br>            writeLock.unlock();<br><br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-测试代码-2"><a href="#2-测试代码-2" class="headerlink" title="[2]测试代码"></a>[2]测试代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 场景三：创建 Situation03 对象</span><br>Situation03 situation03 = <span class="hljs-keyword">new</span> Situation03();<br><br><span class="hljs-comment">// 创建一个线程使用读锁</span><br><span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>    situation03.read();<br>&#125;, <span class="hljs-string">&quot;thread-read&quot;</span>).start();<br><br><span class="hljs-comment">// 创建三个线程使用写锁</span><br><span class="hljs-keyword">new</span> Thread(()-&gt;&#123; situation03.write(); &#125;, <span class="hljs-string">&quot;thread-write 01&quot;</span>).start();<br><span class="hljs-keyword">new</span> Thread(()-&gt;&#123; situation03.write(); &#125;, <span class="hljs-string">&quot;thread-write 02&quot;</span>).start();<br><span class="hljs-keyword">new</span> Thread(()-&gt;&#123; situation03.write(); &#125;, <span class="hljs-string">&quot;thread-write 03&quot;</span>).start();<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-打印效果-2"><a href="#3-打印效果-2" class="headerlink" title="[3]打印效果"></a>[3]打印效果</h4><blockquote>
+<p>thread-read 开始执行读操作<br>thread-read 结束执行读操作<br>thread-write 01 开始执行写操作<br>thread-write 01 结束执行写操作</p>
+<p>thread-write 02 开始执行写操作<br>thread-write 02 结束执行写操作</p>
+<p>thread-write 03 开始执行写操作<br>thread-write 03 结束执行写操作</p>
+</blockquote>
+<h3 id="④场景四：『写』排斥『读』"><a href="#④场景四：『写』排斥『读』" class="headerlink" title="④场景四：『写』排斥『读』"></a>④场景四：『写』排斥『读』</h3><p>结论：当对象具<strong>有写</strong>锁时，其他线程<strong>无法加上读</strong>锁</p>
+<h4 id="1-功能代码-3"><a href="#1-功能代码-3" class="headerlink" title="[1]功能代码"></a>[1]功能代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Situation04</span> </span>&#123;<br><br>    <span class="hljs-keyword">private</span> ReentrantReadWriteLock lock = <span class="hljs-keyword">new</span> ReentrantReadWriteLock();<br>    <span class="hljs-keyword">private</span> ReentrantReadWriteLock.ReadLock readLock = lock.readLock();<br>    <span class="hljs-keyword">private</span> ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();<br><br>    <span class="hljs-comment">// 只要都是加读锁的操作，各个线程间不需要彼此等待，可以同时并发执行</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">read</span><span class="hljs-params">()</span> </span>&#123;<br><br>        <span class="hljs-keyword">try</span> &#123;<br><br>            <span class="hljs-comment">// 加锁</span><br>            readLock.lock();<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 开始执行读操作&quot;</span>);<br><br>            TimeUnit.SECONDS.sleep(<span class="hljs-number">1</span>);<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 结束执行读操作&quot;</span>);<br><br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br><br>            <span class="hljs-comment">// 释放锁</span><br>            readLock.unlock();<br><br>        &#125;<br><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">write</span><span class="hljs-params">()</span> </span>&#123;<br><br>        <span class="hljs-keyword">try</span> &#123;<br><br>            writeLock.lock();<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 开始执行写操作&quot;</span>);<br><br>            TimeUnit.SECONDS.sleep(<span class="hljs-number">5</span>);<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 结束执行写操作&quot;</span>);<br><br>            System.out.println();<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br><br>            writeLock.unlock();<br><br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-测试代码-3"><a href="#2-测试代码-3" class="headerlink" title="[2]测试代码"></a>[2]测试代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java">Situation04 situation04 = <span class="hljs-keyword">new</span> Situation04();<br><br><span class="hljs-comment">// 创建一个线程执行写操作</span><br><span class="hljs-keyword">new</span> Thread(()-&gt;&#123; situation04.write(); &#125;, <span class="hljs-string">&quot;thread-write&quot;</span>).start();<br><br><span class="hljs-comment">// 创建三个线程执行读操作</span><br><span class="hljs-keyword">new</span> Thread(()-&gt;&#123; situation04.read(); &#125;, <span class="hljs-string">&quot;thread-read 01&quot;</span>).start();<br><span class="hljs-keyword">new</span> Thread(()-&gt;&#123; situation04.read(); &#125;, <span class="hljs-string">&quot;thread-read 02&quot;</span>).start();<br><span class="hljs-keyword">new</span> Thread(()-&gt;&#123; situation04.read(); &#125;, <span class="hljs-string">&quot;thread-read 03&quot;</span>).start();<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-打印效果-3"><a href="#3-打印效果-3" class="headerlink" title="[3]打印效果"></a>[3]打印效果</h4><blockquote>
+<p>thread-write 开始执行写操作<br>thread-write 结束执行写操作</p>
+<p>thread-read 01 开始执行读操作<br>thread-read 02 开始执行读操作<br>thread-read 03 开始执行读操作<br>thread-read 01 结束执行读操作<br>thread-read 03 结束执行读操作<br>thread-read 02 结束执行读操作</p>
+</blockquote>
+<h3 id="⑤场景五：『锁升级』不允许"><a href="#⑤场景五：『锁升级』不允许" class="headerlink" title="⑤场景五：『锁升级』不允许"></a>⑤场景五：『锁升级』不允许</h3><p>结论：同一个线程中如果读锁尚未释放就不允许获取写锁，这说明<strong>读锁不能升级为写锁</strong>。</p>
+<h4 id="1-功能代码-4"><a href="#1-功能代码-4" class="headerlink" title="[1]功能代码"></a>[1]功能代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Situation05</span> </span>&#123;<br><br>    <span class="hljs-keyword">private</span> ReentrantReadWriteLock lock = <span class="hljs-keyword">new</span> ReentrantReadWriteLock();<br>    <span class="hljs-keyword">private</span> ReentrantReadWriteLock.ReadLock readLock = lock.readLock();<br>    <span class="hljs-keyword">private</span> ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">readThenWrite</span><span class="hljs-params">()</span> </span>&#123;<br><br>        <span class="hljs-keyword">try</span> &#123;<br>            readLock.lock();<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 正在读取数据&quot;</span>);<br><br>            writeLock.lock();<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 正在写入数据&quot;</span>);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br><br>            writeLock.unlock();<br><br>            readLock.unlock();<br><br>        &#125;<br><br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-测试代码-4"><a href="#2-测试代码-4" class="headerlink" title="[2]测试代码"></a>[2]测试代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">Situation05 situation05 = <span class="hljs-keyword">new</span> Situation05();<br><br><span class="hljs-comment">// 创建一个线程调用 Situation05 对象读写方法</span><br><span class="hljs-keyword">new</span> Thread(()-&gt;&#123; situation05.readThenWrite(); &#125;).start();<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-打印效果-4"><a href="#3-打印效果-4" class="headerlink" title="[3]打印效果"></a>[3]打印效果</h4><blockquote>
+<p>Thread-0 正在读取数据</p>
+</blockquote>
+<h3 id="⑥场景六：『锁降级』"><a href="#⑥场景六：『锁降级』" class="headerlink" title="⑥场景六：『锁降级』"></a>⑥场景六：『锁降级』</h3><p>结论：同一个线程，拥有写锁后，即使写锁尚未释放也仍可再获取读锁，这说明<strong>写锁可以降级为读锁</strong>。</p>
+<h4 id="1-功能代码-5"><a href="#1-功能代码-5" class="headerlink" title="[1]功能代码"></a>[1]功能代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Situation06</span> </span>&#123;<br><br>    <span class="hljs-keyword">private</span> ReentrantReadWriteLock lock = <span class="hljs-keyword">new</span> ReentrantReadWriteLock();<br>    <span class="hljs-keyword">private</span> ReentrantReadWriteLock.ReadLock readLock = lock.readLock();<br>    <span class="hljs-keyword">private</span> ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">writeThenRead</span><span class="hljs-params">()</span> </span>&#123;<br><br>        <span class="hljs-keyword">try</span> &#123;<br>            writeLock.lock();<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 正在写入数据&quot;</span>);<br><br>            <span class="hljs-comment">// 同一个线程内：在写锁尚未释放时，再加读锁</span><br>            readLock.lock();<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 正在读取数据&quot;</span>);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br><br>            readLock.unlock();<br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 读锁释放&quot;</span>);<br><br>            writeLock.unlock();<br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 写锁释放&quot;</span>);<br><br>        &#125;<br><br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-测试代码-5"><a href="#2-测试代码-5" class="headerlink" title="[2]测试代码"></a>[2]测试代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">Situation06 situation06 = <span class="hljs-keyword">new</span> Situation06();<br><br><span class="hljs-comment">// 创建一个线程调用 Situation06 对象的读写方法</span><br><span class="hljs-keyword">new</span> Thread(()-&gt;&#123; situation06.writeThenRead(); &#125;).start();<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-打印效果-5"><a href="#3-打印效果-5" class="headerlink" title="[3]打印效果"></a>[3]打印效果</h4><blockquote>
+<p>Thread-0 正在写入数据<br>Thread-0 正在读取数据<br>Thread-0 写锁释放<br>Thread-0 读锁释放</p>
+</blockquote>
+<h3 id="⑦场景七：『读锁可重入』"><a href="#⑦场景七：『读锁可重入』" class="headerlink" title="⑦场景七：『读锁可重入』"></a>⑦场景七：『读锁可重入』</h3><p>结论：同一个线程内，在读锁尚未释放时，再加读锁——可以。</p>
+<h4 id="1-功能代码-6"><a href="#1-功能代码-6" class="headerlink" title="[1]功能代码"></a>[1]功能代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Situation07</span> </span>&#123;<br><br> 	<span class="hljs-comment">//创建读写锁对象</span><br>    <span class="hljs-keyword">private</span> ReadWriteLock readWriteLock = <span class="hljs-keyword">new</span> ReentrantReadWriteLock();<br><br>    <span class="hljs-comment">//通过读写锁对象获取到的读锁对象</span><br>    <span class="hljs-keyword">private</span> Lock readLock = readWriteLock.readLock();<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">readThenRead</span><span class="hljs-params">()</span> </span>&#123;<br><br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// 第一个读锁</span><br>            readLock.lock();<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 开始第一次读取数据&quot;</span>);<br><br>            <span class="hljs-comment">// 同一个线程内：在读锁尚未释放时，再加读锁</span><br>            readLock.lock();<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 开始第二次读取数据&quot;</span>);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br><br>            readLock.unlock();<br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 读锁释放&quot;</span>);<br><br>            readLock.unlock();<br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 读锁释放&quot;</span>);<br><br>        &#125;<br><br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-测试代码-6"><a href="#2-测试代码-6" class="headerlink" title="[2]测试代码"></a>[2]测试代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">Situation07 situation07 = <span class="hljs-keyword">new</span> Situation07();<br><br><span class="hljs-keyword">new</span> Thread(()-&gt;&#123; situation07.readThenRead(); &#125;).start();<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-打印效果-6"><a href="#3-打印效果-6" class="headerlink" title="[3]打印效果"></a>[3]打印效果</h4><blockquote>
+<p>Thread-0 开始第一次读取数据<br>Thread-0 开始第二次读取数据<br>Thread-0 读锁释放<br>Thread-0 读锁释放</p>
+</blockquote>
+<h3 id="⑧场景八：『写锁可重入』"><a href="#⑧场景八：『写锁可重入』" class="headerlink" title="⑧场景八：『写锁可重入』"></a>⑧场景八：『写锁可重入』</h3><p>结论：同一个线程内，在写锁尚未释放时，再加写锁——可以。</p>
+<h4 id="1-功能代码-7"><a href="#1-功能代码-7" class="headerlink" title="[1]功能代码"></a>[1]功能代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Situation08</span> </span>&#123;<br><br> 	<span class="hljs-comment">//创建读写锁对象</span><br>    <span class="hljs-keyword">private</span> ReadWriteLock readWriteLock = <span class="hljs-keyword">new</span> ReentrantReadWriteLock();<br>    <span class="hljs-comment">//通过读写锁对象获取到的写锁对象</span><br>    <span class="hljs-keyword">private</span> Lock writeLock = readWriteLock.writeLock();<br><br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">writeThenWrite</span><span class="hljs-params">()</span> </span>&#123;<br><br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// 第一个读锁</span><br>            writeLock.lock();<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 开始第一次写入数据&quot;</span>);<br><br>            <span class="hljs-comment">// 同一个线程内：在读锁尚未释放时，再加读锁</span><br>            writeLock.lock();<br><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 开始第二次写入数据&quot;</span>);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br><br>            writeLock.unlock();<br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 写锁释放&quot;</span>);<br><br>            writeLock.unlock();<br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 写锁释放&quot;</span>);<br><br>        &#125;<br><br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-测试代码-7"><a href="#2-测试代码-7" class="headerlink" title="[2]测试代码"></a>[2]测试代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">Situation08 situation08 = <span class="hljs-keyword">new</span> Situation08();<br><br><span class="hljs-keyword">new</span> Thread(()-&gt;&#123; situation08.writeThenWrite(); &#125;).start();<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-打印效果-7"><a href="#3-打印效果-7" class="headerlink" title="[3]打印效果"></a>[3]打印效果</h4><blockquote>
+<p>Thread-0 开始第一次写入数据<br>Thread-0 开始第二次写入数据<br>Thread-0 写锁释放<br>Thread-0 写锁释放</p>
+</blockquote>
+<h3 id="⑨场景九『写读写三重入』"><a href="#⑨场景九『写读写三重入』" class="headerlink" title="⑨场景九『写读写三重入』"></a>⑨场景九『写读写三重入』</h3><p>在一个写锁里面加读锁，再在读锁里面加写锁。</p>
+<p>结论：同一个线程内，在写锁尚未释放时，读写锁都可以加。</p>
+<h4 id="1-功能代码-8"><a href="#1-功能代码-8" class="headerlink" title="[1]功能代码"></a>[1]功能代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//创建读写锁对象</span><br>  <span class="hljs-keyword">private</span> ReadWriteLock readWriteLock = <span class="hljs-keyword">new</span> ReentrantReadWriteLock();<br>  <span class="hljs-comment">//通过读写锁对象获取到的写锁对象</span><br>  <span class="hljs-keyword">private</span> Lock writeLock = readWriteLock.writeLock();<br>  <span class="hljs-comment">//通过读写锁对象获取到的读锁对象</span><br>  <span class="hljs-keyword">private</span> Lock readLock = readWriteLock.readLock();<br><br>  <span class="hljs-comment">//声明一个方法，在加了写锁之后再加写锁</span><br>  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">WriteReadWrite</span><span class="hljs-params">()</span> </span>&#123;<br><br>      <span class="hljs-keyword">try</span> &#123;<br>          <span class="hljs-comment">//加读锁</span><br>          writeLock.lock();<br>          System.out.println(<span class="hljs-string">&quot;加了写锁&quot;</span>);<br>          <span class="hljs-keyword">try</span> &#123;<br>              readLock.lock();<br>              System.out.println(<span class="hljs-string">&quot;加了内层读锁&quot;</span>);<br>              <span class="hljs-keyword">try</span> &#123;<br>                  writeLock.lock();<br>                  System.out.println(<span class="hljs-string">&quot;加了内内层写锁&quot;</span>);<br>              &#125; <span class="hljs-keyword">finally</span> &#123;<br>                  writeLock.unlock();<br>                  System.out.println(<span class="hljs-string">&quot;释放了内内层写锁&quot;</span>);<br><br>              &#125;<br>          &#125; <span class="hljs-keyword">finally</span> &#123;<br>              readLock.unlock();<br>              System.out.println(<span class="hljs-string">&quot;释放内层读锁&quot;</span>);<br>          &#125;<br>      &#125; <span class="hljs-keyword">finally</span> &#123;<br>          writeLock.unlock();<br>          System.out.println(<span class="hljs-string">&quot;释放写锁&quot;</span>);<br>      &#125;<br>  &#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-测试代码-8"><a href="#2-测试代码-8" class="headerlink" title="[2]测试代码"></a>[2]测试代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br>        Demo09WtireReadWrite demo09WtireReadWrite = <span class="hljs-keyword">new</span> Demo09WtireReadWrite();<br>        demo09WtireReadWrite.WriteReadWrite();<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-打印效果-8"><a href="#3-打印效果-8" class="headerlink" title="[3]打印效果"></a>[3]打印效果</h4><blockquote>
+<p>加了写锁<br>加了内层读锁<br>加了内内层写锁<br>释放了内内层写锁<br>释放内层读锁<br>释放写锁</p>
+</blockquote>
+<h1 id="第五节-线程间通信"><a href="#第五节-线程间通信" class="headerlink" title="第五节 线程间通信"></a>第五节 线程间通信</h1><h2 id="1、核心语法"><a href="#1、核心语法" class="headerlink" title="1、核心语法"></a>1、核心语法</h2><ul>
+<li><p><strong>ReentrantLock</strong> 同步锁：将执行操作的代码块设置为同步操作，提供原子性保证</p>
+</li>
+<li><p>Condition 对象</p>
+<p>：对指定线程进行等待、唤醒操作</p>
+<ul>
+<li><strong>await()</strong> 方法：让线程<strong>等待</strong></li>
+<li><strong>signal()</strong> 方法：将线程<strong>唤醒</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="2、案例演示"><a href="#2、案例演示" class="headerlink" title="2、案例演示"></a>2、案例演示</h2><h3 id="①题目要求"><a href="#①题目要求" class="headerlink" title="①题目要求"></a>①题目要求</h3><p>两个线程分别对一个 int 类型的数据执行 + 1 和 - 1 的操作，要求严格交替执行。</p>
+<h3 id="②代码实现"><a href="#②代码实现" class="headerlink" title="②代码实现"></a>②代码实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo03LockConditionWay</span> </span>&#123;<br><br>    <span class="hljs-comment">// 创建同步锁对象</span><br>    <span class="hljs-keyword">private</span> Lock lock = <span class="hljs-keyword">new</span> ReentrantLock();<br><br>    <span class="hljs-comment">// 通过同步锁对象创建控制线程间通信的条件对象</span><br>    <span class="hljs-keyword">private</span> Condition condition = lock.newCondition();<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> data = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-comment">// 声明方法执行 + 1 操作</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doIncr</span><span class="hljs-params">()</span> </span>&#123;<br><br>        <span class="hljs-keyword">try</span> &#123;<br><br>            <span class="hljs-comment">// 使用 lock 锁对象加锁</span><br>            lock.lock();<br><br>            <span class="hljs-comment">// 为了避免虚假唤醒问题：使用 while 结构进行循环判断</span><br>            <span class="hljs-comment">// 判断当前线程是否满足执行核心操作的条件</span><br>            <span class="hljs-keyword">while</span> (data == <span class="hljs-number">1</span>) &#123;<br><br>                <span class="hljs-comment">// 满足条件时，不该当前线程干活，所以进入等待状态</span><br>                condition.await();<br>            &#125;<br>            <span class="hljs-comment">// 不满足上面的条件时，说明该当前线程干活了，所以执行核心操作</span><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 执行 + 1 操作，data = &quot;</span> + ++data);<br>            <span class="hljs-comment">// 自己的任务完成后，叫醒其它线程</span><br>            condition.signalAll();<br>        &#125;<span class="hljs-keyword">finally</span> &#123;<br><br>            <span class="hljs-comment">// 释放锁</span><br>            lock.unlock();<br><br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">// 声明方法执行 - 1 操作</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doDecr</span><span class="hljs-params">()</span> </span>&#123;<br><br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// 使用 lock 锁对象加锁</span><br>            lock.lock();<br><br>            <span class="hljs-comment">// 为了避免虚假唤醒问题：使用 while 结构进行循环判断</span><br>            <span class="hljs-comment">// 判断当前线程是否满足执行核心操作的条件</span><br>            <span class="hljs-keyword">while</span> (data == <span class="hljs-number">0</span>) &#123;<br>                <span class="hljs-comment">// 满足条件时，不该当前线程干活，所以进入等待状态</span><br>                condition.await();<br>            &#125;<br><br>            <span class="hljs-comment">// 不满足上面的条件时，说明该当前线程干活了，所以执行核心操作</span><br>            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">&quot; 执行 - 1 操作，data = &quot;</span> + --data);<br><br>            <span class="hljs-comment">// 自己的任务完成后，叫醒其它线程</span><br>            condition.signalAll();<br>        &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br><br>            <span class="hljs-comment">// 释放锁</span><br>            lock.unlock();<br><br>        &#125;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br><br>        <span class="hljs-comment">// 1、创建当前类的对象</span><br>        Demo03LockConditionWay demo = <span class="hljs-keyword">new</span> Demo03LockConditionWay();<br><br>        <span class="hljs-comment">// 2、创建四个线程，两个 + 1，两个 - 1</span><br>        <span class="hljs-keyword">new</span> Thread(() -&gt; &#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++) &#123;<br>                demo.doIncr();<br>            &#125;<br>        &#125;, <span class="hljs-string">&quot;thread-add A&quot;</span>).start();<br><br>        <span class="hljs-keyword">new</span> Thread(() -&gt; &#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++) &#123;<br>                demo.doDecr();<br>            &#125;<br>        &#125;, <span class="hljs-string">&quot;thread-sub A&quot;</span>).start();<br><br>        <span class="hljs-keyword">new</span> Thread(() -&gt; &#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++) &#123;<br>                demo.doIncr();<br>            &#125;<br>        &#125;, <span class="hljs-string">&quot;thread-add B&quot;</span>).start();<br><br>        <span class="hljs-keyword">new</span> Thread(() -&gt; &#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++) &#123;<br>                demo.doDecr();<br>            &#125;<br>        &#125;, <span class="hljs-string">&quot;thread-sub B&quot;</span>).start();<br><br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>执行效果：</p>
+<blockquote>
+<p>thread-add A 执行 + 1 操作，data = 1<br>thread-sub A 执行 - 1 操作，data = 0<br>thread-add A 执行 + 1 操作，data = 1<br>thread-sub A 执行 - 1 操作，data = 0<br>thread-add A 执行 + 1 操作，data = 1<br>thread-sub A 执行 - 1 操作，data = 0<br>thread-add B 执行 + 1 操作，data = 1<br>thread-sub B 执行 - 1 操作，data = 0<br>thread-add B 执行 + 1 操作，data = 1<br>thread-sub B 执行 - 1 操作，data = 0<br>thread-add B 执行 + 1 操作，data = 1</p>
+</blockquote>
+<h2 id="3、定制化通信"><a href="#3、定制化通信" class="headerlink" title="3、定制化通信"></a>3、定制化通信</h2><p>传统的 synchronized、wait()、notifyAll() 方式无法唤醒一个指定的线程。而 Lock 配合 Condition 的方式能够唤醒指定的线程，从而执行指定线程中指定的任务。</p>
+<h3 id="①语法基础"><a href="#①语法基础" class="headerlink" title="①语法基础"></a>①语法基础</h3><ul>
+<li><p><strong>ReentrantLock</strong> 同步锁：将执行操作的代码块设置为同步操作，提供原子性保证</p>
+</li>
+<li><p>Condition 对象</p>
+<p>：对指定线程进行等待、唤醒操作</p>
+<ul>
+<li><strong>await()</strong> 方法：让线程<strong>等待</strong></li>
+<li><strong>signal()</strong> 方法：将线程<strong>唤醒</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="②案例"><a href="#②案例" class="headerlink" title="②案例"></a>②案例</h3><h4 id="1-题目要求"><a href="#1-题目要求" class="headerlink" title="[1]题目要求"></a>[1]题目要求</h4><p>要求四个线程交替执行打印如下内容：</p>
+<ul>
+<li>线程1：打印连续数字</li>
+<li>线程2：打印连续字母</li>
+<li>线程3：打印 * 符</li>
+<li>线程4：打印 $ 符</li>
+</ul>
+<h4 id="2-代码实现"><a href="#2-代码实现" class="headerlink" title="[2]代码实现"></a>[2]代码实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo03Condition</span> </span>&#123;<br><br>    <span class="hljs-comment">// 控制总体的操作步骤</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> step = <span class="hljs-number">1</span>;<br><br>    <span class="hljs-comment">// 负责打印数字的线程要打印的数字</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> digital = <span class="hljs-number">1</span>;<br><br>    <span class="hljs-comment">// 负责打印字母的线程要打印的字母</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">char</span> alphaBet = <span class="hljs-string">&#x27;a&#x27;</span>;<br><br>    <span class="hljs-comment">// 同步锁对象</span><br>    <span class="hljs-keyword">private</span> Lock lock = <span class="hljs-keyword">new</span> ReentrantLock();<br><br>    <span class="hljs-comment">// 条件对象：对应打印数字的线程</span><br>    <span class="hljs-keyword">private</span> Condition conditionDigital = lock.newCondition();<br><br>    <span class="hljs-comment">// 条件对象：对应打印字母的线程</span><br>    <span class="hljs-keyword">private</span> Condition conditionAlphaBet = lock.newCondition();<br><br>    <span class="hljs-comment">// 条件对象：对应打印星号的线程</span><br>    <span class="hljs-keyword">private</span> Condition conditionStar = lock.newCondition();<br><br>    <span class="hljs-comment">// 条件对象：对应打印 $ 的线程</span><br>    <span class="hljs-keyword">private</span> Condition conditionDollar = lock.newCondition();<br><br>    <span class="hljs-comment">// 声明一个方法专门打印数字</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">printDigital</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            lock.lock();<br><br>            <span class="hljs-comment">// 只要 step 对 4 取模不等于 1，就不该当前方法干活</span><br>            <span class="hljs-keyword">while</span> (step % <span class="hljs-number">4</span> != <span class="hljs-number">1</span>) &#123;<br><br>                <span class="hljs-comment">// 使用专门的条件对象，让当前线程进入等待</span><br>                <span class="hljs-comment">// 将来还用同一个条件对象，调用 singal() 方法就能精确的把这里等待的线程唤醒</span><br>                conditionDigital.await();<br>            &#125;<br><br>            <span class="hljs-comment">// 执行要打印的操作</span><br>            System.out.print(digital++);<br><br>            <span class="hljs-comment">// 精准唤醒打印字母的线程</span><br>            conditionAlphaBet.signal();<br><br>            step++ ;<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br>            lock.unlock();<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">printAlphaBet</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            lock.lock();<br><br>            <span class="hljs-keyword">while</span> (step % <span class="hljs-number">4</span> != <span class="hljs-number">2</span>) &#123;<br>                conditionAlphaBet.await();<br>            &#125;<br><br>            System.out.print(alphaBet++);<br><br>            conditionStar.signal();<br><br>            step++ ;<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br>            lock.unlock();<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">printStar</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            lock.lock();<br><br>            <span class="hljs-keyword">while</span> (step % <span class="hljs-number">4</span> != <span class="hljs-number">3</span>) &#123;<br>                conditionStar.await();<br>            &#125;<br><br>            System.out.print(<span class="hljs-string">&quot;*&quot;</span>);<br><br>            conditionDollar.signal();<br><br>            step++ ;<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br>            lock.unlock();<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">printDollar</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            lock.lock();<br><br>            <span class="hljs-keyword">while</span> (step % <span class="hljs-number">4</span> != <span class="hljs-number">0</span>) &#123;<br>                conditionDollar.await();<br>            &#125;<br><br>            System.out.println(<span class="hljs-string">&quot;$&quot;</span>);<br><br>            conditionDigital.signal();<br><br>            step++ ;<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br>            lock.unlock();<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br><br>        Demo03Condition demo = <span class="hljs-keyword">new</span> Demo03Condition();<br><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>                demo.printDigital();<br>            &#125;<br>        &#125;).start();<br><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>                demo.printAlphaBet();<br>            &#125;<br>        &#125;).start();<br><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>                demo.printStar();<br>            &#125;<br>        &#125;).start();<br><br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>                demo.printDollar();<br>            &#125;<br>        &#125;).start();<br><br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>打印效果：</p>
+<blockquote>
+<p>1a*$<br>2b*$<br>3c*$<br>4d*$<br>5e*$<br>6f*$<br>7g*$<br>8h*$<br>9i*$<br>10j*$</p>
+</blockquote>
+<h3 id="③思考题"><a href="#③思考题" class="headerlink" title="③思考题"></a>③思考题</h3><p>曾经有这样一道笔试题：一个线程打印连续数字，一个线程打印连续字母。要求打印两个数字，然后打印两个字母，如此往复。</p>
+<blockquote>
+<p>12ab34cd56ef78gh ……</p>
+</blockquote>
+<h1 id="第六节-Lock-与-synchronized-对比"><a href="#第六节-Lock-与-synchronized-对比" class="headerlink" title="第六节 Lock 与 synchronized 对比"></a>第六节 Lock 与 synchronized 对比</h1><h2 id="1、相同点"><a href="#1、相同点" class="headerlink" title="1、相同点"></a>1、相同点</h2><ul>
+<li>都支持独占锁</li>
+<li>都支持可重入</li>
+</ul>
+<h2 id="2、不同点"><a href="#2、不同点" class="headerlink" title="2、不同点"></a>2、不同点</h2><table>
+<thead>
+<tr>
+<th></th>
+<th>Lock 系列 API 用法</th>
+<th>synchronized 用法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>加锁/解锁</td>
+<td>手动</td>
+<td>自动</td>
+</tr>
+<tr>
+<td>支持共享锁</td>
+<td>√</td>
+<td>×</td>
+</tr>
+<tr>
+<td>支持尝试获取锁失败<br> 后执行特定操作</td>
+<td>√</td>
+<td>×</td>
+</tr>
+<tr>
+<td>灵活</td>
+<td>√</td>
+<td>×</td>
+</tr>
+<tr>
+<td>便捷</td>
+<td>×</td>
+<td>√</td>
+</tr>
+<tr>
+<td>响应中断</td>
+<td>lockInterruptibly() 方式支持阻塞状态响应中断</td>
+<td>sleep() 睡眠后支持响应中断</td>
+</tr>
+<tr>
+<td>代码风格</td>
+<td>面向对象</td>
+<td>面向过程</td>
+</tr>
+<tr>
+<td>底层机制</td>
+<td>AQS（volatile + CAS + 线程的双向链表）= 非阻塞同步</td>
+<td>阻塞同步</td>
+</tr>
+</tbody></table>
+<h2 id="3、使用建议"><a href="#3、使用建议" class="headerlink" title="3、使用建议"></a>3、使用建议</h2><h3 id="①从功能效果的角度来看"><a href="#①从功能效果的角度来看" class="headerlink" title="①从功能效果的角度来看"></a>①从功能效果的角度来看</h3><p>Lock 能够覆盖 synchronized 的功能，而且功能更强大。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-13.png?versionId=CAEQKRiBgMCPrf2i.xciIDY3YTdjMWNmZDBlYzQ0MzZiNmQzNDk1NWJmMTRjZWEy" srcset="/img/loading.gif" lazyload alt="images"></p>
+<h3 id="②从开发便捷性的角度来看"><a href="#②从开发便捷性的角度来看" class="headerlink" title="②从开发便捷性的角度来看"></a>②从开发便捷性的角度来看</h3><ul>
+<li>synchronized：自动加锁、解锁，使用方便</li>
+<li>Lock：手动加锁、解锁，使用不那么方便</li>
+</ul>
+<h3 id="③从性能角度"><a href="#③从性能角度" class="headerlink" title="③从性能角度"></a>③从性能角度</h3><p>二者差不多。</p>
+<h3 id="④使用建议"><a href="#④使用建议" class="headerlink" title="④使用建议"></a>④使用建议</h3><p>synchronized 够用，那就使用 synchronized；如果需要额外附加功能则使用 Lock：</p>
+<ul>
+<li>公平锁</li>
+<li>共享锁</li>
+<li>尝试获取锁</li>
+<li>以支持响应中断的方式获取锁</li>
+<li>……</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/JUC/">JUC</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JUC/">JUC</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客目前大部分文章都是参考尚硅谷或者马士兵教育的学习资料！<a href="http://www.atguigu.com/" rel="nofollow noopener"官网地址！</a> 
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/03/08/JUC02-synchronized/">
+                        <span class="hidden-mobile">JUC学习笔记（二）synchronized 底层原理探究</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+	<!--《添加网站运行时间 -->
+<br/>
+
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+var now = new Date(); 
+
+function createtime() {
+    //此处修改你的建站时间或者网站上线时间
+    var grt = new Date('11/02/2021 21:39:00');
+    now.setTime(now.getTime() + 250);
+    days = (now - grt) / 1000 / 60 / 60 / 24;
+
+    dnum = Math.floor(days);
+    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+        hnum = "0" + hnum;
+    }
+    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+        mnum = "0" + mnum;
+    }
+    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+        snum = "0" + snum;
+    }
+    document.getElementById("timeDate").innerHTML = " 本站已各种夹缝中安全运行 " + dnum + " 天 ";
+    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()", 250);
+</script>
+
+<!-- 添加网站运行时间》-->
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

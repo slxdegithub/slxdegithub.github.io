@@ -208,6 +208,115 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2022/01/23/docker-containerVolume/" target="_self">
+          Docker容器卷学习笔记
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/01/23/docker-containerVolume/" target="_self">
+          
+          
+            
+          
+          Docker容器卷踩坑：
+​    Docker挂载主机目录访问如果出现cannot open directory .: Permission denied
+
+解决办法：在挂载目录后多加一个–privileged=true参数即可
+
+如果是CentOS7安全模块会比之前系统版本加强，不安全的会先禁止，所以目录挂载的情况被默认为不安全的行为，在SELinux里面挂载目录被禁止掉了额，如果要开启，我们
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-01-23 19:28" pubdate>
+              2022-01-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/docker/">docker</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/docker/">docker</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/01/23/docker-command/" target="_self">
+          Docker常用命令笔记
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/01/23/docker-command/" target="_self">
+          
+          
+            
+          
+          docker基本命令
+启动docker
+1234systemctl start docker #启动dockersystemctl stop docker  #停止dockersystemctl restart docker #重启dockersystemctl status docker #查看docker状态 
+docker自启动
+1systemctl enable docker #设置doc
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-01-23 19:28" pubdate>
+              2022-01-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/docker/">docker</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/docker/">docker</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2022/01/20/MybatisPlus01/" target="_self">
           Mybatis-plus快速入门及增删改查（一）
         </a>
@@ -628,101 +737,6 @@ Quartz介绍Quartz是Job scheduling（作业调度）领域的一个开源项目
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/Quartz/">Quartz</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/12/23/%E6%88%91%E7%9A%84%E5%A5%B6%E5%A5%B6/" target="_self">
-          我的奶奶
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/12/23/%E6%88%91%E7%9A%84%E5%A5%B6%E5%A5%B6/" target="_self">
-          
-          
-            
-          
-          我的奶奶  “你奶奶就是人太好啦，我这辈子都没见到过像你奶奶这么好的人了，谁有困难都去帮忙，帮别人干活从不偷懒……”爷爷哽咽着说到。
-
-​      读幼儿园时，懵懂的我在奶奶的古诗词和乘法口诀表的碎碎念中醒来，后来才发现这些我早就懂得的东西，大家都是上了小学才学的。这或许就是奶奶给我的特殊早教吧。
-​      在精明能干的爷爷眼里，奶奶做过很多在他看来比较傻的事。每次被爷爷骂了之后，奶奶都感到
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-12-23 22:02" pubdate>
-              2021-12-23
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/12/23/RabbitMQ/" target="_self">
-          RabbitMQ-Docker安装
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/12/23/RabbitMQ/" target="_self">
-          
-          
-            
-          
-          Docker安装RabbitMQ和HelloWord入门1.安装1.docker search rabbitmq  //搜索镜像
-
-2.docker pull rabbitmq 
-
-//默认安装最新的版本  如果不安装最新版加上版本号即可
-
-3.docker run -d --hostname my-rabbit --name rabbit -p 15672:15672 -p 5672:5672 
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-12-23 10:01" pubdate>
-              2021-12-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/RabbitMQ/">RabbitMQ</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/RabbitMQ/">RabbitMQ</a>
             
           </div>
         
