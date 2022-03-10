@@ -208,6 +208,117 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2022/02/11/%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95/" target="_self">
+          单点登录学习笔记
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/02/11/%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95/" target="_self">
+          
+          
+            
+          
+          一、用户身份认证1、单一服务器模式
+一般过程如下：
+
+用户向服务器发送用户名和密码。
+验证服务器后，相关数据（如用户名，用户角色等）将保存在当前会话（session）中。
+服务器向用户返回session_id，session信息都会写入到用户的Cookie。
+用户的每个后续请求都将通过在Cookie中取出session_id传给服务器。
+服务器收到session_id并对比之前保存的数据，确认用户
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-02-11 21:31" pubdate>
+              2022-02-11
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%99%BB%E5%BD%95%E9%AA%8C%E8%AF%81/">登录验证</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JWT/">JWT</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/01/23/docker-linux/" target="_self">
+          linux安装Docker及常见的坑
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/01/23/docker-linux/" target="_self">
+          
+          
+            
+          
+          Linux安装docker
+确定你是centos7以上的版本 并且能联网
+1cat /etc/redhat-release #查看centos的版本
+各种环境
+12345yum -y install gcc  #yum安装gcc相关yum -y install gcc-c++yum install -y yum-utils  #安装需要的软件包yum makecache fast  #更新yum软
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-01-23 20:32" pubdate>
+              2022-01-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/docker/">docker</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/docker/">docker</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2022/01/23/docker-containerVolume/" target="_self">
           Docker容器卷学习笔记
         </a>
@@ -622,121 +733,6 @@ Nginx可以作为静态页面的web服务器，同时还支持CGI协议的动态
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/elasticsearch/">elasticsearch</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/01/08/SpringSecurity/" target="_self">
-          SpringSecurity
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2022/01/08/SpringSecurity/" target="_self">
-          
-          
-            
-          
-          Spring Security简介Spring Security是 Spring提供的安全认证服务的框架。 使用Spring Security可以帮助我们来简化认证和授权的过程。官网：https://spring.io/projects/spring-security
-中文官网：https://www.w3cschool.cn/springsecurity/
-​    对应的maven坐标：
-12
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-01-08 21:17" pubdate>
-              2022-01-08
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/SpringSecurity/">SpringSecurity</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/SpringSecurity/">SpringSecurity</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/12/28/Quartz/" target="_self">
-          定时任务组件Quartz
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/12/28/Quartz/" target="_self">
-          
-          
-            
-          
-          定时任务组件Quartz
-Quart介绍
-掌握场景（定时任务
-
-
-Quartz入门案例
-spring整合Quartz（spring中配置）
-
-
-cron表达式
-cron表达式在线生成器
-
-Quartz介绍Quartz是Job scheduling（作业调度）领域的一个开源项目，Quartz既可以单独使用也可以跟spring框架整合使用，在实际开发中一般会使用后者。使用Quartz可以开发一个或者多
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-12-28 21:20" pubdate>
-              2021-12-28
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Quartz/">Quartz</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Quartz/">Quartz</a>
             
           </div>
         

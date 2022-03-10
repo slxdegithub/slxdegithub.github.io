@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-12.png?versionId=CAEQKRiBgICgrf2i.xciIDRiNzAwNjQ1OWVmZDQ0MjZhMGFiZGQ0NTA4MGFhNWZl">
 <meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/JUC/JUC03-13.png?versionId=CAEQKRiBgMCPrf2i.xciIDY3YTdjMWNmZDBlYzQ0MzZiNmQzNDk1NWJmMTRjZWEy">
 <meta property="article:published_time" content="2022-03-08T10:13:47.000Z">
-<meta property="article:modified_time" content="2022-03-08T10:16:30.943Z">
+<meta property="article:modified_time" content="2022-03-08T11:56:25.862Z">
 <meta property="article:author" content="Blue~u~u~u">
 <meta property="article:tag" content="JUC">
 <meta name="twitter:card" content="summary_large_image">
@@ -227,7 +227,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      32k 字
+      33k 字
     </span>
   
 
@@ -236,7 +236,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      99 分钟
+      104 分钟
     </span>
   
 
@@ -277,7 +277,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：1 分钟前
+                  本文最后更新于：2 天前
                 
               </p>
             
@@ -725,6 +725,10 @@
 <blockquote>
 <p>12ab34cd56ef78gh ……</p>
 </blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThinkingThread</span> </span>&#123;<br>    <span class="hljs-keyword">private</span> Lock lock = <span class="hljs-keyword">new</span> ReentrantLock();<br>    <span class="hljs-keyword">private</span> Condition conditionA = lock.newCondition();<br>    <span class="hljs-keyword">private</span> Condition conditionB = lock.newCondition();<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">char</span> alphabet = <span class="hljs-string">&#x27;a&#x27;</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> digital = <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> steep = <span class="hljs-number">1</span>;<br><br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">printDigital</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>)&#123;<br>                <span class="hljs-keyword">try</span> &#123;<br>                    lock.lock();<br>                    <span class="hljs-keyword">if</span> (steep %<span class="hljs-number">2</span> != <span class="hljs-number">1</span>)&#123;<br>                        conditionA.await(); <span class="hljs-comment">////没到条件当前线程阻塞</span><br>                    &#125;<br>                    <span class="hljs-comment">//核心逻辑</span><br>                    <span class="hljs-keyword">if</span> (digital &gt; <span class="hljs-number">25</span>) digital = <span class="hljs-number">1</span>;<br>                    System.out.print(digital++);<br>                    System.out.print(digital++);<br>                    steep++;<br><br>                    conditionB.signal();  <span class="hljs-comment">//唤醒字母编程</span><br><span class="hljs-comment">//                    try &#123;TimeUnit.SECONDS.sleep(1);&#125; catch (InterruptedException e) &#123;&#125;</span><br>                &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>                    e.printStackTrace();<br>                &#125; <span class="hljs-keyword">finally</span> &#123;<br>                    lock.unlock();<br>                &#125;<br>            &#125;<br>        &#125;).start();<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">printAlphabet</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">new</span> Thread(()-&gt;&#123;<br>            <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>)&#123;<br>                <span class="hljs-keyword">try</span> &#123;<br>                    lock.lock();<br>                    <span class="hljs-keyword">if</span> (steep %<span class="hljs-number">2</span> != <span class="hljs-number">0</span>)&#123;<br>                        conditionB.await();  <span class="hljs-comment">//没到条件当前线程阻塞</span><br>                    &#125;<br>                    <span class="hljs-comment">//核心逻辑</span><br>                    <span class="hljs-keyword">if</span> (alphabet &gt; <span class="hljs-string">&#x27;a&#x27;</span>+<span class="hljs-number">25</span>) alphabet = <span class="hljs-string">&#x27;a&#x27;</span>;<br>                    System.out.print(alphabet++);<br>                    System.out.print(alphabet++);<br>                    steep++;<br><br>                    conditionA.signal(); <span class="hljs-comment">//执行完 唤醒打印数字线程</span><br><span class="hljs-comment">//                    try &#123;TimeUnit.SECONDS.sleep(1);&#125; catch (InterruptedException e) &#123;&#125;</span><br>                &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>                    e.printStackTrace();<br>                &#125; <span class="hljs-keyword">finally</span> &#123;<br>                    lock.unlock();<br>                &#125;<br>            &#125;<br>        &#125;).start();<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;<br>        ThinkingThread thinkingThread = <span class="hljs-keyword">new</span> ThinkingThread();<br>        thinkingThread.printAlphabet();<br>        thinkingThread.printDigital();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
 <h1 id="第六节-Lock-与-synchronized-对比"><a href="#第六节-Lock-与-synchronized-对比" class="headerlink" title="第六节 Lock 与 synchronized 对比"></a>第六节 Lock 与 synchronized 对比</h1><h2 id="1、相同点"><a href="#1、相同点" class="headerlink" title="1、相同点"></a>1、相同点</h2><ul>
 <li>都支持独占锁</li>
 <li>都支持可重入</li>
@@ -826,6 +830,12 @@
                 <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2022/03/10/JUC04-scenario/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JUC学习笔记（四）特定场所解决方案</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
