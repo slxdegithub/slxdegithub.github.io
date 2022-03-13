@@ -208,6 +208,206 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2022/03/13/Mysql-%E6%9E%B6%E6%9E%84%E5%BC%95%E6%93%8E/" target="_self">
+          Mysql-引擎,架构和索引与法
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/03/13/Mysql-%E6%9E%B6%E6%9E%84%E5%BC%95%E6%93%8E/" target="_self">
+          
+          
+            
+          
+          MySQL 逻辑架构1、总述和其它数据库有所不同，MySQL 的架构可以在多种不同场景中应用并发挥良好作用。主要体现在存储引擎的架构上，『插件式』的『存储引擎架构』将查询和其它的系统任务以及数据的存储提取相分离。
+这种架构可以根据业务的需求和实际需要选择合适的存储引擎。
+
+2、连接层最上层是一些客户端和连接服务，包含本地 sock 通信和大多数基于客户端/服务端工具实现的类似于 TCP/IP 的通
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-03-13 21:31" pubdate>
+              2022-03-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/mysql/">mysql</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/mysql/">mysql</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/03/13/Mysql-%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" target="_self">
+          Mysql-索引原理
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/03/13/Mysql-%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" target="_self">
+          
+          
+            
+          
+          索引的原理1、数据页假设有一张数据库表：
+
+
+
+emp_id(主键)
+emp_age(非主键)
+emp_name(非主键)
+
+
+
+1
+21
+tom
+
+
+2
+22
+jerry
+
+
+3
+23
+bob
+
+
+4
+24
+harry
+
+
+5
+25
+lily
+
+
+……
+……
+……
+
+
+对于 InnoDB 存储引擎来说，最小的存储单位就是：页。那么存放原始数据的页就称为数据页。
+
+一个数据页默认的大小是：16KB
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-03-13 21:30" pubdate>
+              2022-03-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/mysql/">mysql</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/mysql/">mysql</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/03/13/Mysql-SQL%E4%BC%98%E5%8C%96/" target="_self">
+          Mysql-SQL优化整理
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/03/13/Mysql-SQL%E4%BC%98%E5%8C%96/" target="_self">
+          
+          
+            
+          
+          SQL 优化第一节 准备数据1、修改配置为了能够看出 SQL 优化前后的性能差异，我们需要较为大量的数据。生成这些数据我们需要用到 MySQL 中的自定义函数。
+但是 MySQL 默认关闭了自定义函数功能，所以我们需要通过修改配置文件来开启这项功能。
+12# 使用 vim 编辑器打开配置文件vim /etc/my.cnf
+
+在配置文件末尾增加如下内容：
+12# 设置为 1 表示开启这项功能log_
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-03-13 21:30" pubdate>
+              2022-03-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/mysql/">mysql</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/mysql/">mysql</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2022/03/10/JUC05-LockPrinciple/" target="_self">
           JUC学习笔记（五）Lock底层原理探究
         </a>
@@ -583,185 +783,11 @@ JDK=JRE+Java开发辅助工具
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/02/18/nacosCluster/" target="_self">
-          Linux环境搭建Nacos集群
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2022/02/18/nacosCluster/" target="_self">
-          
-          
-            
-          
-          Linux环境搭建Nacos集群1.环境准备​    需要1个nginx+3个nacos注册中心+1个mysql
-​    Linux 64bit OS Linux/Unix/Mac  //推荐使用Linux系统
-​    需要三个或三个以上的Nacos才能构成集群。
-本次搭建使用的是nacos-server-1.4.2.tar.gz ， 下载地址
-1https://github.com/alib
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-02-18 20:35" pubdate>
-              2022-02-18
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/nacos/">nacos</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/nacos/">nacos</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/02/17/ComputerNetwork/" target="_self">
-          计算机网络学习笔记
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2022/02/17/ComputerNetwork/" target="_self">
-          
-          
-            
-          
-          计算机网络OSI七层模型：
-应用层（Application Layer）：只关心业务逻辑，不关心数据的传输
-比如微信，只关心谁发消息给了谁，不关心发了什么消息
-
-表现层（Presentation Layer）：
-负责写上用于传输的数据格式，并转换数据格式
-
-会话层（Session Layer）：负责管理两个联网实体间的连接
-
-传输层（Transport Layer）：负责将数据从一个实体（一个服务
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-02-17 17:09" pubdate>
-              2022-02-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/02/11/aliOss/" target="_self">
-          阿里云存储OSS学习笔记及入门案例
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2022/02/11/aliOss/" target="_self">
-          
-          
-            
-          
-          阿里云存储OSS一、开通“对象存储OSS”服务为了解决海量数据存储与弹性扩容，项目中我们采用云存储的解决方案- 阿里云OSS。 
-1、开通“对象存储OSS”服务
-
-2、进入管理控制台
-二、控制台使用1、创建Bucket命名：srb-file
-读写权限：公共读
-2、上传默认头像创建文件夹avatar，上传默认的用户头像
-
-三、使用RAM子用户1、进入子用户管理页面
-
-2、添加用户
-3、获取子用户ke
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-02-11 21:52" pubdate>
-              2022-02-11
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OSS/">OSS</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/OSS/">OSS</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#board">5</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/#board">6</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

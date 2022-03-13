@@ -1,0 +1,904 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="Blue~u~u~u">
+  <meta name="author" content="Blue~u~u~u">
+  <meta name="keywords" content="">
+  <meta name="description" content="索引的原理1、数据页假设有一张数据库表：    emp_id(主键) emp_age(非主键) emp_name(非主键)    1 21 tom   2 22 jerry   3 23 bob   4 24 harry   5 25 lily   …… …… ……   对于 InnoDB 存储引擎来说，最小的存储单位就是：页。那么存放原始数据的页就称为数据页。  一个数据页默认的大小是：16KB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql-索引原理">
+<meta property="og:url" content="http://www.slx.blue/2022/03/13/Mysql-%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Blue~u~u~u~u">
+<meta property="og:description" content="索引的原理1、数据页假设有一张数据库表：    emp_id(主键) emp_age(非主键) emp_name(非主键)    1 21 tom   2 22 jerry   3 23 bob   4 24 harry   5 25 lily   …… …… ……   对于 InnoDB 存储引擎来说，最小的存储单位就是：页。那么存放原始数据的页就称为数据页。  一个数据页默认的大小是：16KB">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL06.png?versionId=CAEQKRiBgID9kJf7.xciIGU0ZmQ4MWEzYmVlNzQwMTU5ZWU4ZGM4YWNlYjRmYmFh">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL07.png?versionId=CAEQKRiBgIDtkJf7.xciIGNkZDk3NTFhNDJhYzQxMWZhZjIzN2VkMzI4NDg3M2Ey">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL08.png?versionId=CAEQKRiBgIDskJf7.xciIDQ1MmFkZTY0ZjM5NjQ5NjA5OGVkODZlYjRmNmJlMmE3">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL09.png?versionId=CAEQKRiBgIDnkJf7.xciIDRhZmQyYTFmMGY2YzQyODJiNTIxMGVjZGI2NWIwODVj">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL10.png?versionId=CAEQKRiBgMDqkJf7.xciIDZhYTlmODdjOTE0OTQ1YTFhZjJjMTViMmFkMmVmMzk2">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL11.png?versionId=CAEQKRiBgIDhkJf7.xciIGMzNDM4ZjY3NGUwYjRlODk4ZTRhZDFjODI4MjU2YjE2">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL12.png?versionId=CAEQKRiBgMCkj5f7.xciIDY5M2JkNzBiOTZiNDQ4MjlhNWFmNGU4ZTZjZWQ4NzIw">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL13.png?versionId=CAEQKRiBgMCUj5f7.xciIDBlNmMwMDYwNGJjZTQxMTU4ODU0NmEyZmYzNmY2OWY3">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL14.png?versionId=CAEQKRiBgMCMj5f7.xciIGU5MDQxNDI5MGQ4ODQyMGRiZTNmMWFmMmI4YjEyZjFk">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL15.png?versionId=CAEQKRiBgID3jpf7.xciIDE1ODdkY2U0ZDU2YjQyZmRhY2IyNzVjZTI1OGM5MjJk">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL16.png?versionId=CAEQKRiBgMDtjpf7.xciIDJkYWUzNjZiZDI3ZTRlOTFhYjRhNDcxODkxNzI0Njgw">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL17.png?versionId=CAEQKRiBgMDqjpf7.xciIDIzYjhhY2Y5MjY5ZTQ3NTRhODUxNTI0NmE3MWVmNGQ1">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL18.png?versionId=CAEQKRiBgMDijpf7.xciIDcxNjc5N2ZmOWQwYTQyZGFhMDlkOWNjMjkzYWM3NDhh">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL19.png?versionId=CAEQKRiBgMDXjpf7.xciIGZlYmVkZTJmYzlhMDQzY2NhYzg3YWQ2N2RjYzA2NzE0">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL20.png?versionId=CAEQKRiBgIDij5f7.xciIDI2NzU0YjM4ZmJkMDQwMTBhMTUxNTQxODU2Mjg0M2Yz">
+<meta property="article:published_time" content="2022-03-13T13:30:54.000Z">
+<meta property="article:modified_time" content="2022-03-13T13:32:41.259Z">
+<meta property="article:author" content="Blue~u~u~u">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL06.png?versionId=CAEQKRiBgID9kJf7.xciIGU0ZmQ4MWEzYmVlNzQwMTU5ZWU4ZGM4YWNlYjRmYmFh">
+  
+  <title>Mysql-索引原理 - Blue~u~u~u~u</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"/>
+<script src="/live2d-widget/autoload.js"></script>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Blue~u~u</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Mysql-索引原理">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-03-13 21:30" pubdate>
+        2022年3月13日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      7.5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      23 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Mysql-索引原理</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 分钟前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="索引的原理"><a href="#索引的原理" class="headerlink" title="索引的原理"></a>索引的原理</h1><h2 id="1、数据页"><a href="#1、数据页" class="headerlink" title="1、数据页"></a>1、数据页</h2><p>假设有一张数据库表：</p>
+<table>
+<thead>
+<tr>
+<th>emp_id(主键)</th>
+<th>emp_age(非主键)</th>
+<th>emp_name(非主键)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>21</td>
+<td>tom</td>
+</tr>
+<tr>
+<td>2</td>
+<td>22</td>
+<td>jerry</td>
+</tr>
+<tr>
+<td>3</td>
+<td>23</td>
+<td>bob</td>
+</tr>
+<tr>
+<td>4</td>
+<td>24</td>
+<td>harry</td>
+</tr>
+<tr>
+<td>5</td>
+<td>25</td>
+<td>lily</td>
+</tr>
+<tr>
+<td>……</td>
+<td>……</td>
+<td>……</td>
+</tr>
+</tbody></table>
+<p>对于 InnoDB 存储引擎来说，<strong>最小的存储单位</strong>就是：<strong>页</strong>。那么存放原始数据的页就称为<strong>数据页</strong>。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL06.png?versionId=CAEQKRiBgID9kJf7.xciIGU0ZmQ4MWEzYmVlNzQwMTU5ZWU4ZGM4YWNlYjRmYmFh" srcset="/img/loading.gif" lazyload alt="images"></p>
+<p>一个数据页默认的大小是：<strong>16KB</strong>。如果我们假设一条记录所占空间的字节数是 1KB，那么这个数据页大致能够存储 16 条记录。那么如果这个数据库表总共有 100 万条记录，那么肯定是需要很多数据页来存放这些数据。</p>
+<h2 id="2、数据页内部"><a href="#2、数据页内部" class="headerlink" title="2、数据页内部"></a>2、数据页内部</h2><h3 id="①主键排序"><a href="#①主键排序" class="headerlink" title="①主键排序"></a>①主键排序</h3><p>数据页内部对主键进行了排序，所以当我们在一个数据页内部根据主键查找记录时，会根据<strong>二分法</strong>进行查找。找到主键就能够很快找到这条记录。</p>
+<h3 id="②数据页编号"><a href="#②数据页编号" class="headerlink" title="②数据页编号"></a>②数据页编号</h3><p>为了在众多数据页中，定位每一个数据页，数据页需要有编号。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL07.png?versionId=CAEQKRiBgIDtkJf7.xciIGNkZDk3NTFhNDJhYzQxMWZhZjIzN2VkMzI4NDg3M2Ey" srcset="/img/loading.gif" lazyload alt="images"></p>
+<h2 id="3、数据页如何便于查找"><a href="#3、数据页如何便于查找" class="headerlink" title="3、数据页如何便于查找"></a>3、数据页如何便于查找</h2><h3 id="①排序"><a href="#①排序" class="headerlink" title="①排序"></a>①排序</h3><p>根据<strong>主键值</strong>对所有数据页进行排序。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL08.png?versionId=CAEQKRiBgIDskJf7.xciIDQ1MmFkZTY0ZjM5NjQ5NjA5OGVkODZlYjRmNmJlMmE3" srcset="/img/loading.gif" lazyload alt="images"></p>
+<h3 id="②双向链表"><a href="#②双向链表" class="headerlink" title="②双向链表"></a>②双向链表</h3><p>把所有数据页组成<strong>环状双向链表</strong>。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL09.png?versionId=CAEQKRiBgIDnkJf7.xciIDRhZmQyYTFmMGY2YzQyODJiNTIxMGVjZGI2NWIwODVj" srcset="/img/loading.gif" lazyload alt="images"></p>
+<p>好处是：假设搜索主键值大于 30 的记录，那么找到主键值为 30 的记录之后，后面所有的记录就都可以快速找到和返回了。</p>
+<h3 id="③扫描全表"><a href="#③扫描全表" class="headerlink" title="③扫描全表"></a>③扫描全表</h3><p>就目前的数据存储方式来说，如果要找到某一个主键值所在的数据页，需要一页一页的查找，这无疑是非常缓慢的。所以肯定需要做进一步优化。</p>
+<h2 id="4、数据页设定目录"><a href="#4、数据页设定目录" class="headerlink" title="4、数据页设定目录"></a>4、数据页设定目录</h2><h3 id="①第一层目录"><a href="#①第一层目录" class="headerlink" title="①第一层目录"></a>①第一层目录</h3><h4 id="1-设置"><a href="#1-设置" class="headerlink" title="[1]设置"></a>[1]设置</h4><ul>
+<li>选取每一个数据页中最小的主键值</li>
+<li>最小主键值 + 当前数据页的页码 = 目录页中的一条记录</li>
+<li><strong>主键值 + 页码 组成的记录</strong>放在一起组成了<strong>目录页</strong></li>
+<li>不管是数据页还是目录页都是页，默认大小都是 16KB</li>
+<li>估算目录页能够存储多少条记录？<ul>
+<li>主键值占 8 字节</li>
+<li>页码占 8 字节</li>
+<li>16 KB / 16 B = 1024 条</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL10.png?versionId=CAEQKRiBgMDqkJf7.xciIDZhYTlmODdjOTE0OTQ1YTFhZjJjMTViMmFkMmVmMzk2" srcset="/img/loading.gif" lazyload alt="images"></p>
+<h4 id="2-搜索"><a href="#2-搜索" class="headerlink" title="[2]搜索"></a>[2]搜索</h4><p>现在我们在 4 号目录页中有如下三个区间：</p>
+<ul>
+<li>区间 1：[1,11)</li>
+<li>区间 2：[11,21)</li>
+<li>区间 3：[21, …)</li>
+</ul>
+<p>情景一：搜索主键值为 11 的记录</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> emp_id,emp_name,emp_age <span class="hljs-keyword">from</span> t_emp <span class="hljs-keyword">where</span> emp_id<span class="hljs-operator">=</span><span class="hljs-number">11</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>11 落在了区间 2：[11,21)</li>
+<li>根据目录页中的 11-&gt;2 这条记录，得知想要的数据在页码为 2 的数据页</li>
+<li>进入页码为 2 的数据页</li>
+<li>在数据页内部根据主键做二分法查找</li>
+</ul>
+<p>情景二：搜索主键值为 15 的记录</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> emp_id,emp_name,emp_age <span class="hljs-keyword">from</span> t_emp <span class="hljs-keyword">where</span> emp_id<span class="hljs-operator">=</span><span class="hljs-number">15</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>15 落在了区间 2：[11,21)</li>
+<li>根据目录页中的 11-&gt;2 这条记录，得知想要的数据在页码为 2 的数据页</li>
+<li>进入页码为 2 的数据页</li>
+<li>在数据页内部根据主键做二分法查找</li>
+</ul>
+<h3 id="②第二层目录"><a href="#②第二层目录" class="headerlink" title="②第二层目录"></a>②第二层目录</h3><h4 id="1-设置-1"><a href="#1-设置-1" class="headerlink" title="[1]设置"></a>[1]设置</h4><p>为了更进一步方便查找，命中我们要找的目录页，我们可以进一步<strong>给目录再设置目录</strong>。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL11.png?versionId=CAEQKRiBgIDhkJf7.xciIGMzNDM4ZjY3NGUwYjRlODk4ZTRhZDFjODI4MjU2YjE2" srcset="/img/loading.gif" lazyload alt="images"></p>
+<h4 id="2-搜索-1"><a href="#2-搜索-1" class="headerlink" title="[2]搜索"></a>[2]搜索</h4><p>用户搜索的主键值是：60。现在 13 号目录页中包含的区间：</p>
+<ul>
+<li>[1,51)</li>
+<li>[51,150)</li>
+<li>[150,…)</li>
+</ul>
+<p>所以 60 会落在 [51,150) 区间，所以继续查找页码为 8 的目录页：</p>
+<ul>
+<li>[51,81)</li>
+<li>[81,100)</li>
+<li>[100,…)</li>
+</ul>
+<p>所以 60 会落在 [51,81) 区间，所以继续查找页码为 5 的数据页，根据主键执行二分法查找。</p>
+<h4 id="3-扩展"><a href="#3-扩展" class="headerlink" title="[3]扩展"></a>[3]扩展</h4><p>如果有需要，就可以给目录的目录再设置目录……直到向上汇总到一个唯一的根节点。</p>
+<h3 id="③最终形成一个树形结构"><a href="#③最终形成一个树形结构" class="headerlink" title="③最终形成一个树形结构"></a>③最终形成一个树形结构</h3><h4 id="1-示意图"><a href="#1-示意图" class="headerlink" title="[1]示意图"></a>[1]示意图</h4><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL12.png?versionId=CAEQKRiBgMCkj5f7.xciIDY5M2JkNzBiOTZiNDQ4MjlhNWFmNGU4ZTZjZWQ4NzIw" srcset="/img/loading.gif" lazyload alt="images"></p>
+<h4 id="2-对接概念"><a href="#2-对接概念" class="headerlink" title="[2]对接概念"></a>[2]对接概念</h4><p><strong>B+Tree</strong>：其实这就是 B+Tree。在我们这里例子中，数据的主键就是 B+Tree 里面的索引，页码值就是指向数据存储位置的指针。只不过指针有可能指向数据页，也有可能指向目录页。</p>
+<p><strong>B+Tree 节点</strong>：目录页或数据页都算是 B+Tree 中的节点。</p>
+<ul>
+<li>页：是 InnoDB 存储引擎管理数据的最小单元。</li>
+<li>节点：是从树形结构角度来说的。</li>
+</ul>
+<p><strong>聚簇索引</strong>：索引和原始数据存放在一起的存储形式。聚簇索引都是由主键作为索引值，所以一个表中只有一个聚簇索引。</p>
+<blockquote>
+<p>这里我们可以说：主键索引其实就是聚簇索引，这两个名字是从不同的角度来说的。 </p>
+<p>——&gt; 主键索引：是指这个索引是根据主键字段来创建的</p>
+<p>——&gt; 聚簇索引：是指这个索引的树形结构中是否同时包含了『原始数据』和『索引目录』 </p>
+<p>不仅『主键索引』和『聚簇索引』这个两个概念是等同的，而且它们其实也就是数据表本身。也就是说其实我们并没有在原始数据库表之外再另外创建索引表，而是应该说：数据库表本身就是按照 B+Tree 的结构组织起来的，底层就是这么存储的。</p>
+</blockquote>
+<p><strong>非聚簇索引</strong>：索引和原始数据没有存放在一起的存储形式。非聚簇索引都算由非主键字段创建的，所以可以有多个。</p>
+<p><strong>索引值</strong>：在当前例子中，我们是拿主键字段的值作为索引。</p>
+<h4 id="3-估算-B-Tree-能够存储的记录数量"><a href="#3-估算-B-Tree-能够存储的记录数量" class="headerlink" title="[3]估算 B+Tree 能够存储的记录数量"></a>[3]估算 B+Tree 能够存储的记录数量</h4><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL13.png?versionId=CAEQKRiBgMCUj5f7.xciIDBlNmMwMDYwNGJjZTQxMTU4ODU0NmEyZmYzNmY2OWY3" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>结论：根据下面的推算使用 B+Tree 的形式来组织数据库表中数据的存储方式，<strong>只需要 2~4 层</strong>就足够了。</p>
+<ul>
+<li>一层：只有一个根节点<ul>
+<li>这个根节点只能是数据页节点</li>
+<li>一个数据页默认大小是：16KB</li>
+<li>假设一条记录占空间：1K</li>
+<li>能够存储的是数据数量：16 条</li>
+</ul>
+</li>
+<li>两层：<ul>
+<li>根节点：目录页<ul>
+<li>主键：8 B</li>
+<li>页码：8 B</li>
+<li>目录页的每一条记录：16 B</li>
+<li>目录页能够存储的记录数量：16 KB / 16 B = 1024</li>
+<li>对目录页来说：内部存储了多少条记录，就会指向多少个子节点</li>
+</ul>
+</li>
+<li>叶子节点：数据页<ul>
+<li>能够存储的是数据数量：16 条</li>
+</ul>
+</li>
+<li>总和：目录页容量 × 数据页容量 = 1024 × 16 = 16384 条记录</li>
+</ul>
+</li>
+<li>三层：<ul>
+<li>根节点：1 个目录页</li>
+<li>第二层：1024 个目录页</li>
+<li>第三层：目录页的个数 × 目录页的容量 = 1024 × 1024 = 1048576 个数据页</li>
+<li>总和：数据页的个数 × 数据页的容量= 1048576 × 16 = 16,777,216 条记录</li>
+</ul>
+</li>
+<li>四层：<ul>
+<li>根节点：1 个目录页</li>
+<li>第二层：1024 个目录页</li>
+<li>第三层：目录页的个数 × 目录页的容量 = 1024 × 1024 = 1048576 个目录页</li>
+<li>第四层：目录页的个数 × 目录页的容量 = 1048576 × 1024 = 1,073,741,824 个数据页</li>
+<li>总和：数据页的个数 × 数据页的容量= 1,073,741,824 × 16 = 17,179,869,184 条记录</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-B-Tree-层次对性能的影响"><a href="#4-B-Tree-层次对性能的影响" class="headerlink" title="[4]B+Tree 层次对性能的影响"></a>[4]B+Tree 层次对性能的影响</h4><ul>
+<li>根节点常驻内存。</li>
+<li>访问下一层的节点会导致一次 I/O。</li>
+<li>所以层数越少，I/O 的次数就越少，性能就越好。</li>
+</ul>
+<h4 id="5-BTree-为什么高瘦？"><a href="#5-BTree-为什么高瘦？" class="headerlink" title="[5]BTree 为什么高瘦？"></a>[5]BTree 为什么高瘦？</h4><ul>
+<li><p>BTree 的体型：</p>
+<p>高瘦</p>
+<ul>
+<li>BTree 每个节点都存原始数据。</li>
+<li>每个节点的默认大小 16 KB，存了数据，能够用来存『主键 + 页码』的空间就不够了</li>
+<li>每个节点容纳子节点的数量就很少，导致深度增加</li>
+<li>对于查询来说：深度增加 1 层，I/O 次数增加一次</li>
+<li>所以性能方面 BTree 不如 B+Tree</li>
+</ul>
+</li>
+<li><p>B+Tree 的体现：<strong>扁平、矮胖</strong></p>
+</li>
+</ul>
+<h4 id="6-BTree-为什么每个节点都存原始数据？"><a href="#6-BTree-为什么每个节点都存原始数据？" class="headerlink" title="[6]BTree 为什么每个节点都存原始数据？"></a>[6]BTree 为什么每个节点都存原始数据？</h4><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL14.png?versionId=CAEQKRiBgMCMj5f7.xciIGU5MDQxNDI5MGQ4ODQyMGRiZTNmMWFmMmI4YjEyZjFk" srcset="/img/loading.gif" lazyload alt="images"></p>
+<p>BTree 将所有主键排序，对于父节点来说：</p>
+<ul>
+<li>节点内部：主键是排序的</li>
+<li>左边子节点：存放比父节点中最小主键还要小的主键</li>
+<li>右边子节点：存放比父节点中最大主键还要大的主键</li>
+<li>中间子节点：存放在父节点中主键区间范围的主键</li>
+</ul>
+<p>所以在 BTree 中，在父节点出现过的主键不会在子节点中出现。反过来说：每一个主键只在一个节点中出现。所以主键关联的数据只能在主键所在的节点中保存。</p>
+<h4 id="7-BTree-和-B-Tree-的区别总结"><a href="#7-BTree-和-B-Tree-的区别总结" class="headerlink" title="[7]BTree 和 B+Tree 的区别总结"></a>[7]BTree 和 B+Tree 的区别总结</h4><ul>
+<li>BTree 中的节点（页），没有目录页、数据页之分。</li>
+<li>BTree 的节点中既存储原始数据，又存储子节点的页码值。</li>
+<li>在 BTree 中，每个主键值只能在一个节点中出现，所以每个节点都需要保存原始数据</li>
+<li>BTree 因为每个节点都保存原始数据，所以用来保存节点页码的空间变小</li>
+<li>BTree 每个节点能够容纳的子节点比 B+Tree 要少</li>
+<li>BTree 整体层数比 B+Tree 要多</li>
+<li>MySQL 每读取一层节点，就要做一次 I/O 操作</li>
+<li>I/O 操作越多，性能越差</li>
+<li>B+树中所有叶子节点都是通过指针连接在一起，而B树不是。所以B+树范围查询效率很高</li>
+</ul>
+<blockquote>
+<p>BTree：高瘦<br>层数多 —&gt; I/O 次数多 —&gt; 性能低<br>[1]为什么层数多？<br>因为父节点中，能够容纳的子节点的指针少。<br>[2]为什么能够容纳的子节点的指针少？<br>数据页的存储空间是固定的，默认是 16KB。<br>在这个固定的空间内，要拿出一部分存储原始数据。<br>所以能够用来存储索引记录的空间就变少了。<br>所以能够存储的索引记录的数量就变少了。<br>索引记录=索引值+子节点指针<br>[3]BTree里为什么每个节点都存数据？<br>因为对BTree的父节点来说，内部的主键值也是经过排序的。<br>比父节点中最小的主键值还小的主键值存放在父节点左边的子节点中。<br>比父节点中最大的主键值还大的主键值存放在父节点右边的子节点中。<br>最终导致：每一个主键都只在一个节点中出现过一次，所以原始数据就必须和主键保存在同一个节点中。<br>B+Tree：矮胖<br>层数少 —&gt; I/O 次数少 —&gt; 性能高</p>
+</blockquote>
+<h4 id="8-有数据表和索引表之分吗？"><a href="#8-有数据表和索引表之分吗？" class="headerlink" title="[8]有数据表和索引表之分吗？"></a>[8]有数据表和索引表之分吗？</h4><p>这要看索引表具体指的是哪种类型的索引。</p>
+<ul>
+<li>聚簇索引：那就没有额外的数据表，数据本身就是按照 B+Tree 的形式组成了聚簇索引——以主键作为索引值。</li>
+<li>非聚簇索引：非聚簇索引相对于聚簇索引来说可以称之为是另外一张表。</li>
+</ul>
+<p>但其实我们应该更进一步，更精确的来说：数据库底层维护表中的数据其实并没有『表』这个概念，而全部都是以索引的形式保存的。所以说数据库底层存储数据并不是我们从逻辑上看到的『行』和『列』的形式，而是树形结构。</p>
+<p>结论：</p>
+<ul>
+<li>数据的<strong>逻辑结构</strong>：<strong>表、行、列</strong></li>
+<li>数据的<strong>物理结构</strong>：<strong>B+Tree</strong></li>
+</ul>
+<h2 id="5、非主键字段创建索引"><a href="#5、非主键字段创建索引" class="headerlink" title="5、非主键字段创建索引"></a>5、非主键字段创建索引</h2><p>TIP</p>
+<p>前面我们所论述的，都是从主键出发建立索引，方便 SQL 语句中根据主键查询数据。</p>
+<p>而用户在 SQL 语句中很多时候不是根据主键查询的。所以非主键字段也应该在适合的情况下创建索引，提升查询效率。</p>
+<h3 id="①不同数据类型的搜索方式"><a href="#①不同数据类型的搜索方式" class="headerlink" title="①不同数据类型的搜索方式"></a>①不同数据类型的搜索方式</h3><ul>
+<li>数值类型：就拿这个数值字段本身作为索引值</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> emp_id,emp_name,emp_age <span class="hljs-keyword">from</span> t_emp <span class="hljs-keyword">where</span> emp_age<span class="hljs-operator">=</span><span class="hljs-number">20</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>字符串类型：</p>
+<ul>
+<li>较短字符串：就拿这个字符串字段本身作为索引值</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> emp_id,emp_name,emp_age <span class="hljs-keyword">from</span> t_emp <span class="hljs-keyword">where</span> emp_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;tom&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>较长字符串：通常就拿这个字符串字段开头（最左边）的一部分本身作为索引值</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> emp_id,emp_name,emp_age <span class="hljs-keyword">from</span> t_emp <span class="hljs-keyword">where</span> emp_decs <span class="hljs-keyword">like</span> &quot;I come from UK%&quot;;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>TIP</p>
+<p>对于目录页来说，它的结构固定就是下图所示：</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL15.png?versionId=CAEQKRiBgID3jpf7.xciIDE1ODdkY2U0ZDU2YjQyZmRhY2IyNzVjZTI1OGM5MjJk" srcset="/img/loading.gif" lazyload alt="images"></p>
+<p>那么我们用什么值做索引呢？</p>
+<ul>
+<li><strong>聚簇索引</strong>：<strong>主键值</strong>作为<strong>索引</strong>值</li>
+<li><strong>非聚簇索引</strong>：<strong>主键之外其它形式数据</strong>作为<strong>索引</strong>值</li>
+</ul>
+<h3 id="②单列索引"><a href="#②单列索引" class="headerlink" title="②单列索引"></a>②单列索引</h3><h4 id="1-概念"><a href="#1-概念" class="headerlink" title="[1]概念"></a>[1]概念</h4><p>假设还是使用前面的数据库表：</p>
+<table>
+<thead>
+<tr>
+<th>emp_id(主键)</th>
+<th>emp_age(非主键)</th>
+<th>emp_name(非主键)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>21</td>
+<td>tom</td>
+</tr>
+<tr>
+<td>2</td>
+<td>22</td>
+<td>jerry</td>
+</tr>
+<tr>
+<td>3</td>
+<td>23</td>
+<td>bob</td>
+</tr>
+<tr>
+<td>4</td>
+<td>24</td>
+<td>harry</td>
+</tr>
+<tr>
+<td>5</td>
+<td>25</td>
+<td>lily</td>
+</tr>
+<tr>
+<td>……</td>
+<td>……</td>
+<td>……</td>
+</tr>
+</tbody></table>
+<p>现在我们为 emp_age 字段建立索引。此时因为我们只用到了这一个字段，所以叫单列索引。</p>
+<h4 id="2-存储结构"><a href="#2-存储结构" class="headerlink" title="[2]存储结构"></a>[2]存储结构</h4><p>和前面聚簇索引对比，也就是<strong>数据页</strong>存储的结构不同：</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL16.png?versionId=CAEQKRiBgMDtjpf7.xciIDJkYWUzNjZiZDI3ZTRlOTFhYjRhNDcxODkxNzI0Njgw" srcset="/img/loading.gif" lazyload alt="images"></p>
+<p>下面咱们拿实际数据举个例子：</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL17.png?versionId=CAEQKRiBgMDqjpf7.xciIDIzYjhhY2Y5MjY5ZTQ3NTRhODUxNTI0NmE3MWVmNGQ1" srcset="/img/loading.gif" lazyload alt="images"></p>
+<h4 id="3-字符串类型能排序吗？"><a href="#3-字符串类型能排序吗？" class="headerlink" title="[3]字符串类型能排序吗？"></a>[3]字符串类型能排序吗？</h4><p>B+Tree 要求作为索引值的数据必须经过排序，这样方便执行二分法查找。而字符串可以根据它底层的 Unicode 码进行排序。因为 Unicode 码是二进制数据，二进制数据（或十六进制数据）也是整数，所以当然可以比较大小，可以排序。</p>
+<h3 id="③多列索引"><a href="#③多列索引" class="headerlink" title="③多列索引"></a>③多列索引</h3><p>也叫：组合索引、联合索引。顾名思义，这种索引就是在<strong>数据页</strong>包含了多个字段的值。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL18.png?versionId=CAEQKRiBgMDijpf7.xciIDcxNjc5N2ZmOWQwYTQyZGFhMDlkOWNjMjkzYWM3NDhh" srcset="/img/loading.gif" lazyload alt="images"></p>
+<h3 id="④回表"><a href="#④回表" class="headerlink" title="④回表"></a>④回表</h3><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL19.png?versionId=CAEQKRiBgMDXjpf7.xciIGZlYmVkZTJmYzlhMDQzY2NhYzg3YWQ2N2RjYzA2NzE0" srcset="/img/loading.gif" lazyload alt="images"></p>
+<p>我们根据这个以非聚簇索引的索引列大小排序的 B+ 树只能确定我们要查找记录的主键值，所以如果我们想根据非聚簇索引的索引列的值查找到完整的用户记录的话，仍然需要<strong>回到聚簇索引</strong>中再查一遍，这个过程称为<strong>回表</strong>。也就是根据非聚簇索引的索引列的值查询一条完整的用户记录需要使用到<strong>两棵B+树</strong>！</p>
+<p>问题：为什么我们还需要一次回表操作呢？直接把完整的用户记录放到叶子节点不OK吗？</p>
+<p>回答： 如果把完整的用户记录放到叶子节点是可以不用回表。但是<code>太占地方</code>了，相当于每建立一棵B+树都需要把所有的用户记录再都拷贝一遍，这就有点太浪费存储空间了。</p>
+<p>因为这种按照<code>非主键列</code>建立的B+树需要一次回表操作才可以定位到完整的用户记录，所以这种B+树也被称为<code>二级索引</code>（英文名<code>secondary index</code>），或者<code>辅助索引</code>。如果我们使用的是 emp_age 列的大小作为 B+ 树的排序规则，那么我们也可以把这个B+树叫做：为 emp_age 列建立的索引。</p>
+<p>非聚簇索引的存在不影响数据在聚簇索引中的组织，所以一张表可以有多个非聚簇索引。</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL20.png?versionId=CAEQKRiBgIDij5f7.xciIDI2NzU0YjM4ZmJkMDQwMTBhMTUxNTQxODU2Mjg0M2Yz" srcset="/img/loading.gif" lazyload alt="images"></p>
+<h3 id="⑤不回表的情况"><a href="#⑤不回表的情况" class="headerlink" title="⑤不回表的情况"></a>⑤不回表的情况</h3><p>如果最终需要使用的数据，在非聚簇索引中直接就能够拿到，那就不需要回表再查询聚簇索引。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> index idx_emp_name <span class="hljs-keyword">on</span> t_emp(emp_name);<br><br><span class="hljs-keyword">select</span> emp_id,emp_name <span class="hljs-keyword">from</span> t_emp <span class="hljs-keyword">where</span> emp_name <span class="hljs-keyword">like</span> <span class="hljs-string">&#x27;tom%&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="⑥小结"><a href="#⑥小结" class="headerlink" title="⑥小结"></a>⑥小结</h3><p>聚簇索引与非聚簇索引的原理不同，在使用上也有一些区别：</p>
+<ol>
+<li>聚簇索引的<code>叶子节点</code>存储的就是我们的数据记录，非聚簇索引的叶子节点存储的是数据位置——主键。非聚簇索引不会影响数据表的物理存储顺序。</li>
+<li>一个表<code>只能有一个聚簇索引</code>，因为原始数据只能有一种排序存储的方式，但可以有<code>多个非聚簇索引</code>，也就是多个索引目录提供数据检索。</li>
+</ol>
+<h2 id="6、索引的分类"><a href="#6、索引的分类" class="headerlink" title="6、索引的分类"></a>6、索引的分类</h2><p>MySQL的索引包括普通索引、唯一性索引、全文索引、单列索引、多列索引和空间索引等。</p>
+<ul>
+<li>从<code>功能逻辑</code>上说，索引主要有 4 种，分别是普通索引、唯一索引、主键索引和全文索引。</li>
+<li>按照<code>物理实现方式</code>，索引可以分为 2 种：聚簇索引和非聚簇索引。</li>
+<li>按照<code>字段个数</code>进行划分，分成单列索引和联合索引。</li>
+</ul>
+<h3 id="①普通索引"><a href="#①普通索引" class="headerlink" title="①普通索引"></a>①普通索引</h3><p>在创建普通索引时，不附加任何限制条件，主要用于提高查询效率。这类索引可以创建在<code>任何数据类型</code>中，其值是否唯一和非空，要由字段本身的完整性约束条件决定。建立索引以后，可以通过索引进行查询。例如，在表<code>t_student</code>的字段<code>stuid</code>上建立一个普通索引，查询记录时就可以根据该索引进行查询。</p>
+<h3 id="②唯一性索引"><a href="#②唯一性索引" class="headerlink" title="②唯一性索引"></a>②唯一性索引</h3><p>使用<code>UNIQUE参数</code>可以设置索引为唯一性索引，在创建唯一性索引时，限制该索引的值必须是唯一的，但允许有空值。在一张数据表里<code>可以有多个</code>唯一索引。</p>
+<p>例如，在表t_student的字段name中创建唯一性索引，那么字段name的值就必须是唯一的。通过唯一性索引，可以更快速地确定某条记录。</p>
+<h3 id="③主键索引"><a href="#③主键索引" class="headerlink" title="③主键索引"></a>③主键索引</h3><p>主键索引就是一种<code>特殊的唯一性索引</code>，在唯一索引的基础上增加了不为空的约束，也就是 NOT NULL+UNIQUE，一张表里<code>最多只有一个</code>主键索引。</p>
+<p><code>Why？</code> 这是由主键索引的物理实现方式决定的，因为数据存储在文件中只能按照一种顺序进行存储。</p>
+<h3 id="④单列索引"><a href="#④单列索引" class="headerlink" title="④单列索引"></a>④单列索引</h3><p>在表中的单个字段上创建索引。单列索引只根据该字段进行索引。单列索引可以是普通索引，也可以是唯一性索引，还可以是全文索引。只要保证该索引只对应一个字段即可。一个表可以<code>有多个</code>单列索引。</p>
+<h3 id="⑤多列-组合、联合-索引"><a href="#⑤多列-组合、联合-索引" class="headerlink" title="⑤多列(组合、联合)索引"></a>⑤多列(组合、联合)索引</h3><p>多列索引是在表的多个字段组合上创建一个索引。该索引指向创建时对应的多个字段，可以通过这几个字段进行查询，但是只有查询条件中使用了这些字段中的第一个字段时才会被使用。例如，在表中的字段id、name和gender上建立一个多列索引<code>idx_id_name_gender</code>，只有在查询条件中使用了字段id时该索引才会被使用。使用组合索引时遵循<code>最左前缀集合</code>。</p>
+<h3 id="⑥全文索引"><a href="#⑥全文索引" class="headerlink" title="⑥全文索引"></a>⑥全文索引</h3><p>全文索引（也称全文检索）是目前<code>搜索引擎</code>使用的一种关键技术。它能够利用【<code>分词技术</code>】等多种算法智能分析出文本文字中关键词的频率和重要性，然后按照一定的算法规则智能地筛选出我们想要的搜索结果。</p>
+<p>使用参数<code>FULLTEXT</code>可以设置索引为全文索引。在定义索引的列上支持值的全文查找，允许在这些索引列中插入重复值和空值。全文索引只能创建在<code>CHAR</code>、<code>VARCHAR</code>或<code>TEXT</code>类型及其系列类型的字段上，<strong>查询数据量较大的字符串类型的字段时，使用全文索引可以提高查询速度。</strong>例如，表<code>t_student</code>的字段<code>information</code>是<code>TEXT</code>类型，该字段包含了很多文字信息。在字段information上建立全文索引后，可以提高查询字段information的速度。</p>
+<h4 id="1-自然语言的全文索引"><a href="#1-自然语言的全文索引" class="headerlink" title="[1]自然语言的全文索引"></a>[1]自然语言的全文索引</h4><p>默认情况下，或者使用 in natural language mode 修饰符时，match() 函数对文本集合执行自然语言搜索。</p>
+<p>自然语言搜索引擎将计算每一个文档对象和查询的相关度。这里，相关度是基于匹配的关键词的个数，以及关键词在文档中出现的次数。<strong>在整个索引中出现次数越少的词语，匹配时的相关度就越高。</strong>相反，非常常见的单词将不会被搜索，如果一个词语的在超过 50% 的记录中都出现了，那么自然语言的搜索将不会搜索这类词语。</p>
+<p>这个机制也比较好理解，比如说，一个数据表存储的是一篇篇的文章，文章中的常见词、语气词等等，出现的肯定比较多，搜索这些词语就没什么意义了，需要搜索的是那些文章中有特殊意义的词，这样才能把文章区分开。</p>
+<h4 id="2-布尔全文索引"><a href="#2-布尔全文索引" class="headerlink" title="[2]布尔全文索引"></a>[2]布尔全文索引</h4><p>在布尔搜索中，我们可以在查询中自定义某个被搜索的词语的相关性，当编写一个布尔搜索查询时，可以通过一些前缀修饰符来定制搜索。</p>
+<p>MySQL 内置的修饰符，上面查询最小搜索长度时，搜索结果 ft_boolean_syntax 变量的值就是内置的修饰符，下面简单解释几个，更多修饰符的作用可以查手册。</p>
+<p><strong>限制：</strong> MySQL数据库从3.23.23版开始支持全文索引，但MySQL5.6.4以前<code>只有Myisam支持</code>，5.6.4版本以后<code>innodb才支持</code>，但是官方版本不支持<code>中文分词</code>，需要第三方分词插件。在5.7.6版本，MySQL内置了<code>ngram全文解析器</code>，用来支持亚洲语种的分词。测试或使用全文索引时，要先看一下自己的 MySQL 版本、存储引擎和数据类型是否支持全文索引。</p>
+<p>随着大数据时代的到来，关系型数据库应对全文索引的需求已力不从心，逐渐被 <code>solr</code>、<code>elasticSearch</code>等专门的搜索引擎所替代。</p>
+<h3 id="⑦补充：空间索引"><a href="#⑦补充：空间索引" class="headerlink" title="⑦补充：空间索引"></a>⑦补充：空间索引</h3><p>使用参数<code>SPATIAL</code>可以设置索引为<code>空间索引</code>。空间索引只能建立在空间数据类型上，这样可以提高系统获取空间数据的效率。MySQL中的空间数据类型包括<code>GEOMETRY</code>、<code>POINT</code>、<code>LINESTRING</code>和<code>POLYGON</code>等。目前只有MyISAM存储引擎支持空间检索，而且索引的字段不能为空值。对于初学者来说，这类索引很少会用到。</p>
+<p>**小结：不同的存储引擎支持的索引类型也不一样 **</p>
+<ul>
+<li><strong>InnoDB</strong> ：支持 B-tree、Full-text 等索引，不支持 Hash 索引； </li>
+<li><strong>MyISAM</strong> ： 支持 B-tree、Full-text 等索引，不支持 Hash 索引；</li>
+<li><strong>Memory ：</strong>支持 B-tree、Hash 等索引，不支持 Full-text 索引；</li>
+<li><strong>NDB ：</strong>支持 Hash 索引，不支持 B-tree、Full-text 等索引； </li>
+<li><strong>Archive ：</strong>不支持 B-tree、Hash、Full-text 等索引；</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/mysql/">mysql</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/mysql/">mysql</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客目前大部分文章都是参考尚硅谷或者马士兵教育的学习资料！<a href="http://www.atguigu.com/" rel="nofollow noopener"官网地址！</a> 
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/03/13/Mysql-%E6%9E%B6%E6%9E%84%E5%BC%95%E6%93%8E/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Mysql-引擎,架构和索引与法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/03/13/Mysql-SQL%E4%BC%98%E5%8C%96/">
+                        <span class="hidden-mobile">Mysql-SQL优化整理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+	<!--《添加网站运行时间 -->
+<br/>
+
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+var now = new Date(); 
+
+function createtime() {
+    //此处修改你的建站时间或者网站上线时间
+    var grt = new Date('11/02/2021 21:39:00');
+    now.setTime(now.getTime() + 250);
+    days = (now - grt) / 1000 / 60 / 60 / 24;
+
+    dnum = Math.floor(days);
+    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+        hnum = "0" + hnum;
+    }
+    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+        mnum = "0" + mnum;
+    }
+    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+        snum = "0" + snum;
+    }
+    document.getElementById("timeDate").innerHTML = " 本站已各种夹缝中安全运行 " + dnum + " 天 ";
+    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()", 250);
+</script>
+
+<!-- 添加网站运行时间》-->
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
