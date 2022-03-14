@@ -173,7 +173,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="No one can take advantage of you as long as you&#39;re a loser">
+            <span class="h2" id="subtitle" title="莫忘少年凌云志，曾许天下第一流">
               
             </span>
 
@@ -208,21 +208,23 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/03/13/Mysql-%E6%9E%B6%E6%9E%84%E5%BC%95%E6%93%8E/" target="_self">
-          Mysql-引擎,架构和索引与法
+        <a href="/2022/03/14/MySQL-%E5%A4%8D%E5%88%B6%E6%9E%B6%E6%9E%84/" target="_self">
+          MySQL-复制架构
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2022/03/13/Mysql-%E6%9E%B6%E6%9E%84%E5%BC%95%E6%93%8E/" target="_self">
+        <a href="/2022/03/14/MySQL-%E5%A4%8D%E5%88%B6%E6%9E%B6%E6%9E%84/" target="_self">
           
           
             
           
-          MySQL 逻辑架构1、总述和其它数据库有所不同，MySQL 的架构可以在多种不同场景中应用并发挥良好作用。主要体现在存储引擎的架构上，『插件式』的『存储引擎架构』将查询和其它的系统任务以及数据的存储提取相分离。
-这种架构可以根据业务的需求和实际需要选择合适的存储引擎。
-
-2、连接层最上层是一些客户端和连接服务，包含本地 sock 通信和大多数基于客户端/服务端工具实现的类似于 TCP/IP 的通
+          MySQL 复制架构第一节 概述1.1 数据拓展
+热备份：数据库在运行的过程中，对数据进行备份操作。相对的，还有冷备份，冷备份需要停机，然后对数据进行备份操作。
+多活：所谓的多活，就是让数据库机器节点会存在多个，避免单点情况的出现。
+故障切换：当一台数据库物理机出现异常状况时，可以自动的切换到其他物理机上。
+读写分离：当存在多台数据库物理机，将读写操作分别交给不同的机器完成。
+负载均衡：假设当存在
         </a>
       </p>
 
@@ -230,7 +232,62 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-03-13 21:31" pubdate>
+            <time datetime="2022-03-14 18:18" pubdate>
+              2022-03-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/mysql/">mysql</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/mysql/">mysql</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/03/13/MySQL-SQL%E4%BC%98%E5%8C%96/" target="_self">
+          Mysql-SQL优化整理
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/03/13/MySQL-SQL%E4%BC%98%E5%8C%96/" target="_self">
+          
+          
+            
+          
+          SQL 优化第一节 准备数据1、修改配置为了能够看出 SQL 优化前后的性能差异，我们需要较为大量的数据。生成这些数据我们需要用到 MySQL 中的自定义函数。
+但是 MySQL 默认关闭了自定义函数功能，所以我们需要通过修改配置文件来开启这项功能。
+12# 使用 vim 编辑器打开配置文件vim /etc/my.cnf
+
+在配置文件末尾增加如下内容：
+12# 设置为 1 表示开启这项功能log_
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-03-13 21:32" pubdate>
               2022-03-13
             </time>
           </div>
@@ -261,13 +318,13 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/03/13/Mysql-%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" target="_self">
+        <a href="/2022/03/13/MySQL-%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" target="_self">
           Mysql-索引原理
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2022/03/13/Mysql-%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" target="_self">
+        <a href="/2022/03/13/MySQL-%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" target="_self">
           
           
             
@@ -322,7 +379,7 @@ lily
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-03-13 21:30" pubdate>
+            <time datetime="2022-03-13 21:31" pubdate>
               2022-03-13
             </time>
           </div>
@@ -353,23 +410,21 @@ lily
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/03/13/Mysql-SQL%E4%BC%98%E5%8C%96/" target="_self">
-          Mysql-SQL优化整理
+        <a href="/2022/03/13/MySQL-%E6%9E%B6%E6%9E%84%E5%BC%95%E6%93%8E/" target="_self">
+          Mysql-引擎,架构和索引语法
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2022/03/13/Mysql-SQL%E4%BC%98%E5%8C%96/" target="_self">
+        <a href="/2022/03/13/MySQL-%E6%9E%B6%E6%9E%84%E5%BC%95%E6%93%8E/" target="_self">
           
           
             
           
-          SQL 优化第一节 准备数据1、修改配置为了能够看出 SQL 优化前后的性能差异，我们需要较为大量的数据。生成这些数据我们需要用到 MySQL 中的自定义函数。
-但是 MySQL 默认关闭了自定义函数功能，所以我们需要通过修改配置文件来开启这项功能。
-12# 使用 vim 编辑器打开配置文件vim /etc/my.cnf
+          MySQL 逻辑架构1、总述和其它数据库有所不同，MySQL 的架构可以在多种不同场景中应用并发挥良好作用。主要体现在存储引擎的架构上，『插件式』的『存储引擎架构』将查询和其它的系统任务以及数据的存储提取相分离。
+这种架构可以根据业务的需求和实际需要选择合适的存储引擎。
 
-在配置文件末尾增加如下内容：
-12# 设置为 1 表示开启这项功能log_
+2、连接层最上层是一些客户端和连接服务，包含本地 sock 通信和大多数基于客户端/服务端工具实现的类似于 TCP/IP 的通
         </a>
       </p>
 
@@ -725,57 +780,6 @@ JDK=JRE+Java开发辅助工具
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/jvm/">jvm</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/02/28/RabbitMQ%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
-          RabbitMQ学习笔记
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2022/02/28/RabbitMQ%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
-          
-          
-            
-          
-          RabbitMQ1. 消息中间件概述1.1.为什么学习消息队列电子商务应用中，经常需要对庞大的海量数据进行监控，随着网络技术和软件开发技术的不断提高，在实战开发中MQ的使用与日俱增，特别是RabbitMQ在分布式系统中存储转发消息，可以保证数据不丢失，也能保证高可用性，即集群部署的时候部分机器宕机可以继续运行。在大型电子商务类网站，如京东、淘宝、去哪儿等网站有着深入的应用 。
-队列的主要作用是消除
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-02-28 19:54" pubdate>
-              2022-02-28
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/RabbitMQ/">RabbitMQ</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/RabbitMQ/">RabbitMQ</a>
             
           </div>
         

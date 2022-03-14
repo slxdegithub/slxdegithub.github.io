@@ -19,7 +19,7 @@
   <meta name="description" content="索引的原理1、数据页假设有一张数据库表：    emp_id(主键) emp_age(非主键) emp_name(非主键)    1 21 tom   2 22 jerry   3 23 bob   4 24 harry   5 25 lily   …… …… ……   对于 InnoDB 存储引擎来说，最小的存储单位就是：页。那么存放原始数据的页就称为数据页。  一个数据页默认的大小是：16KB">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mysql-索引原理">
-<meta property="og:url" content="http://www.slx.blue/2022/03/13/Mysql-%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:url" content="http://www.slx.blue/2022/03/13/MySQL-%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="Blue~u~u~u~u">
 <meta property="og:description" content="索引的原理1、数据页假设有一张数据库表：    emp_id(主键) emp_age(非主键) emp_name(非主键)    1 21 tom   2 22 jerry   3 23 bob   4 24 harry   5 25 lily   …… …… ……   对于 InnoDB 存储引擎来说，最小的存储单位就是：页。那么存放原始数据的页就称为数据页。  一个数据页默认的大小是：16KB">
 <meta property="og:locale" content="zh_CN">
@@ -38,8 +38,8 @@
 <meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL18.png?versionId=CAEQKRiBgMDijpf7.xciIDcxNjc5N2ZmOWQwYTQyZGFhMDlkOWNjMjkzYWM3NDhh">
 <meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL19.png?versionId=CAEQKRiBgMDXjpf7.xciIGZlYmVkZTJmYzlhMDQzY2NhYzg3YWQ2N2RjYzA2NzE0">
 <meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL20.png?versionId=CAEQKRiBgIDij5f7.xciIDI2NzU0YjM4ZmJkMDQwMTBhMTUxNTQxODU2Mjg0M2Yz">
-<meta property="article:published_time" content="2022-03-13T13:30:54.000Z">
-<meta property="article:modified_time" content="2022-03-13T13:32:41.259Z">
+<meta property="article:published_time" content="2022-03-13T13:31:54.000Z">
+<meta property="article:modified_time" content="2022-03-14T10:17:44.979Z">
 <meta property="article:author" content="Blue~u~u~u">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary_large_image">
@@ -217,7 +217,7 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-03-13 21:30" pubdate>
+      <time datetime="2022-03-13 21:31" pubdate>
         2022年3月13日 晚上
       </time>
     </span>
@@ -278,7 +278,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：1 分钟前
+                  本文最后更新于：29 分钟前
                 
               </p>
             
@@ -657,9 +657,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/03/13/Mysql-%E6%9E%B6%E6%9E%84%E5%BC%95%E6%93%8E/">
+                      <a href="/2022/03/13/MySQL-SQL%E4%BC%98%E5%8C%96/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Mysql-引擎,架构和索引与法</span>
+                        <span class="hidden-mobile">Mysql-SQL优化整理</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -667,8 +667,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/03/13/Mysql-SQL%E4%BC%98%E5%8C%96/">
-                        <span class="hidden-mobile">Mysql-SQL优化整理</span>
+                      <a href="/2022/03/13/MySQL-%E6%9E%B6%E6%9E%84%E5%BC%95%E6%93%8E/">
+                        <span class="hidden-mobile">Mysql-引擎,架构和索引语法</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

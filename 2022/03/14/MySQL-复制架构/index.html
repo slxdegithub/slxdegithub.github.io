@@ -1,0 +1,899 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="Blue~u~u~u">
+  <meta name="author" content="Blue~u~u~u">
+  <meta name="keywords" content="">
+  <meta name="description" content="MySQL 复制架构第一节 概述1.1 数据拓展 热备份：数据库在运行的过程中，对数据进行备份操作。相对的，还有冷备份，冷备份需要停机，然后对数据进行备份操作。 多活：所谓的多活，就是让数据库机器节点会存在多个，避免单点情况的出现。 故障切换：当一台数据库物理机出现异常状况时，可以自动的切换到其他物理机上。 读写分离：当存在多台数据库物理机，将读写操作分别交给不同的机器完成。 负载均衡：假设当存在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL-复制架构">
+<meta property="og:url" content="http://www.slx.blue/2022/03/14/MySQL-%E5%A4%8D%E5%88%B6%E6%9E%B6%E6%9E%84/index.html">
+<meta property="og:site_name" content="Blue~u~u~u~u">
+<meta property="og:description" content="MySQL 复制架构第一节 概述1.1 数据拓展 热备份：数据库在运行的过程中，对数据进行备份操作。相对的，还有冷备份，冷备份需要停机，然后对数据进行备份操作。 多活：所谓的多活，就是让数据库机器节点会存在多个，避免单点情况的出现。 故障切换：当一台数据库物理机出现异常状况时，可以自动的切换到其他物理机上。 读写分离：当存在多台数据库物理机，将读写操作分别交给不同的机器完成。 负载均衡：假设当存在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL63.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL64.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL65.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL66.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL99.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL67.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL68.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL69.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL70.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL71.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL72.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL73.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL74.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL75.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL76.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL77.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL78.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL79.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL80.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL81.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL82.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL83.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL84.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL85.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL86.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL87.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL88.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL89.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL90.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL91.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL92.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL93.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL94.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL95.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL96.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL97.png">
+<meta property="og:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL98.png">
+<meta property="article:published_time" content="2022-03-14T10:18:54.000Z">
+<meta property="article:modified_time" content="2022-03-14T10:20:06.559Z">
+<meta property="article:author" content="Blue~u~u~u">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL63.png">
+  
+  <title>MySQL-复制架构 - Blue~u~u~u~u</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.slx.blue","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":140,"cursorChar":"_","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"/>
+<script src="/live2d-widget/autoload.js"></script>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Blue~u~u</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/images/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="MySQL-复制架构">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-03-14 18:18" pubdate>
+        2022年3月14日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      14k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      43 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">MySQL-复制架构</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：26 分钟前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="MySQL-复制架构"><a href="#MySQL-复制架构" class="headerlink" title="MySQL 复制架构"></a>MySQL 复制架构</h1><h1 id="第一节-概述"><a href="#第一节-概述" class="headerlink" title="第一节 概述"></a>第一节 概述</h1><h2 id="1-1-数据拓展"><a href="#1-1-数据拓展" class="headerlink" title="1.1 数据拓展"></a>1.1 数据拓展</h2><ul>
+<li>热备份：数据库在运行的过程中，对数据进行备份操作。相对的，还有冷备份，冷备份需要停机，然后对数据进行备份操作。</li>
+<li>多活：所谓的多活，就是让数据库机器节点会存在多个，避免单点情况的出现。</li>
+<li>故障切换：当一台数据库物理机出现异常状况时，可以自动的切换到其他物理机上。</li>
+<li>读写分离：当存在多台数据库物理机，将读写操作分别交给不同的机器完成。</li>
+<li>负载均衡：假设当存在多台数据库物理机接收读请求时，多个请求会均匀的分配到不同的机器上，避免大量请求压在某一台机器上。</li>
+</ul>
+<h2 id="1-2-常见架构"><a href="#1-2-常见架构" class="headerlink" title="1.2 常见架构"></a>1.2 常见架构</h2><p><strong>没有百分百的完美架构，只有适合的架构</strong></p>
+<p>理解mysql的分库分表，先了解mysql的架构设计,在mysql架构中，经常会使用到的就是<strong>读写分离</strong>，此设计理念的基础上常见架构有: 一主一从或多从、主主复制、级联复制、主主与级联复制结合。</p>
+<p><strong>一主一从或多从</strong>: 一个mysql数据库主节点,一个或者多个从节点.主节点与从节点进行数据同步</p>
+<p><strong>主主复制</strong>: 两个mysql主节点,主节点与主节点之间进行数据同步</p>
+<p><strong>级联复制</strong>: 类似一主多从架构,但是从节点分级同步</p>
+<p><strong>主主与级联复制结合</strong>: 双主节点同步,同时从节点分级同步</p>
+<h1 id="第二节-主从模式"><a href="#第二节-主从模式" class="headerlink" title="第二节 主从模式"></a>第二节 主从模式</h1><h2 id="1、主从简介"><a href="#1、主从简介" class="headerlink" title="1、主从简介"></a>1、主从简介</h2><p>主从模式是使用的最多的mysql高可用架构。</p>
+<p>存在一台master作为写机，一个或多个slave作为读机,实现读写分离。之所以这么设计是因为在实际的情况下，读的请求量一般是远远大于写请求。架构图如下</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL63.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><strong>优点:</strong></p>
+<p>读与写的节点分离,数据写入master节点后,再由master节点将数据复制到slave节点上</p>
+<p><strong>缺点:</strong></p>
+<ul>
+<li>master是单点存在的，如果要对master进行停机维护，无法接收写请求</li>
+<li>master需要将写入数据复制到各个slave节点，复制是有一定的时间延迟的，因此有可能出现查询数据不一致</li>
+<li>对master进行停机维护，需将某一个slave提升为新的master节点，选举规则需要进行自定义</li>
+<li>当slave被提升为新的master后，可能会造成新的master节点与旧master的数据不一致</li>
+</ul>
+<h3 id="1-3-2-主从搭建"><a href="#1-3-2-主从搭建" class="headerlink" title="1.3.2 主从搭建"></a>1.3.2 主从搭建</h3><p>在虚拟机中安装 docker</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">yum install -y docker<br></code></pre></td></tr></table></figure>
+
+
+
+<p>若遇到如下问题:</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL64.png" srcset="/img/loading.gif" lazyload alt="image-20210607104243205"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs text">#编辑yum的配置文件<br>vi /etc/yum/pluginconf.d/langpacks.conf<br>将第一行：enable=1改为enable=0<br><br>#杀掉进程即可<br>kill -9 8683<br></code></pre></td></tr></table></figure>
+
+
+
+<p>查看docker版本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs text">docker -v<br>#开启启动docker<br>systemctl enable docker<br>#查看运行状态<br>systemctl status docker<br>#启动<br>systemctl start docker<br>#停止<br>systemctl stop docker<br>#重启<br>systemctl restart docker<br></code></pre></td></tr></table></figure>
+
+<p>搜索mysql镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">docker search mysql<br></code></pre></td></tr></table></figure>
+
+<p>下载mysql镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">docker pull docker.io/mysql:5.7<br></code></pre></td></tr></table></figure>
+
+<p>安装mysql容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs text">#服务一<br>docker run --name mysqlm1 \<br>-p 10000:3306 \<br>--privileged=true \<br>-it \<br>-e MYSQL_ROOT_PASSWORD=123456 \<br>-e MYSQL_USER=user \<br>-e MYSQL_PASSWORD=pass \<br>-v /home/mysql/docker-data/m1/conf:/etc/mysql/conf.d \<br>-v /home/mysql/docker-data/m1/data/:/var/lib/mysql \<br>-v /home/mysql/docker-data/m1/logs/:/var/log/mysql \<br>-d mysql:5.7<br><br>#服务二<br>docker run --name mysqls1 \<br>-p 20000:3306 \<br>--privileged=true \<br>-it \<br>-e MYSQL_ROOT_PASSWORD=123456 \<br>-e MYSQL_USER=user \<br>-e MYSQL_PASSWORD=pass \<br>-v /home/mysql/docker-data/s1/conf:/etc/mysql/conf.d \<br>-v /home/mysql/docker-data/s1/data/:/var/lib/mysql \<br>-v /home/mysql/docker-data/s1/logs/:/var/log/mysql \<br>-d mysql:5.7<br></code></pre></td></tr></table></figure>
+
+
+
+<p>参数说明：</p>
+<blockquote>
+<p>-p 参数格式：宿主机端口号:容器内程序的端口号</p>
+<p>-e MYSQL_ROOT_PASSWORD 给 MySQL 的 root 用户设置密码</p>
+<p>-v 参数指定宿主机内的目录，用来给 docker 容器设定配置文件等等</p>
+</blockquote>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL65.png" srcset="/img/loading.gif" lazyload alt="images"></p>
+<p>在两台机器上新增配置文件,路径为/home/mysql/docker-data/m1/conf/my.cnf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs text"># For advice on how to change settings please see<br># http://dev.mysql.com/doc/refman/5.7/en/server-configuration-defaults.html<br><br>[mysqld]<br>#<br># Remove leading # and set to the amount of RAM for the most important data<br># cache in MySQL. Start at 70% of total RAM for dedicated server, else 10%.<br># innodb_buffer_pool_size = 128M<br>#<br># Remove leading # to turn on a very important data integrity option: logging<br># changes to the binary log between backups.<br># log_bin<br>#<br># Remove leading # to set options mainly useful for reporting servers.<br># The server defaults are faster for transactions and fast SELECTs.<br># Adjust sizes as needed, experiment to find the optimal values.<br># join_buffer_size = 128M<br># sort_buffer_size = 2M<br># read_rnd_buffer_size = 2M<br><br>character_set_server=utf8<br>init_connect=&#x27;SET NAMES utf8&#x27;<br><br># Disabling symbolic-links is recommended to prevent assorted security risks<br>symbolic-links=0<br><br>lower_case_table_names=1<br>#指定主机号，不允许出现重复<br>server-id=134<br>#开启binlog<br>log-bin=mysql-bin<br>auto_increment_increment=2<br>auto_increment_offset=1<br><br>#rpl_semi_sync_master_enabled=1<br>#rpl_semi_sync_master_timeout=10000<br></code></pre></td></tr></table></figure>
+
+
+
+<p>/home/mysql/docker-data/s1/conf/my.cnf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs text"># For advice on how to change settings please see<br># http://dev.mysql.com/doc/refman/5.7/en/server-configuration-defaults.html<br><br>[mysqld]<br>#<br># Remove leading # and set to the amount of RAM for the most important data<br># cache in MySQL. Start at 70% of total RAM for dedicated server, else 10%.<br># innodb_buffer_pool_size = 128M<br>#<br># Remove leading # to turn on a very important data integrity option: logging<br># changes to the binary log between backups.<br># log_bin<br>#<br># Remove leading # to set options mainly useful for reporting servers.<br># The server defaults are faster for transactions and fast SELECTs.<br># Adjust sizes as needed, experiment to find the optimal values.<br># join_buffer_size = 128M<br># sort_buffer_size = 2M<br># read_rnd_buffer_size = 2M<br><br>character_set_server=utf8<br>init_connect=&#x27;SET NAMES utf8&#x27;<br><br># Disabling symbolic-links is recommended to prevent assorted security risks<br>symbolic-links=0<br><br>lower_case_table_names=1<br>#指定主机号，不允许出现重复<br>server-id=130<br>#开启binlog<br>log-bin=mysql-bin<br>auto_increment_increment=2<br>auto_increment_offset=1<br><br>#rpl_semi_sync_master_enabled=1<br>#rpl_semi_sync_master_timeout=10000<br></code></pre></td></tr></table></figure>
+
+
+
+<p>❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤</p>
+<p>修改 my.cnf 后记得<strong>重启</strong> MySQL 容器！</p>
+<blockquote>
+<p>[root@demo conf]# docker restart mysqlm1<br>mysqlm1<br>[root@demo conf]# docker restart mysqls1<br>mysqls1</p>
+</blockquote>
+<p>❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤</p>
+<p>在master的docker容器中添加mysql权限，开启备份机复制，并且设置备份用户信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs text">#在134服务中进入mysql容器<br>docker exec -it mysqlm1 /bin/bash<br><br>#登录到 MySQL<br>mysql -u root -p<br>EnterPassword:123456<br><br>#==================== 在 MySQL 中的操作 ===========================<br>#添加权限<br>GRANT REPLICATION SLAVE,FILE,REPLICATION CLIENT ON *.* TO &#x27;repluser&#x27;@&#x27;%&#x27; IDENTIFIED BY &#x27;123456&#x27;;<br><br>#刷新权限<br>FLUSH PRIVILEGES;<br><br>#退出MySQL<br>quit;<br>#==================== 在 MySQL 中的操作 ===========================<br><br>#退出docker容器<br>exit<br><br>#重启容器<br>docker restart mysqlm1<br><br>#查看m1的binlog信息（需要进入docker容器，然后再登录MySQL执行）<br>show master status;<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL66.png" srcset="/img/loading.gif" lazyload alt="image-20220314111451455"></p>
+<p><strong>设置主从关系</strong></p>
+<p>接着在slave中进入到mysql容器，设置master信息，用于标注当前slave的master是谁</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL99.png" srcset="/img/loading.gif" lazyload alt="images"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql">#语法<br>change master <span class="hljs-keyword">to</span> master_host<span class="hljs-operator">=</span><span class="hljs-string">&#x27;通过宿主机访问master的ip&#x27;</span>,master_port<span class="hljs-operator">=</span>docker对外暴露的宿主机master的端口号,master_user<span class="hljs-operator">=</span><span class="hljs-string">&#x27;repluser&#x27;</span>,master_password<span class="hljs-operator">=</span><span class="hljs-string">&#x27;123456&#x27;</span>,master_log_file<span class="hljs-operator">=</span><span class="hljs-string">&#x27;master中的binlob文件&#x27;</span>,master_log_pos<span class="hljs-operator">=</span>master中的position位置信息;<br>#命令<br>change master <span class="hljs-keyword">to</span> master_host<span class="hljs-operator">=</span><span class="hljs-string">&#x27;192.168.2.128&#x27;</span>,master_port<span class="hljs-operator">=</span><span class="hljs-number">10000</span>,master_user<span class="hljs-operator">=</span><span class="hljs-string">&#x27;repluser&#x27;</span>,master_password<span class="hljs-operator">=</span><span class="hljs-string">&#x27;123456&#x27;</span>,master_log_file<span class="hljs-operator">=</span><span class="hljs-string">&#x27;mysql-bin.000001&#x27;</span>,master_log_pos<span class="hljs-operator">=</span><span class="hljs-number">487</span>;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>提示：如果命令发现参数打错了 就 执行 stop slave； 再重新执行上述命令</p>
+</blockquote>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL67.png" srcset="/img/loading.gif" lazyload alt="image-20220314090841354"></p>
+<p>完成后，还需要开启slave中的<strong>IO</strong>和<strong>SQL</strong>线程，这两个线程主要用于slave中进行数据备份。</p>
+<ul>
+<li><code>IO</code> 线程：从日志文件中读取数据，其中最关键的就是用来同步数据的 <code>SQL</code> 语句</li>
+<li><code>SQL</code> 线程：执行从日志文件中读取到的 <code>SQL</code> 语句</li>
+</ul>
+<p>可以先查看slave中这两个线程的状态</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">show</span> slave status\G;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL68.png" srcset="/img/loading.gif" lazyload alt="image-20220314091210982"></p>
+<p>我们发现在slave中，这两个线程是关闭的，需要将这两个线程进行开启</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql">#开启（在 docker容器中登录 MySQL 后执行）<br><span class="hljs-keyword">start</span> slave;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL69.png" srcset="/img/loading.gif" lazyload alt="image-20220314091353282"></p>
+<p>到此，mysql主从复制就已经搭建完毕</p>
+<h3 id="1-3-3-测试"><a href="#1-3-3-测试" class="headerlink" title="1.3.3 测试"></a>1.3.3 测试</h3><h4 id="1-查看主从相关信息"><a href="#1-查看主从相关信息" class="headerlink" title="[1]查看主从相关信息"></a>[1]查看主从相关信息</h4><p>查看slave中的binlog是否已经开启</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">show</span> <span class="hljs-keyword">global</span> variables <span class="hljs-keyword">like</span> &quot;%log%&quot;;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL70.png" srcset="/img/loading.gif" lazyload alt="image-20220314091518052"></p>
+<p>查看master、slave中的进程信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql">#m1和s1分别输入<br><span class="hljs-keyword">show</span> processlist;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>m1节点内容</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL71.png" srcset="/img/loading.gif" lazyload alt="image-20220314105409477"></p>
+<p>s1节点内容</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL72.png" srcset="/img/loading.gif" lazyload alt="image-20220314105450221"></p>
+<h4 id="2-数据库同步测试"><a href="#2-数据库同步测试" class="headerlink" title="[2]数据库同步测试"></a>[2]数据库同步测试</h4><p>在m1节点创建一个数据库</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL73.png" srcset="/img/loading.gif" lazyload alt="image-20220314105617999"></p>
+<p>在s1节点中查看数据库</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL74.png" srcset="/img/loading.gif" lazyload alt="image-20220314110455637"></p>
+<h4 id="3-表同步测试"><a href="#3-表同步测试" class="headerlink" title="[3]表同步测试"></a>[3]表同步测试</h4><p>在m1中创建一张表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> `t_user`;<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> `t_user` (<br>`id` <span class="hljs-type">int</span>(<span class="hljs-number">11</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span> AUTO_INCREMENT,<br>`username` <span class="hljs-type">varchar</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>`password` <span class="hljs-type">varchar</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>`address` <span class="hljs-type">varchar</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br><span class="hljs-keyword">PRIMARY</span> KEY (`id`)<br>) ENGINE<span class="hljs-operator">=</span>InnoDB AUTO_INCREMENT<span class="hljs-operator">=</span><span class="hljs-number">10</span> <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8;<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL75.png" srcset="/img/loading.gif" lazyload alt="image-20220314112513243"></p>
+<p>在s1中查看表</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL76.png" srcset="/img/loading.gif" lazyload alt="image-20220314112651330"></p>
+<h4 id="4-数据同步测试"><a href="#4-数据同步测试" class="headerlink" title="[4]数据同步测试"></a>[4]数据同步测试</h4><p>在m1中新增一条数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `t_user` <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">&#x27;1&#x27;</span>, <span class="hljs-string">&#x27;zhangsan&#x27;</span>, <span class="hljs-string">&#x27;123&#x27;</span>, <span class="hljs-string">&#x27;北京&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL77.png" srcset="/img/loading.gif" lazyload alt="image-20210607111612466"></p>
+<p>在130中查看数据</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL78.png" srcset="/img/loading.gif" lazyload alt="image-20210607111628561"></p>
+<h4 id="5-反向同步数据"><a href="#5-反向同步数据" class="headerlink" title="[5]反向同步数据"></a>[5]反向同步数据</h4><p>在s1中新增一条数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `t_user` <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">&#x27;2&#x27;</span>, <span class="hljs-string">&#x27;lisi&#x27;</span>, <span class="hljs-string">&#x27;123&#x27;</span>, <span class="hljs-string">&#x27;上海&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL79.png" srcset="/img/loading.gif" lazyload alt="image-20210607111741609"></p>
+<p>在m1中查看数据</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL80.png" srcset="/img/loading.gif" lazyload alt="image-20210607111805185"></p>
+<p><strong>==结论: 从服务中新增数据无法同步到主服务中去, 主从同步是单向的!==</strong></p>
+<h4 id="6-数据修复"><a href="#6-数据修复" class="headerlink" title="[6]数据修复"></a>[6]数据修复</h4><p>如果因为各种原因，发现 slave 中的数据和 master中不一致，可以参考下面的步骤恢复（下面的步骤相当于在 slave 中推倒重来）：</p>
+<ul>
+<li><p>停止 slave 相关复制线程</p>
+<p>stop slave;</p>
+</li>
+<li><p>删除 slave 中同步过来的数据库</p>
+<p>drop database db_hr;</p>
+</li>
+<li><p>重新设定主从关系</p>
+<p>change master to master_host=’192.168.2.128’,master_port=10000,master_user=’repluser’,master_password=’123456’,master_log_file=’mysql-bin.000002’,master_log_pos=154;</p>
+</li>
+<li><p>重新启动 slave 中的相关复制线程</p>
+<p>start slave;</p>
+</li>
+</ul>
+<h2 id="1-4-主从复制原理"><a href="#1-4-主从复制原理" class="headerlink" title="1.4 主从复制原理"></a>1.4 主从复制原理</h2><ul>
+<li>异步操作：不需要等待</li>
+<li>同步操作：需要等待</li>
+</ul>
+<h3 id="1-4-1-异步复制"><a href="#1-4-1-异步复制" class="headerlink" title="1.4.1 异步复制"></a>1.4.1 异步复制</h3><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL81.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<ol>
+<li>在主服务器写操作举例：insert 语句。</li>
+<li>事务提交到master，master确认修改已保存。</li>
+<li>master接收到应用事务提交请求后，更新内部的binlog日志，让mysql引擎执行事务操作，并返回给客户端执行结果信息。同时在master中会存在一个事件监听，其会一直监听着master中binlog日志文件的改变，一旦发现日志文件发生改变，触发dump线程</li>
+<li>dump线程被触发后，通知slave中的IO线程：现在有事务操作要进行同步</li>
+<li>slave中IO线程接收到通知后，会从slave中<strong>relay-log.info</strong>文件中获取slave中的binlog日志文件和pos位置信息。接着会把这部分信息发送给master的dump线程。发送信息的含义是：告诉master，我上次读取到了哪里，这次还从上次读取到的位置继续读取。</li>
+<li>master的dump线程收到这些信息后，会根据slave发送的binlog日志文件和pos位置，将最新的binlog日志和pos位置后面的内容同步给slave的IO线程</li>
+<li>slave的IO线程接收到这些信息后，会将这部分内容同步到slave中的relay-bin文件中</li>
+<li>当relay-bin文件发生改变后，触发slave线程执行sql操作【异步】</li>
+<li>当slave向relay-bin写入完成后，会向master返回一个ACK消息，同步成功。</li>
+</ol>
+<p>对于这一系列的操作，可以发现master和slave在进行同步时是以异步的方式完成的，master写入完binlog后，会马上通过引擎进行事务提交并向客户端返回响应，对于与slave同步的操作，则是异步完成的。</p>
+<p><strong>优点:</strong></p>
+<p>效率高</p>
+<p><strong>缺点:</strong></p>
+<p>可能出现数据不一致</p>
+<h3 id="1-4-2-半同步复制"><a href="#1-4-2-半同步复制" class="headerlink" title="1.4.2 半同步复制"></a>1.4.2 半同步复制</h3><p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL82.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>半同步复制与异步复制的工作流程大体相似</p>
+<p><strong>不同点:</strong> 当master中的binlog日志写入完成后，其不会马上通过引擎进行事务提交，而会处于等待，等到slave同步完成向master返回ACK通知后，才会唤醒等待，继续向下执行。</p>
+<ul>
+<li>等待的时长，默认为10秒，但该时间可以配置</li>
+<li>尽量的避免了主从数据不一致，但造成吞吐量的降低</li>
+<li>mysql兜底方案: 使用半同步复制进行备份时slave节点挂掉了，那么当master等待10秒后，仍然会进行引擎提交，同时会将半同步复制切换为异步复制。等到slave节点重启后，又会自动的从异步复制切换到半同步复制。</li>
+</ul>
+<h3 id="1-4-3-异步复制实现"><a href="#1-4-3-异步复制实现" class="headerlink" title="1.4.3 异步复制实现"></a>1.4.3 异步复制实现</h3><p>Mysql在进行复制操作时，默认是基于异步复制完成的。那为了更好的体会异步复制的效果，可以通过mysql日志来查看具体的复制过程效果。</p>
+<ol>
+<li><strong>查看master的Mysql日志信息</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">docker logs -f mysqlm1<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL83.png" srcset="/img/loading.gif" lazyload alt="image-20210607113019936"></p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">根据当前查看的日志信息，在master中已经开启了dump线程连接到了<span class="hljs-built_in">id</span>为<span class="hljs-number">130</span>的slave节点，并且该<span class="hljs-built_in">id</span>就是在slave的mysql配置文件中设置的<span class="hljs-built_in">id</span>。同时pos内容包括当前的binlog日志和pos位置。<br></code></pre></td></tr></table></figure>
+
+<ol>
+<li><strong>查看slave的Mysql日志信息</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">docker logs -f mysqls1<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL84.png" srcset="/img/loading.gif" lazyload alt="image-20210607113156502"></p>
+<p>根据slave中的日志信息，可以看到，当前slave中已经开启了relay-log日志，其对应文件信息就是xxxxx-relay-bin。其内部保存的就是slave中的相关binlog信息和pos位置信息。</p>
+<p>同时在slave中也已经开启了SQL Thread，并且根据信息可以，它会从7375d7dd3ef6-relay-bin.000001文件的4位置开始复制。</p>
+<p>同时在slave中也开启了IO Thread，其已经连接到master，并且会从master的binlog日志的154的位置开启复制。</p>
+<ol>
+<li><strong>查看master当前的binlog日志信息</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">cd home/mysql/docker-data/129/data/<br>#确定当前master正在使用的binlog日志文件<br>cat mysql-bin.index<br>#查看当前binlog日志文件内容<br>tail -f mysql-bin.000001<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL85.png" srcset="/img/loading.gif" lazyload alt="image-20210607113730796"></p>
+<ol>
+<li><strong>查看slave当前的日志信息</strong></li>
+</ol>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL86.png" srcset="/img/loading.gif" lazyload alt="image-20210607114023235"></p>
+<h3 id="1-4-4-半同步复制实现"><a href="#1-4-4-半同步复制实现" class="headerlink" title="1.4.4 半同步复制实现"></a>1.4.4 半同步复制实现</h3><ol>
+<li>进入mysql容器，加载lib，<strong>主从节点都要配置</strong>，因为主从节点间会存在切换。</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"># 这两条 install 命令需要在 m1 中都执行一遍，然后在 s1 中也都执行一遍<br>install plugin rpl_semi_sync_master soname <span class="hljs-string">&#x27;semisync_master.so&#x27;</span>;<br>install plugin rpl_semi_sync_slave soname <span class="hljs-string">&#x27;semisync_slave.so&#x27;</span>;<br>#查看插件信息<br><span class="hljs-keyword">show</span> plugins;<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL87.png" srcset="/img/loading.gif" lazyload alt="image-20210607114621298"></p>
+<ol>
+<li>启用半同步<strong>（务必先启用从库，再启用主库）</strong></li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql">#先启用从库，再启用主库<br><br>从库：<span class="hljs-keyword">set</span> <span class="hljs-keyword">global</span> rpl_semi_sync_slave_enabled<span class="hljs-operator">=</span> <span class="hljs-number">1</span>;   # <span class="hljs-number">1</span>：启用，<span class="hljs-number">0</span>：禁止<br><br>主库：<br>     <span class="hljs-keyword">set</span> <span class="hljs-keyword">global</span> rpl_semi_sync_master_enabled<span class="hljs-operator">=</span> <span class="hljs-number">1</span>;   # <span class="hljs-number">1</span>：启用，<span class="hljs-number">0</span>：禁止<br>     <span class="hljs-keyword">set</span> <span class="hljs-keyword">global</span> rpl_semi_sync_master_timeout<span class="hljs-operator">=</span><span class="hljs-number">10000</span>;   # 单位为ms<br></code></pre></td></tr></table></figure>
+
+
+
+<ol>
+<li>从库重启IO Thread</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql">stop slave io_thread;<br><span class="hljs-keyword">start</span> slave io_thread;<br></code></pre></td></tr></table></figure>
+
+
+
+<ol>
+<li>主库查看启动状态</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql">#查询状态信息<br><span class="hljs-keyword">show</span> <span class="hljs-keyword">global</span> status <span class="hljs-keyword">like</span> &quot;%sync%&quot;;<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL88.png" srcset="/img/loading.gif" lazyload alt="image-20210607115008800"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql">#查询参数信息<br><span class="hljs-keyword">show</span> <span class="hljs-keyword">global</span> variables <span class="hljs-keyword">like</span> <span class="hljs-string">&#x27;%sync%&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL89.png" srcset="/img/loading.gif" lazyload alt="image-20210607115025368"></p>
+<ol>
+<li>半同步复制效果测试</li>
+</ol>
+<ul>
+<li>正常的向master中添加数据，slave可以进行正常数据更新</li>
+</ul>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL90.png" srcset="/img/loading.gif" lazyload alt="image-20210607115320148"></p>
+<ul>
+<li>关闭slave的IO,再次向master中添加数据</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"># 从库执行操作：关闭 I<span class="hljs-operator">/</span>O 线程<br>stop slave io_thread;<br><br># 主库插入数据<br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `t_user` <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">&#x27;3&#x27;</span>, <span class="hljs-string">&#x27;ding&#x27;</span>, <span class="hljs-string">&#x27;111&#x27;</span>, <span class="hljs-string">&#x27;武汉&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL91.png" srcset="/img/loading.gif" lazyload alt="image-20210607115718465"></p>
+<p>==<strong>此时复制机制会由半同步复制转换为异步复制，当再次向master中添加数据，不会再次出现等待</strong>==</p>
+<ul>
+<li>slave中重新开启IO Thread</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">start</span> slave io_thread;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>异步复制会再次转换为半同步复制，master中打印日志信息如下：</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL92.png" srcset="/img/loading.gif" lazyload alt="image-20210607115905128"></p>
+<p>在slave IO Tthread关闭这段时间内的数据，会同步到slave中，不会出现数据丢失</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL93.png" srcset="/img/loading.gif" lazyload alt="image-20210607115930371"></p>
+<h1 id="第三节-主主复制"><a href="#第三节-主主复制" class="headerlink" title="第三节 主主复制"></a>第三节 主主复制</h1><h2 id="1、简介"><a href="#1、简介" class="headerlink" title="1、简介"></a>1、简介</h2><p>对于主从复制来说，其内部会存在一台master以及一台或多台slave。但有一个非常明显的问题，<strong>master是单点存在</strong>。一旦master宕机，则无法进行数据的写入。为了解决这个问题，可以使用主主复制架构。</p>
+<p>在主主复制架构中，会存在两台master，没有slave。并且会对这两台master进行读写分离，两台master会进行相互的复制, 架构图如下:</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL94.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>在此架构中，两台master会进行双向复制，为什么这么做呢？ 因为假设现在负责写的master宕机了，那么写的工作则会交给之前负责读的服务器来完成，相当于它即负责写又负责读。等到原先负责写的master恢复了，其在继续负责写工作。 反之亦然。因此才需要两者间进行双向复制。</p>
+<p><strong>缺点: 读请求的并发量过大，服务可能产生宕机, 主主复制架构直接使用的情况较少。</strong></p>
+<h2 id="2、主主搭建"><a href="#2、主主搭建" class="headerlink" title="2、主主搭建"></a>2、主主搭建</h2><p>在 docker 中再各自创建一个实例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs text">docker run --name mysqlm2 \<br>-p 30000:3306 \<br>--privileged=true \<br>-it \<br>-e MYSQL_ROOT_PASSWORD=123456 \<br>-e MYSQL_USER=user \<br>-e MYSQL_PASSWORD=pass \<br>-v /home/mysql/docker-data/m2/conf:/etc/mysql/conf.d \<br>-v /home/mysql/docker-data/m2/data/:/var/lib/mysql \<br>-v /home/mysql/docker-data/m2/logs/:/var/log/mysql \<br>-d mysql:5.7<br><br>docker run --name mysqlm3 \<br>-p 40000:3306 \<br>--privileged=true \<br>-it \<br>-e MYSQL_ROOT_PASSWORD=123456 \<br>-e MYSQL_USER=user \<br>-e MYSQL_PASSWORD=pass \<br>-v /home/mysql/docker-data/m3/conf:/etc/mysql/conf.d \<br>-v /home/mysql/docker-data/m3/data/:/var/lib/mysql \<br>-v /home/mysql/docker-data/m3/logs/:/var/log/mysql \<br>-d mysql:5.7<br></code></pre></td></tr></table></figure>
+
+
+
+<p>/home/mysql/docker-data/m2/conf/my.cnf</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs sql"># <span class="hljs-keyword">For</span> advice <span class="hljs-keyword">on</span> how <span class="hljs-keyword">to</span> change settings please see<br># http:<span class="hljs-operator">/</span><span class="hljs-operator">/</span>dev.mysql.com<span class="hljs-operator">/</span>doc<span class="hljs-operator">/</span>refman<span class="hljs-operator">/</span><span class="hljs-number">5.7</span><span class="hljs-operator">/</span>en<span class="hljs-operator">/</span>server<span class="hljs-operator">-</span>configuration<span class="hljs-operator">-</span>defaults.html<br><br>[mysqld]<br>#<br># Remove <span class="hljs-keyword">leading</span> # <span class="hljs-keyword">and</span> <span class="hljs-keyword">set</span> <span class="hljs-keyword">to</span> the amount <span class="hljs-keyword">of</span> RAM <span class="hljs-keyword">for</span> the most important data<br># cache <span class="hljs-keyword">in</span> MySQL. <span class="hljs-keyword">Start</span> <span class="hljs-keyword">at</span> <span class="hljs-number">70</span><span class="hljs-operator">%</span> <span class="hljs-keyword">of</span> total RAM <span class="hljs-keyword">for</span> dedicated server, <span class="hljs-keyword">else</span> <span class="hljs-number">10</span><span class="hljs-operator">%</span>.<br># innodb_buffer_pool_size <span class="hljs-operator">=</span> <span class="hljs-number">128</span>M<br>#<br># Remove <span class="hljs-keyword">leading</span> # <span class="hljs-keyword">to</span> turn <span class="hljs-keyword">on</span> a very important data integrity option: logging<br># changes <span class="hljs-keyword">to</span> the <span class="hljs-type">binary</span> log <span class="hljs-keyword">between</span> backups.<br># log_bin<br>#<br># Remove <span class="hljs-keyword">leading</span> # <span class="hljs-keyword">to</span> <span class="hljs-keyword">set</span> options mainly useful <span class="hljs-keyword">for</span> reporting servers.<br># The server defaults <span class="hljs-keyword">are</span> faster <span class="hljs-keyword">for</span> transactions <span class="hljs-keyword">and</span> fast SELECTs.<br># Adjust sizes <span class="hljs-keyword">as</span> needed, experiment <span class="hljs-keyword">to</span> find the optimal values.<br># join_buffer_size <span class="hljs-operator">=</span> <span class="hljs-number">128</span>M<br># sort_buffer_size <span class="hljs-operator">=</span> <span class="hljs-number">2</span>M<br># read_rnd_buffer_size <span class="hljs-operator">=</span> <span class="hljs-number">2</span>M<br><br>character_set_server<span class="hljs-operator">=</span>utf8<br>init_connect<span class="hljs-operator">=</span><span class="hljs-string">&#x27;SET NAMES utf8&#x27;</span><br><br># Disabling symbolic<span class="hljs-operator">-</span>links <span class="hljs-keyword">is</span> recommended <span class="hljs-keyword">to</span> prevent assorted security risks<br>symbolic<span class="hljs-operator">-</span>links<span class="hljs-operator">=</span><span class="hljs-number">0</span><br><br>lower_case_table_names<span class="hljs-operator">=</span><span class="hljs-number">1</span><br>#指定主机号，不允许出现重复<br>server<span class="hljs-operator">-</span>id<span class="hljs-operator">=</span><span class="hljs-number">1341</span><br>#开启binlog<br>log<span class="hljs-operator">-</span>bin<span class="hljs-operator">=</span>mysql<span class="hljs-operator">-</span>bin<br>auto_increment_increment<span class="hljs-operator">=</span><span class="hljs-number">2</span><br>auto_increment_offset<span class="hljs-operator">=</span><span class="hljs-number">1</span><br><br>#rpl_semi_sync_master_enabled<span class="hljs-operator">=</span><span class="hljs-number">1</span><br>#rpl_semi_sync_master_timeout<span class="hljs-operator">=</span><span class="hljs-number">10000</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>/home/mysql/docker-data/m3/conf/my.cnf</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs sql"># <span class="hljs-keyword">For</span> advice <span class="hljs-keyword">on</span> how <span class="hljs-keyword">to</span> change settings please see<br># http:<span class="hljs-operator">/</span><span class="hljs-operator">/</span>dev.mysql.com<span class="hljs-operator">/</span>doc<span class="hljs-operator">/</span>refman<span class="hljs-operator">/</span><span class="hljs-number">5.7</span><span class="hljs-operator">/</span>en<span class="hljs-operator">/</span>server<span class="hljs-operator">-</span>configuration<span class="hljs-operator">-</span>defaults.html<br><br>[mysqld]<br>#<br># Remove <span class="hljs-keyword">leading</span> # <span class="hljs-keyword">and</span> <span class="hljs-keyword">set</span> <span class="hljs-keyword">to</span> the amount <span class="hljs-keyword">of</span> RAM <span class="hljs-keyword">for</span> the most important data<br># cache <span class="hljs-keyword">in</span> MySQL. <span class="hljs-keyword">Start</span> <span class="hljs-keyword">at</span> <span class="hljs-number">70</span><span class="hljs-operator">%</span> <span class="hljs-keyword">of</span> total RAM <span class="hljs-keyword">for</span> dedicated server, <span class="hljs-keyword">else</span> <span class="hljs-number">10</span><span class="hljs-operator">%</span>.<br># innodb_buffer_pool_size <span class="hljs-operator">=</span> <span class="hljs-number">128</span>M<br>#<br># Remove <span class="hljs-keyword">leading</span> # <span class="hljs-keyword">to</span> turn <span class="hljs-keyword">on</span> a very important data integrity option: logging<br># changes <span class="hljs-keyword">to</span> the <span class="hljs-type">binary</span> log <span class="hljs-keyword">between</span> backups.<br># log_bin<br>#<br># Remove <span class="hljs-keyword">leading</span> # <span class="hljs-keyword">to</span> <span class="hljs-keyword">set</span> options mainly useful <span class="hljs-keyword">for</span> reporting servers.<br># The server defaults <span class="hljs-keyword">are</span> faster <span class="hljs-keyword">for</span> transactions <span class="hljs-keyword">and</span> fast SELECTs.<br># Adjust sizes <span class="hljs-keyword">as</span> needed, experiment <span class="hljs-keyword">to</span> find the optimal values.<br># join_buffer_size <span class="hljs-operator">=</span> <span class="hljs-number">128</span>M<br># sort_buffer_size <span class="hljs-operator">=</span> <span class="hljs-number">2</span>M<br># read_rnd_buffer_size <span class="hljs-operator">=</span> <span class="hljs-number">2</span>M<br><br>character_set_server<span class="hljs-operator">=</span>utf8<br>init_connect<span class="hljs-operator">=</span><span class="hljs-string">&#x27;SET NAMES utf8&#x27;</span><br><br># Disabling symbolic<span class="hljs-operator">-</span>links <span class="hljs-keyword">is</span> recommended <span class="hljs-keyword">to</span> prevent assorted security risks<br>symbolic<span class="hljs-operator">-</span>links<span class="hljs-operator">=</span><span class="hljs-number">0</span><br><br>lower_case_table_names<span class="hljs-operator">=</span><span class="hljs-number">1</span><br>#指定主机号，不允许出现重复<br>server<span class="hljs-operator">-</span>id<span class="hljs-operator">=</span><span class="hljs-number">666</span><br>#开启binlog<br>log<span class="hljs-operator">-</span>bin<span class="hljs-operator">=</span>mysql<span class="hljs-operator">-</span>bin<br>auto_increment_increment<span class="hljs-operator">=</span><span class="hljs-number">2</span><br>auto_increment_offset<span class="hljs-operator">=</span><span class="hljs-number">1</span><br><br>#rpl_semi_sync_master_enabled<span class="hljs-operator">=</span><span class="hljs-number">1</span><br>#rpl_semi_sync_master_timeout<span class="hljs-operator">=</span><span class="hljs-number">10000</span><br></code></pre></td></tr></table></figure>
+
+<p>❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤</p>
+<p>修改 my.cnf 后记得<strong>重启</strong> MySQL 容器！</p>
+<p>❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤</p>
+<p>添加slave的相关配置, 虽然是主主模式,也要添加从用户（供从机访问的用户）。由于 m2 和 m3 都有可能作为从机访问对方（此时对方是主机），所以在 m2 和 m3 都需要创建 repluser 用户。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql">#添加权限<br><span class="hljs-keyword">GRANT</span> REPLICATION SLAVE,FILE,REPLICATION CLIENT <span class="hljs-keyword">ON</span> <span class="hljs-operator">*</span>.<span class="hljs-operator">*</span> <span class="hljs-keyword">TO</span> <span class="hljs-string">&#x27;repluser&#x27;</span>@<span class="hljs-string">&#x27;%&#x27;</span> IDENTIFIED <span class="hljs-keyword">BY</span> <span class="hljs-string">&#x27;123456&#x27;</span>;<br>#刷新权限<br>FLUSH PRIVILEGES;<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sql">#在m2<span class="hljs-operator">/</span>m3服务器上运行<br><span class="hljs-keyword">show</span> master status;<br><br>#执行主主关联（参考 m2 的状态设置 m3；参考 m3 的状态设置 m2）<br>#设置m2。因为m2要去连m3，所以这里要设置m3的IP地址和端口号。<br>change master <span class="hljs-keyword">to</span> master_host<span class="hljs-operator">=</span><span class="hljs-string">&#x27;192.168.198.120&#x27;</span>,master_port<span class="hljs-operator">=</span><span class="hljs-number">40000</span>,master_user<span class="hljs-operator">=</span><span class="hljs-string">&#x27;repluser&#x27;</span>,master_password<span class="hljs-operator">=</span><span class="hljs-string">&#x27;123456&#x27;</span>,master_log_file<span class="hljs-operator">=</span><span class="hljs-string">&#x27;mysql-bin.000001&#x27;</span>,master_log_pos<span class="hljs-operator">=</span><span class="hljs-number">1104</span>;<br><br>#设置m3。因为m3要去连m2，所以这里要设置m2的IP地址和端口号。<br>change master <span class="hljs-keyword">to</span> master_host<span class="hljs-operator">=</span><span class="hljs-string">&#x27;192.168.198.120&#x27;</span>,master_port<span class="hljs-operator">=</span><span class="hljs-number">30000</span>,master_user<span class="hljs-operator">=</span><span class="hljs-string">&#x27;repluser&#x27;</span>,master_password<span class="hljs-operator">=</span><span class="hljs-string">&#x27;123456&#x27;</span>,master_log_file<span class="hljs-operator">=</span><span class="hljs-string">&#x27;mysql-bin.000001&#x27;</span>,master_log_pos<span class="hljs-operator">=</span><span class="hljs-number">1104</span>;<br><br>#主主同步生效：也就是说m2和m3都需要执行<br><span class="hljs-keyword">start</span> slave;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>查看master 129的进程列表：show processlist;</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL95.png" srcset="/img/loading.gif" lazyload alt="image-20210607143921793"></p>
+<p>slave131的进程列表：show processlist;</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL96.png" srcset="/img/loading.gif" lazyload alt="image-20210607143932355"></p>
+<h1 id="第四节-其他模式"><a href="#第四节-其他模式" class="headerlink" title="第四节 其他模式"></a>第四节 其他模式</h1><h2 id="1、级联复制"><a href="#1、级联复制" class="headerlink" title="1、级联复制"></a>1、级联复制</h2><p>写请求的入口为一个，但当master向slave进行复制时，对于slave可以分为多层， master只要向其中两台slave复制即可，然后再由slave将其数据复制到后面更多的slave中。通过这种方式可以减轻master向slave复制的IO压力。但是这种架构会使slave的延迟会加大,架构如下图:</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL97.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h2 id="2、双主与级联复制-了解"><a href="#2、双主与级联复制-了解" class="headerlink" title="2、双主与级联复制(了解)"></a>2、双主与级联复制(了解)</h2><p>对于master在前面几种架构设计中，都存在单点问题， 对于master单点问题的解决，可以采用当前的架构。</p>
+<p>通过这种架构不仅可以解决master单点的问题，也可以解决slave延迟的问题, 架构图如下:</p>
+<p><img src="https://lllong.oss-cn-shenzhen.aliyuncs.com/Mysql/Mysql%E9%AB%98%E7%BA%A7/MySQL98.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/mysql/">mysql</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/mysql/">mysql</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客目前大部分文章都是参考尚硅谷或者马士兵教育的学习资料！<a href="http://www.atguigu.com/" rel="nofollow noopener"官网地址！</a> 
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/03/13/MySQL-SQL%E4%BC%98%E5%8C%96/">
+                        <span class="hidden-mobile">Mysql-SQL优化整理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+	<!--《添加网站运行时间 -->
+<br/>
+
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+var now = new Date(); 
+
+function createtime() {
+    //此处修改你的建站时间或者网站上线时间
+    var grt = new Date('11/02/2021 21:39:00');
+    now.setTime(now.getTime() + 250);
+    days = (now - grt) / 1000 / 60 / 60 / 24;
+
+    dnum = Math.floor(days);
+    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+        hnum = "0" + hnum;
+    }
+    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+        mnum = "0" + mnum;
+    }
+    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+        snum = "0" + snum;
+    }
+    document.getElementById("timeDate").innerHTML = " 本站已各种夹缝中安全运行 " + dnum + " 天 ";
+    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()", 250);
+</script>
+
+<!-- 添加网站运行时间》-->
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
