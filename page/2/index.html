@@ -208,6 +208,57 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2022/03/08/JUC02-synchronized/" target="_self">
+          JUC学习笔记（二）synchronized 底层原理探究
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/03/08/JUC02-synchronized/" target="_self">
+          
+          
+            
+          
+          synchronized 底层原理探究第一节 锁膨胀机制1、JDK 1.6 分水岭在 JDK 1.6 之前，synchronized 的底层工作机制只有『重量级锁』这一种模式。从 JDK 1.6 开始，官方对synchronized 的底层工作机制做了重大调整。
+为了减少获得锁和释放锁带来的性能消耗，引入了『偏向锁』和『轻量级锁』的概念。升级后锁一共有 4 种状态，级别从低到高依次是：无锁状态、偏
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-03-08 18:13" pubdate>
+              2022-03-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/JUC/">JUC</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JUC/">JUC</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2022/03/07/JUC01-Thread/" target="_self">
           JUC学习笔记（一）多线程基本知识
         </a>
@@ -677,60 +728,6 @@ JDK=JRE+Java开发辅助工具
 解决办法：在挂载目录后多加一个–privileged=true参数即可
 
 如果是CentOS7安全模块会比之前系统版本加强，不安全的会先禁止，所以目录挂载的情况被默认为不安全的行为，在SELinux里面挂载目录被禁止掉了额，如果要开启，我们
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-01-23 19:28" pubdate>
-              2022-01-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/docker/">docker</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/docker/">docker</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/01/23/docker-command/" target="_self">
-          Docker常用命令笔记
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2022/01/23/docker-command/" target="_self">
-          
-          
-            
-          
-          docker基本命令
-启动docker
-1234systemctl start docker #启动dockersystemctl stop docker  #停止dockersystemctl restart docker #重启dockersystemctl status docker #查看docker状态 
-docker自启动
-1systemctl enable docker #设置doc
         </a>
       </p>
 
